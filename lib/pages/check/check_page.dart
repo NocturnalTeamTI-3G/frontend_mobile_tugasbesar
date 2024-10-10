@@ -13,7 +13,7 @@ class _CheckPageState extends State<CheckPage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: Center(
-        child: Text('Check Page'),
+        child: Text('Camera Page'),
       ),
     );
   }
