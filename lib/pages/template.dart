@@ -4,6 +4,7 @@ import 'package:frontend_mobile_tugasbesar/pages/fitplan/fitplan_page.dart';
 import 'package:frontend_mobile_tugasbesar/pages/history/history_page.dart';
 import 'package:frontend_mobile_tugasbesar/pages/home/home_page.dart';
 import 'package:frontend_mobile_tugasbesar/pages/profile/profile_page.dart';
+import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 
 class Template extends StatefulWidget {
   const Template({Key? key}) : super(key: key);
@@ -40,7 +41,7 @@ class _TemplateState extends State<Template> {
                 builder: (context) => CheckPage(),
               ));
         },
-        backgroundColor: Colors.orange[800],
+        backgroundColor: AppColors.mainColor,
         shape: const CircleBorder(),
         child: const Icon(
           Icons.camera,
@@ -81,7 +82,7 @@ class _TemplateState extends State<Template> {
                           Icon(
                             Icons.home,
                             color: _selectedIndex == 0
-                                ? Colors.orange[800]
+                                ? AppColors.mainColor
                                 : Colors.grey,
                             size: 30,
                           ),
@@ -90,7 +91,7 @@ class _TemplateState extends State<Template> {
                             style: TextStyle(
                               fontSize: 12,
                               color: _selectedIndex == 0
-                                  ? Colors.orange[800]
+                                  ? AppColors.mainColor
                                   : Colors.grey,
                             ),
                           )
@@ -113,7 +114,7 @@ class _TemplateState extends State<Template> {
                           Icon(
                             Icons.fitbit,
                             color: _selectedIndex == 1
-                                ? Colors.orange[800]
+                                ? AppColors.mainColor
                                 : Colors.grey,
                             size: 30,
                           ),
@@ -122,7 +123,7 @@ class _TemplateState extends State<Template> {
                             style: TextStyle(
                               fontSize: 12,
                               color: _selectedIndex == 1
-                                  ? Colors.orange[800]
+                                  ? AppColors.mainColor
                                   : Colors.grey,
                             ),
                           )
@@ -157,7 +158,7 @@ class _TemplateState extends State<Template> {
                           Icon(
                             Icons.history_edu,
                             color: _selectedIndex == 2
-                                ? Colors.orange[800]
+                                ? AppColors.mainColor
                                 : Colors.grey,
                             size: 30,
                           ),
@@ -166,7 +167,7 @@ class _TemplateState extends State<Template> {
                             style: TextStyle(
                               fontSize: 12,
                               color: _selectedIndex == 2
-                                  ? Colors.orange[800]
+                                  ? AppColors.mainColor
                                   : Colors.grey,
                             ),
                           )
@@ -189,7 +190,7 @@ class _TemplateState extends State<Template> {
                           Icon(
                             Icons.person_rounded,
                             color: _selectedIndex == 3
-                                ? Colors.orange[800]
+                                ? AppColors.mainColor
                                 : Colors.grey,
                             size: 30,
                           ),
@@ -198,7 +199,7 @@ class _TemplateState extends State<Template> {
                             style: TextStyle(
                               fontSize: 12,
                               color: _selectedIndex == 3
-                                  ? Colors.orange[800]
+                                  ? AppColors.mainColor
                                   : Colors.grey,
                             ),
                           )
