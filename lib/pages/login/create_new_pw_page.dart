@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/pages/login/login_page.dart';
+import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 import 'package:get/get.dart';
 
 class CreateNewPasswordPage extends StatefulWidget {
@@ -51,12 +52,12 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
               height: 37,
               width: 37,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.orangeAccent, width: 3),
+                border: Border.all(color: AppColors.mainColor, width: 3),
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_back_ios_new,
-                color: Colors.orangeAccent,
+                color: AppColors.mainColor,
                 size: 23,
               ),
             )),
@@ -70,13 +71,13 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
               // color: Colors.orangeAccent[400]
               gradient: LinearGradient(
                 colors: [
-                  Colors.orange[800]!,
-                  Colors.orange[800]!,
-                  Colors.orangeAccent,
-                  Colors.orange[800]!,
+                  AppColors.mainColor,
+                  AppColors.mainColor,
+                  AppColors.secondaryColor,
+                  AppColors.mainColor,
                 ],
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
             ),
           ),
@@ -125,11 +126,11 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
                           child: TextField(
                             controller: _newPasswordController,
                             obscureText: !_isShowPasswordNew,
-                            style: TextStyle(color: Colors.orange[800]),
-                            cursorColor: Colors.orange[800],
+                            style: TextStyle(color: AppColors.mainColor),
+                            cursorColor: AppColors.mainColor,
                             decoration: InputDecoration(
                               hintText: 'New Password',
-                              hintStyle: TextStyle(color: Colors.orange[800]),
+                              hintStyle: TextStyle(color: AppColors.mainColor),
                               suffixIcon: _isPasswordNewFilled
                                   ? IconButton(
                                       onPressed: () {
@@ -142,25 +143,25 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
                                         (_isShowPasswordNew)
                                             ? Icons.visibility
                                             : Icons.visibility_off,
-                                        color: Colors.orange[800],
+                                        color: AppColors.mainColor,
                                       ),
                                     )
                                   : null,
                               prefixIcon: Icon(
                                 Icons.lock,
-                                color: Colors.orange[800],
+                                color: AppColors.mainColor,
                               ),
                               fillColor: Colors.orange[50]!,
                               filled: true,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide:
-                                    BorderSide(color: Colors.orange[800]!),
+                                    BorderSide(color: AppColors.mainColor),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: BorderSide(
-                                    color: Colors.orange[800]!, width: 2),
+                                    color: AppColors.mainColor, width: 2),
                               ),
                             ),
                           ),
@@ -171,11 +172,11 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
                           child: TextField(
                             controller: _confPasswordController,
                             obscureText: !_isShowPasswordConf,
-                            style: TextStyle(color: Colors.orange[800]),
-                            cursorColor: Colors.orange[800],
+                            style: TextStyle(color: AppColors.mainColor),
+                            cursorColor: AppColors.mainColor,
                             decoration: InputDecoration(
                               hintText: 'Confirm Password',
-                              hintStyle: TextStyle(color: Colors.orange[800]),
+                              hintStyle: TextStyle(color: AppColors.mainColor),
                               suffixIcon: _isPasswordConfFilled
                                   ? IconButton(
                                       onPressed: () {
@@ -188,25 +189,25 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
                                         (_isShowPasswordConf)
                                             ? Icons.visibility
                                             : Icons.visibility_off,
-                                        color: Colors.orange[800],
+                                        color: AppColors.mainColor,
                                       ),
                                     )
                                   : null,
                               prefixIcon: Icon(
                                 Icons.lock,
-                                color: Colors.orange[800],
+                                color: AppColors.mainColor,
                               ),
                               fillColor: Colors.orange[50]!,
                               filled: true,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide:
-                                    BorderSide(color: Colors.orange[800]!),
+                                    BorderSide(color: AppColors.mainColor),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 borderSide: BorderSide(
-                                    color: Colors.orange[800]!, width: 2),
+                                    color: AppColors.mainColor, width: 2),
                               ),
                             ),
                           ),
@@ -214,26 +215,26 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
                         const SizedBox(height: 50),
                         Material(
                           elevation: 3,
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(15),
                           child: Container(
                             width: 280,
                             height: 50,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
+                                borderRadius: BorderRadius.circular(15),
                                 gradient: LinearGradient(
                                   colors: [
-                                    Colors.orange[800]!,
-                                    Colors.orange[500]!,
+                                    AppColors.mainColor,
+                                    AppColors.secondaryColor,
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 )),
                             child: Material(
-                              borderRadius: BorderRadius.circular(25),
+                              borderRadius: BorderRadius.circular(15),
                               color: Colors.transparent,
                               child: InkWell(
-                                splashColor: Colors.orange,
-                                borderRadius: BorderRadius.circular(25),
+                                splashColor: AppColors.mainColor,
+                                borderRadius: BorderRadius.circular(15),
                                 onTap: () {
                                   Get.to(() => LoginPage(),
                                       transition: Transition.fadeIn);

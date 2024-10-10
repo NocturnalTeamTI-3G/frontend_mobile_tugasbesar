@@ -18,6 +18,8 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isPasswordFilled = false;
   bool _isShowPassword = false;
 
+  final List<String> optionList = ['Laki-laki', 'Perempuan'];
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +33,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    String selectedValue = optionList[0];
+
     return Scaffold(
       // backgroundColor: Colors.orangeAccent,
       resizeToAvoidBottomInset: true,
@@ -90,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   Transform.translate(
-                    offset: const Offset(0, -20),
+                    offset: const Offset(0, -30),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -121,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 Icons.person,
                                 color: AppColors.mainColor,
                               ),
-                              fillColor: Colors.orange[50]!,
+                              fillColor: Colors.white,
                               filled: true,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
@@ -150,7 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 Icons.email,
                                 color: AppColors.mainColor,
                               ),
-                              fillColor: Colors.orange[50]!,
+                              fillColor: Colors.white,
                               filled: true,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
@@ -195,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 Icons.lock,
                                 color: AppColors.mainColor,
                               ),
-                              fillColor: Colors.orange[50]!,
+                              fillColor: Colors.white,
                               filled: true,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
@@ -210,6 +214,44 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                         ),
+                        const SizedBox(height: 16),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 35),
+                            child: DropdownButtonFormField(
+                              value: selectedValue,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.wc,
+                                  color: AppColors.mainColor,
+                                ),
+                                fillColor: Colors.white,
+                                filled: true,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: AppColors.mainColor),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                      color: AppColors.mainColor, width: 2),
+                                ),
+                              ),
+                              icon: Icon(Icons.keyboard_arrow_down, color: AppColors.mainColor),
+                              style: TextStyle(color: AppColors.mainColor, fontSize: 16, fontWeight: FontWeight.w500),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedValue = newValue!;
+                                });
+                              },
+                              items: optionList.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            )),
                         const SizedBox(height: 45),
                         Material(
                           elevation: 3,

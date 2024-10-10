@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/pages/login/otp_verif_page.dart';
+import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 import 'package:get/get.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -28,12 +29,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               height: 37,
               width: 37,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.orangeAccent, width: 3),
+                border: Border.all(color: AppColors.mainColor, width: 3),
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_back_ios_new,
-                color: Colors.orangeAccent,
+                color: AppColors.mainColor,
                 size: 23,
               ),
             )),
@@ -47,10 +48,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               // color: Colors.orangeAccent[400]
               gradient: LinearGradient(
                 colors: [
-                  Colors.orange[800]!,
-                  Colors.orange[800]!,
-                  Colors.orangeAccent,
-                  Colors.orange[800]!,
+                  AppColors.mainColor,
+                  AppColors.mainColor,
+                  AppColors.secondaryColor,
+                  AppColors.mainColor,
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -92,25 +93,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 35),
                     child: TextField(
                       controller: _emailController,
-                      style: TextStyle(color: Colors.orange[800]),
-                      cursorColor: Colors.orange[800],
+                      style: TextStyle(color: AppColors.mainColor),
+                      cursorColor: AppColors.mainColor,
                       decoration: InputDecoration(
                         hintText: 'Email',
-                        hintStyle: TextStyle(color: Colors.orange[800]),
+                        hintStyle: TextStyle(color: AppColors.mainColor),
                         prefixIcon: Icon(
                           Icons.email,
-                          color: Colors.orange[800],
+                          color: AppColors.mainColor,
                         ),
-                        fillColor: Colors.orange[50]!,
+                        fillColor: Colors.white,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.orange[800]!),
+                          borderSide: BorderSide(color: AppColors.mainColor),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide:
-                              BorderSide(color: Colors.orange[800]!, width: 2),
+                              BorderSide(color: AppColors.mainColor, width: 2),
                         ),
                       ),
                     ),
@@ -118,26 +119,26 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   const SizedBox(height: 50),
                   Material(
                     elevation: 3,
-                    borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(15),
                     child: Container(
                       width: 280,
                       height: 50,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(15),
                           gradient: LinearGradient(
                             colors: [
-                              Colors.orange[800]!,
-                              Colors.orange[500]!,
+                              AppColors.mainColor,
+                              AppColors.secondaryColor,
                             ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           )),
                       child: Material(
-                        borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(15),
                         color: Colors.transparent,
                         child: InkWell(
-                          splashColor: Colors.orange,
-                          borderRadius: BorderRadius.circular(25),
+                          splashColor: AppColors.secondaryColor,
+                          borderRadius: BorderRadius.circular(15),
                           onTap: () {
                             Get.to(() => OtpVerifPage(),
                                 transition: Transition.fadeIn);

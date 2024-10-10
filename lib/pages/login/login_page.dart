@@ -15,6 +15,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   bool _isPasswordFilled = false;
   bool _isShowPassword = false;
@@ -77,183 +78,208 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SingleChildScrollView(
             child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipPath(
-                    clipper: BottomWaveClipper(),
-                    child: Image.asset(
-                      'assets/images/login.jpg',
-                      height: 300,
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const Text(
-                    'Welcome Back',
-                    style: TextStyle(
-                        fontSize: 40,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Login to your account',
-                    style: TextStyle(fontSize: 16, color: Colors.grey[300]),
-                  ),
-                  const SizedBox(height: 42),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: TextField(
-                      controller: _usernameController,
-                      style: TextStyle(color: AppColors.mainColor),
-                      cursorColor: AppColors.mainColor,
-                      decoration: InputDecoration(
-                        hintText: 'Username',
-                        hintStyle: TextStyle(color: AppColors.mainColor),
-                        prefixIcon: Icon(
-                          Icons.person,
-                          color: AppColors.mainColor,
-                        ),
-                        fillColor: Colors.orange[50]!,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: AppColors.mainColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: AppColors.mainColor, width: 2),
-                        ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ClipPath(
+                      clipper: BottomWaveClipper(),
+                      child: Image.asset(
+                        'assets/images/login.jpg',
+                        height: 300,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: TextField(
-                      controller: _passwordController,
-                      obscureText: !_isShowPassword,
-                      style: TextStyle(color: AppColors.mainColor),
-                      cursorColor: AppColors.mainColor,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        hintStyle: TextStyle(color: AppColors.mainColor),
-                        suffixIcon: _isPasswordFilled
-                            ? IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isShowPassword = !_isShowPassword;
-                                  });
-                                },
-                                icon: Icon(
-                                  (_isShowPassword)
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: AppColors.mainColor,
-                                ),
-                              )
-                            : null,
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: AppColors.mainColor,
-                        ),
-                        fillColor: Colors.orange[50]!,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: AppColors.mainColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: AppColors.mainColor, width: 2),
-                        ),
-                      ),
+                    const Text(
+                      'Welcome Back',
+                      style: TextStyle(
+                          fontSize: 40,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 35),
-                        child: TextButton(
-                          onPressed: () {
-                            Get.to(() => const ForgotPasswordPage(),
-                                transition: Transition.fadeIn);
-                          },
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Login to your account',
+                      style: TextStyle(fontSize: 16, color: Colors.grey[300]),
+                    ),
+                    const SizedBox(height: 42),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please fill the username';
+                          }
+                          return null;
+                        },
+                        controller: _usernameController,
+                        style: TextStyle(color: AppColors.mainColor),
+                        cursorColor: AppColors.mainColor,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(color: Colors.redAccent[700]),
+                          hintText: 'Username',
+                          hintStyle: TextStyle(color: AppColors.mainColor),
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: AppColors.mainColor,
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: AppColors.mainColor),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: AppColors.mainColor, width: 2),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: AppColors.mainColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                                color: AppColors.mainColor, width: 2),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 35),
-                  Material(
-                    elevation: 3,
-                    borderRadius: BorderRadius.circular(15),
-                    child: Container(
-                      width: 280,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.mainColor,
-                              AppColors.secondaryColor, 
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.transparent,
-                        child: InkWell(
-                          splashColor: AppColors.thirdColor,
-                          borderRadius: BorderRadius.circular(15),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const Template()));
-                          },
-                          child: const Center(
-                            child: Text(
-                              "Login",
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      child: TextFormField(
+                        controller: _passwordController,
+                        obscureText: !_isShowPassword,
+                        style: TextStyle(color: AppColors.mainColor),
+                        cursorColor: AppColors.mainColor,
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                          hintStyle: TextStyle(color: AppColors.mainColor),
+                          suffixIcon: _isPasswordFilled
+                              ? IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isShowPassword = !_isShowPassword;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    (_isShowPassword)
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: AppColors.mainColor,
+                                  ),
+                                )
+                              : null,
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: AppColors.mainColor,
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: AppColors.mainColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                                color: AppColors.mainColor, width: 2),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 35),
+                          child: TextButton(
+                            onPressed: () {
+                              Get.to(() => const ForgotPasswordPage(),
+                                  transition: Transition.fadeIn);
+                            },
+                            child: const Text(
+                              'Forgot Password?',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 35),
+                    Material(
+                      elevation: 3,
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        width: 280,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.mainColor,
+                                AppColors.secondaryColor,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )),
+                        child: Material(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.transparent,
+                          child: InkWell(
+                            splashColor: AppColors.thirdColor,
+                            borderRadius: BorderRadius.circular(15),
+                            onTap: () {
+                              if (_formKey.currentState!.validate()) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Template(),
+                                  ),
+                                );
+                              }
+                            },
+                            child: const Center(
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w500),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Don't have an account? ",
-                        style: TextStyle(color: Colors.grey[100]),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Get.to(() => const RegisterPage(),
-                              transition: Transition.fadeIn);
-                        },
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Don't have an account? ",
+                          style: TextStyle(color: Colors.grey[100]),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                        TextButton(
+                          onPressed: () {
+                            Get.to(() => const RegisterPage(),
+                                transition: Transition.fadeIn);
+                          },
+                          child: const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
