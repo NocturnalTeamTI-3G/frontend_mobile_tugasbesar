@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: Splash()
-      home: IntroPage(),
+      home: Splash()
+      // home: IntroPage(),
       // home: MainHomePage(),
       // home: Template(),
     );

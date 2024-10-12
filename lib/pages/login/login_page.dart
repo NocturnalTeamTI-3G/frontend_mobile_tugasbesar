@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _isPasswordFilled = false;
   bool _isShowPassword = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -238,12 +239,20 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(15),
                             onTap: () {
                               if (_formKey.currentState!.validate()) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Template(),
-                                  ),
-                                );
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                Future.delayed(const Duration(seconds: 1), () {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Template(),
+                                    ),
+                                  );
+                                });
                               }
                             },
                             child: const Center(
@@ -285,6 +294,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          if (_isLoading)
+            Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.mainColor,
+                ),
+              ),
+            ),
         ],
       ),
     );

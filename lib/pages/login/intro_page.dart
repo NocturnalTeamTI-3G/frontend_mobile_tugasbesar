@@ -31,16 +31,18 @@ class _IntroPageState extends State<IntroPage> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 47, right: 47, top: 100, bottom: 80),
+            padding: const EdgeInsets.only(left: 47, right: 47, top: 100, bottom: 70),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
                   'The best app for your facial skin',
                   style: TextStyle(
-                      fontSize: 56,
+                      fontSize: 52,
                       color: Colors.white,
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.w600,
+                      height: 1.2
+                      ),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,

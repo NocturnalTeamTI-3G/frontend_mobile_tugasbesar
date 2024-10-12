@@ -20,26 +20,26 @@ class _SplashState extends State<Splash> {
         splash: Stack(
           children: [
             Center(
-              // child: LottieBuilder.asset('assets/lottie/load.json', width: 200),
-              child: Text('SkinAssist', style: TextStyle(fontSize: 24, color: AppColors.white, fontWeight: FontWeight.w700),),
+              child: LottieBuilder.asset('assets/lottie/camera.json', width: 400),
+              // child: Text('SkinAssist', style: TextStyle(fontSize: 24, color: AppColors.white, fontWeight: FontWeight.w700),),
             ),
 
-            // Expanded(
-            //   child: Center(
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.end,
-            //       children: [
-            //         Padding(
-            //           padding: const EdgeInsets.all(20.0),
-            //           child: Text(
-            //             'Nocturnal Team',
-            //             style: TextStyle(fontSize: 20, color: AppColors.black, fontWeight: FontWeight.bold),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // )
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        'Skin Assist App',
+                        style: TextStyle(fontSize: 20, color: AppColors.mainColor, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
         nextScreen: const IntroPage(),
