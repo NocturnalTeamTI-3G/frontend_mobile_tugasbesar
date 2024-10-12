@@ -18,8 +18,8 @@ class _TemplateState extends State<Template> {
 
   final List<Widget> _pages = [
     const MainHomePage(),
-    const FitplanPage(),
     const HistoryPage(),
+    const FitplanPage(),
     const ProfilePage(),
   ];
 
@@ -56,7 +56,6 @@ class _TemplateState extends State<Template> {
         shape: const CircularNotchedRectangle(),
         color: Colors.white,
         child: Container(
-          height: 50,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -112,14 +111,14 @@ class _TemplateState extends State<Template> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.fitbit,
+                            Icons.history_edu,
                             color: _selectedIndex == 1
                                 ? AppColors.mainColor
                                 : Colors.grey,
                             size: 30,
                           ),
                           Text(
-                            "Fit Plan",
+                            "Report",
                             style: TextStyle(
                               fontSize: 12,
                               color: _selectedIndex == 1
@@ -156,14 +155,14 @@ class _TemplateState extends State<Template> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.history_edu,
+                            Icons.info,
                             color: _selectedIndex == 2
                                 ? AppColors.mainColor
                                 : Colors.grey,
                             size: 30,
                           ),
                           Text(
-                            "History",
+                            "Info",
                             style: TextStyle(
                               fontSize: 12,
                               color: _selectedIndex == 2
@@ -188,14 +187,14 @@ class _TemplateState extends State<Template> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.person_rounded,
+                            Icons.settings,
                             color: _selectedIndex == 3
                                 ? AppColors.mainColor
                                 : Colors.grey,
                             size: 30,
                           ),
                           Text(
-                            "Profile",
+                            "Setting",
                             style: TextStyle(
                               fontSize: 12,
                               color: _selectedIndex == 3

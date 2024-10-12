@@ -5,7 +5,8 @@ import 'package:frontend_mobile_tugasbesar/pages/template.dart';
 import 'package:frontend_mobile_tugasbesar/splash.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

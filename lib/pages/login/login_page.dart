@@ -40,22 +40,23 @@ class _LoginPageState extends State<LoginPage> {
       floatingActionButton: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-              height: 37,
-              width: 37,
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.mainColor, width: 3),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Icon(
-                Icons.arrow_back_ios_new,
-                color: AppColors.mainColor,
-                size: 23,
-              ),
-            )),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Container(
+            height: 37,
+            width: 37,
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.mainColor, width: 3),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Icon(
+              Icons.arrow_back_ios_new,
+              color: AppColors.mainColor,
+              size: 23,
+            ),
+          ),
+        ),
       ),
       body: Stack(
         children: [
@@ -108,12 +109,12 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please fill the username';
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return 'Please fill the username';
+                        //   }
+                        //   return null;
+                        // },
                         controller: _usernameController,
                         style: TextStyle(color: AppColors.mainColor),
                         cursorColor: AppColors.mainColor,
@@ -133,7 +134,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(color: AppColors.mainColor, width: 2),
+                            borderSide: BorderSide(
+                                color: AppColors.mainColor, width: 2),
                           ),
                           errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
