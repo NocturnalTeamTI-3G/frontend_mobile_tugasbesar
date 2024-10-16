@@ -32,84 +32,117 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _isLoading
-            ? Center(
-                child: Lottie.asset('assets/lottie/camera.json', width: 300),
-              )
-            : Stack(
-                children: [
-                  Positioned.fill(
-                    child: Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.rotationY(
-                          math.pi), // Membalikkan pratinjau kamera depan
-                      child: Image.file(
-                        File(widget.imagePath),
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
+      body: _isLoading
+          ? Center(
+              child: Lottie.asset('assets/lottie/camera.json', width: 300),
+            )
+          : Stack(
+              children: [
+                Positioned.fill(
+                  child: Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.rotationY(
+                        math.pi), // Membalikkan pratinjau kamera depan
+                    child: Image.file(
+                      File(widget.imagePath),
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.black.withOpacity(0.5),
+                          AppColors.black.withOpacity(0.0),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 30, right: 30, top: 64),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                height: 37,
-                                width: 37,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: Icon(
-                                  Icons.arrow_back_ios_new,
-                                  color: AppColors.mainColor,
-                                  size: 24,
-                                ),
-                              ),
-                            ),
-                            const Text(
-                              'Check your result',
-                              style: TextStyle(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 30, top: 64),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              height: 37,
+                              width: 37,
+                              decoration: BoxDecoration(
                                 color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Icon(
+                                Icons.arrow_back_ios_new,
+                                color: AppColors.mainColor,
+                                size: 24,
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                height: 37,
-                                width: 37,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: Icon(
-                                  Icons.question_mark,
-                                  color: AppColors.mainColor,
-                                  size: 24,
-                                ),
+                          ),
+                          const Text(
+                            'Check your result',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              height: 37,
+                              width: 37,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Icon(
+                                Icons.question_mark,
+                                color: AppColors.mainColor,
+                                size: 24,
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ));
+                ),
+                // Positioned(
+                //   bottom: 0,
+                //   left: 0,
+                //   right: 0,
+                //   child: Container(
+                //     height: 370,
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       borderRadius: BorderRadius.only(
+                //         topLeft: Radius.circular(50),
+                //         topRight: Radius.circular(50),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
+    );
   }
 }
