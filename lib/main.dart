@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/pages/home/home_page.dart';
 import 'package:frontend_mobile_tugasbesar/pages/login/intro_page.dart';
 import 'package:frontend_mobile_tugasbesar/pages/template.dart';
 import 'package:frontend_mobile_tugasbesar/splash.dart';
