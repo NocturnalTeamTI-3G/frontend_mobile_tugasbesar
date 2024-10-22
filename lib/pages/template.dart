@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/pages/check/check_page.dart';
-import 'package:frontend_mobile_tugasbesar/pages/fitplan/fitplan_page.dart';
+import 'package:frontend_mobile_tugasbesar/pages/news/news_page.dart';
 import 'package:frontend_mobile_tugasbesar/pages/history/history_page.dart';
 import 'package:frontend_mobile_tugasbesar/pages/home/home_page.dart';
 import 'package:frontend_mobile_tugasbesar/pages/profile/profile_page.dart';
@@ -19,7 +19,7 @@ class _TemplateState extends State<Template> {
   final List<Widget> _pages = [
     const MainHomePage(),
     const HistoryPage(),
-    const FitplanPage(),
+    const NewsPage(),
     const ProfilePage(),
   ];
 
@@ -44,167 +44,159 @@ class _TemplateState extends State<Template> {
         backgroundColor: AppColors.mainColor,
         shape: const CircleBorder(),
         child: const Icon(
-          Icons.camera,
+          Icons.camera_alt,
           color: Colors.white,
-          size: 38,
+          size: 35,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        notchMargin: 8,
-        // padding: const EdgeInsets.symmetric(horizontal: 5),
-        shape: const CircularNotchedRectangle(),
-        color: Colors.white,
-        child: Container(
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1), // Warna shadow
+              spreadRadius: 6,
+              blurRadius: 10, 
+              offset: const Offset(0, 3), // Posisi shadow (x,y)
+            ),
+          ],
+        ),
+        child: BottomAppBar(
+          notchMargin: 6,
+          shape: const CircularNotchedRectangle(),
+          color: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                minWidth: 15,
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 0;
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    MaterialButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      minWidth: 25,
-                      onPressed: () {
-                        setState(() {
-                          _selectedIndex = 0;
-                        });
-                      },
-                      // color: _selectedIndex == 0 ? Colors.grey[100] : null,
-                
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.home,
-                            color: _selectedIndex == 0
-                                ? AppColors.mainColor
-                                : Colors.grey,
-                            size: 30,
-                          ),
-                          Text(
-                            "Home",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: _selectedIndex == 0
-                                  ? AppColors.mainColor
-                                  : Colors.grey,
-                            ),
-                          )
-                        ],
-                      ),
+                    Icon(
+                      Icons.home,
+                      color: _selectedIndex == 0
+                          ? AppColors.mainColor
+                          : Colors.grey,
+                      size: 28,
                     ),
-                    MaterialButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      minWidth: 25,
-                      onPressed: () {
-                        setState(() {
-                          _selectedIndex = 1;
-                        });
-                      },
-                      // color: _selectedIndex == 1 ? Colors.grey[100] : null,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.history_edu,
-                            color: _selectedIndex == 1
-                                ? AppColors.mainColor
-                                : Colors.grey,
-                            size: 30,
-                          ),
-                          Text(
-                            "Report",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: _selectedIndex == 1
-                                  ? AppColors.mainColor
-                                  : Colors.grey,
-                            ),
-                          )
-                        ],
+                    Text(
+                      "Home",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: _selectedIndex == 0
+                            ? AppColors.mainColor
+                            : Colors.grey,
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Container(),
-              ),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                minWidth: 15,
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 1;
+                  });
+                },
+                // color: _selectedIndex == 1 ? Colors.grey[100] : null,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    MaterialButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      minWidth: 25,
-                      onPressed: () {
-                        setState(() {
-                          _selectedIndex = 2;
-                        });
-                      },
-                      // color: _selectedIndex == 2 ? Colors.grey[100] : null,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.info,
-                            color: _selectedIndex == 2
-                                ? AppColors.mainColor
-                                : Colors.grey,
-                            size: 30,
-                          ),
-                          Text(
-                            "Info",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: _selectedIndex == 2
-                                  ? AppColors.mainColor
-                                  : Colors.grey,
-                            ),
-                          )
-                        ],
-                      ),
+                    Icon(
+                      Icons.history,
+                      color: _selectedIndex == 1
+                          ? AppColors.mainColor
+                          : Colors.grey,
+                      size: 28,
                     ),
-                    MaterialButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      minWidth: 25,
-                      onPressed: () {
-                        setState(() {
-                          _selectedIndex = 3;
-                        });
-                      },
-                      // color: _selectedIndex == 3 ? Colors.grey[100] : null,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.settings,
-                            color: _selectedIndex == 3
-                                ? AppColors.mainColor
-                                : Colors.grey,
-                            size: 30,
-                          ),
-                          Text(
-                            "Setting",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: _selectedIndex == 3
-                                  ? AppColors.mainColor
-                                  : Colors.grey,
-                            ),
-                          )
-                        ],
+                    Text(
+                      "History",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: _selectedIndex == 1
+                            ? AppColors.mainColor
+                            : Colors.grey,
                       ),
+                    )
+                  ],
+                ),
+              ),
+              const Spacer(),
+              MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                minWidth: 15,
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 2;
+                  });
+                },
+                // color: _selectedIndex == 2 ? Colors.grey[100] : null,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.newspaper,
+                      color: _selectedIndex == 2
+                          ? AppColors.mainColor
+                          : Colors.grey,
+                      size: 28,
                     ),
+                    Text(
+                      "News",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: _selectedIndex == 2
+                            ? AppColors.mainColor
+                            : Colors.grey,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                minWidth: 15,
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 3;
+                  });
+                },
+                // color: _selectedIndex == 3 ? Colors.grey[100] : null,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.category,
+                      color: _selectedIndex == 3
+                          ? AppColors.mainColor
+                          : Colors.grey,
+                      size: 28,
+                    ),
+                    Text(
+                      "Product",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: _selectedIndex == 3
+                            ? AppColors.mainColor
+                            : Colors.grey,
+                      ),
+                    )
                   ],
                 ),
               ),
