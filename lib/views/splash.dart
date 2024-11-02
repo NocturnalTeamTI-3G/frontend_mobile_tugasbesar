@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/pages/login/intro_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/login/intro_page.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 import 'package:lottie/lottie.dart';
 

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/pages/login/otp_verif_page.dart';
+import 'package:flutter/services.dart';
+import 'package:frontend_mobile_tugasbesar/views/login/create_new_pw_page.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 import 'package:get/get.dart';
 
-class ForgotPasswordPage extends StatefulWidget {
-  const ForgotPasswordPage({Key? key}) : super(key: key);
+class OtpVerifPage extends StatefulWidget {
+  const OtpVerifPage({Key? key}) : super(key: key);
 
   @override
-  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+  State<OtpVerifPage> createState() => _OtpVerifPageState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final TextEditingController _emailController = TextEditingController();
+class _OtpVerifPageState extends State<OtpVerifPage> {
+  final List<FocusNode> _focusNodes = List.generate(5, (_) => FocusNode());
+  final List<TextEditingController> _controllers =
+      List.generate(6, (_) => TextEditingController());
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +76,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
                   ),
                   const Text(
-                    'Forgot Password?',
+                    'OTP Verification',
                     style: TextStyle(
                         fontSize: 35,
                         color: Colors.white,
@@ -83,7 +86,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Text(
-                      'Please enter your email linked with your account',
+                      'Enter the verification code sent to your email',
                       style: TextStyle(fontSize: 16, color: Colors.grey[300]),
                       textAlign: TextAlign.center,
                     ),
@@ -91,28 +94,60 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   const SizedBox(height: 35),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: TextField(
-                      controller: _emailController,
-                      style: TextStyle(color: AppColors.mainColor),
-                      cursorColor: AppColors.mainColor,
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        hintStyle: TextStyle(color: AppColors.mainColor),
-                        prefixIcon: Icon(
-                          Icons.email,
-                          color: AppColors.mainColor,
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: AppColors.mainColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: AppColors.mainColor, width: 2),
-                        ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: List.generate(
+                        5,
+                        (index) {
+                          return SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: TextField(
+                              controller: _controllers[index],
+                              cursorColor: AppColors.mainColor,
+                              focusNode: _focusNodes[index],
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.number,
+                              maxLength: 1,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(1),
+                              ],
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: AppColors.mainColor,
+                                  fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 15),
+                                fillColor: Colors.white,
+                                filled: true,
+                                counterText: "",
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: AppColors.mainColor),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                    color: AppColors.mainColor,
+                                    width: 2,
+                                  ),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                if (value.length == 1 && index < 4) {
+                                  FocusScope.of(context)
+                                      .requestFocus(_focusNodes[index + 1]);
+                                } else if (value.isEmpty && index > 0) {
+                                  FocusScope.of(context)
+                                      .requestFocus(_focusNodes[index - 1]);
+                                }
+                              },
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -137,15 +172,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         borderRadius: BorderRadius.circular(15),
                         color: Colors.transparent,
                         child: InkWell(
-                          splashColor: AppColors.secondaryColor,
+                          splashColor: AppColors.thirdColor,
                           borderRadius: BorderRadius.circular(15),
                           onTap: () {
-                            Get.to(() => OtpVerifPage(),
+                            Get.to(() => CreateNewPasswordPage(),
                                 transition: Transition.fadeIn);
                           },
                           child: const Center(
                             child: Text(
-                              "Send Code",
+                              "Verify",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 19,
@@ -156,6 +191,23 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     ),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Didn't received code? ",
+                        style: TextStyle(color: Colors.grey[100]),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Resend',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -163,6 +215,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    for (var focusNode in _focusNodes) {
+      focusNode.dispose();
+    }
+    super.dispose();
   }
 }
 

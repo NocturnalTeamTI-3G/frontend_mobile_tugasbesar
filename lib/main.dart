@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/pages/login/intro_page.dart';
-import 'package:frontend_mobile_tugasbesar/pages/template.dart';
-import 'package:frontend_mobile_tugasbesar/splash.dart';
+import 'package:frontend_mobile_tugasbesar/providers/news_provider.dart';
+import 'package:frontend_mobile_tugasbesar/views/splash.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => NewsProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,11 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Splash()
-      // home: IntroPage(),
-      // home: MainHomePage(),
-      // home: Template(),
-    );
+        debugShowCheckedModeBanner: false, home: Splash()
+        );
   }
 }

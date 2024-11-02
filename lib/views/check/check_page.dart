@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/pages/check/display_picture_screen.dart';
+import 'package:frontend_mobile_tugasbesar/views/check/display_picture_screen.dart';
 import 'dart:math' as math;
 
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/pages/template.dart';
+import 'package:frontend_mobile_tugasbesar/views/template.dart';
 import 'dart:math' as math;
 
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';

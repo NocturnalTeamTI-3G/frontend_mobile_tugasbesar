@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/pages/login/login_page.dart';
-import 'package:frontend_mobile_tugasbesar/pages/login/register_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/login/login_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/login/register_page.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

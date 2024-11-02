@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/pages/login/forgot_password_page.dart';
-import 'package:frontend_mobile_tugasbesar/pages/login/register_page.dart';
-import 'package:frontend_mobile_tugasbesar/pages/template.dart';
+import 'package:frontend_mobile_tugasbesar/views/login/forgot_password_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/login/register_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/template.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 import 'package:get/get.dart';
 

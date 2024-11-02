@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/pages/check/check_page.dart';
-import 'package:frontend_mobile_tugasbesar/pages/news/news_page.dart';
-import 'package:frontend_mobile_tugasbesar/pages/history/history_page.dart';
-import 'package:frontend_mobile_tugasbesar/pages/home/home_page.dart';
-import 'package:frontend_mobile_tugasbesar/pages/profile/profile_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/check/check_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/news/pages/news_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/history/history_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/home/home_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/profile/profile_page.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 
 class Template extends StatefulWidget {
@@ -62,7 +62,9 @@ class _TemplateState extends State<Template> {
           ],
         ),
         child: BottomAppBar(
+          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           notchMargin: 6,
+          height: 60,
           shape: const CircularNotchedRectangle(),
           color: Colors.white,
           child: Row(

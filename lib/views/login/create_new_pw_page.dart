@@ -1,40 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/pages/login/login_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/login/login_page.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 import 'package:get/get.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+class CreateNewPasswordPage extends StatefulWidget {
+  const CreateNewPasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<CreateNewPasswordPage> createState() => _CreateNewPasswordPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confPasswordController = TextEditingController();
 
-  bool _isPasswordFilled = false;
-  bool _isShowPassword = false;
-
-  final List<String> optionList = ['Laki-laki', 'Perempuan'];
+  bool _isPasswordNewFilled = false;
+  bool _isShowPasswordNew = false;
+  bool _isPasswordConfFilled = false;
+  bool _isShowPasswordConf = false;
 
   @override
   void initState() {
     super.initState();
 
-    _passwordController.addListener(() {
+    _newPasswordController.addListener(() {
       setState(() {
-        _isPasswordFilled = _passwordController.text.isNotEmpty;
+        _isPasswordNewFilled = _newPasswordController.text.isNotEmpty;
+      });
+    });
+
+    _newPasswordController.addListener(() {
+      setState(() {
+        _isPasswordConfFilled = _newPasswordController.text.isNotEmpty;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    String selectedValue = optionList[0];
-
     return Scaffold(
       // backgroundColor: Colors.orangeAccent,
       resizeToAvoidBottomInset: true,
@@ -88,26 +91,32 @@ class _RegisterPageState extends State<RegisterPage> {
                     clipper: BottomWaveClipper(),
                     child: Image.asset(
                       'assets/images/login.jpg',
-                      height: 250,
+                      height: 300,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
                     ),
                   ),
                   Transform.translate(
-                    offset: const Offset(0, -30),
+                    offset: const Offset(0, -20),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
-                          'Register',
-                          style: TextStyle(
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            'Create New Password',
+                            style: TextStyle(
                               fontSize: 40,
                               color: Colors.white,
-                              fontWeight: FontWeight.w500),
+                              fontWeight: FontWeight.w500,
+                              height: 1.1,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                        // const SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
-                          'Create your account',
+                          'Create your new unique password',
                           style:
                               TextStyle(fontSize: 16, color: Colors.grey[300]),
                         ),
@@ -115,80 +124,23 @@ class _RegisterPageState extends State<RegisterPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: TextField(
-                            controller: _usernameController,
+                            controller: _newPasswordController,
+                            obscureText: !_isShowPasswordNew,
                             style: TextStyle(color: AppColors.mainColor),
                             cursorColor: AppColors.mainColor,
                             decoration: InputDecoration(
-                              hintText: 'Username',
+                              hintText: 'New Password',
                               hintStyle: TextStyle(color: AppColors.mainColor),
-                              prefixIcon: Icon(
-                                Icons.person,
-                                color: AppColors.mainColor,
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide:
-                                    BorderSide(color: AppColors.mainColor),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide: BorderSide(
-                                    color: AppColors.mainColor, width: 2),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 35),
-                          child: TextField(
-                            controller: _emailController,
-                            style: TextStyle(color: AppColors.mainColor),
-                            cursorColor: AppColors.mainColor,
-                            decoration: InputDecoration(
-                              hintText: 'Email',
-                              hintStyle: TextStyle(color: AppColors.mainColor),
-                              prefixIcon: Icon(
-                                Icons.email,
-                                color: AppColors.mainColor,
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide:
-                                    BorderSide(color: AppColors.mainColor),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                borderSide: BorderSide(
-                                    color: AppColors.mainColor, width: 2),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 35),
-                          child: TextField(
-                            controller: _passwordController,
-                            style: TextStyle(color: AppColors.mainColor),
-                            cursorColor: AppColors.mainColor,
-                            obscureText: !_isShowPassword,
-                            decoration: InputDecoration(
-                              hintText: 'Password',
-                              hintStyle: TextStyle(color: AppColors.mainColor),
-                              suffixIcon: _isPasswordFilled
+                              suffixIcon: _isPasswordNewFilled
                                   ? IconButton(
                                       onPressed: () {
                                         setState(() {
-                                          _isShowPassword = !_isShowPassword;
+                                          _isShowPasswordNew =
+                                              !_isShowPasswordNew;
                                         });
                                       },
                                       icon: Icon(
-                                        (_isShowPassword)
+                                        (_isShowPasswordNew)
                                             ? Icons.visibility
                                             : Icons.visibility_off,
                                         color: AppColors.mainColor,
@@ -199,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 Icons.lock,
                                 color: AppColors.mainColor,
                               ),
-                              fillColor: Colors.white,
+                              fillColor: Colors.orange[50]!,
                               filled: true,
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
@@ -216,43 +168,51 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         const SizedBox(height: 16),
                         Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 35),
-                            child: DropdownButtonFormField(
-                              value: selectedValue,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.wc,
-                                  color: AppColors.mainColor,
-                                ),
-                                fillColor: Colors.white,
-                                filled: true,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide:
-                                      BorderSide(color: AppColors.mainColor),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                      color: AppColors.mainColor, width: 2),
-                                ),
+                          padding: const EdgeInsets.symmetric(horizontal: 35),
+                          child: TextField(
+                            controller: _confPasswordController,
+                            obscureText: !_isShowPasswordConf,
+                            style: TextStyle(color: AppColors.mainColor),
+                            cursorColor: AppColors.mainColor,
+                            decoration: InputDecoration(
+                              hintText: 'Confirm Password',
+                              hintStyle: TextStyle(color: AppColors.mainColor),
+                              suffixIcon: _isPasswordConfFilled
+                                  ? IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _isShowPasswordConf =
+                                              !_isShowPasswordConf;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        (_isShowPasswordConf)
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: AppColors.mainColor,
+                                      ),
+                                    )
+                                  : null,
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: AppColors.mainColor,
                               ),
-                              icon: Icon(Icons.keyboard_arrow_down, color: AppColors.mainColor),
-                              style: TextStyle(color: AppColors.mainColor, fontSize: 16, fontWeight: FontWeight.w500),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  selectedValue = newValue!;
-                                });
-                              },
-                              items: optionList.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            )),
-                        const SizedBox(height: 45),
+                              fillColor: Colors.orange[50]!,
+                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    BorderSide(color: AppColors.mainColor),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide(
+                                    color: AppColors.mainColor, width: 2),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 50),
                         Material(
                           elevation: 3,
                           borderRadius: BorderRadius.circular(15),
@@ -273,18 +233,15 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(15),
                               color: Colors.transparent,
                               child: InkWell(
-                                splashColor: AppColors.secondaryColor,
+                                splashColor: AppColors.mainColor,
                                 borderRadius: BorderRadius.circular(15),
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginPage()));
+                                  Get.to(() => LoginPage(),
+                                      transition: Transition.fadeIn);
                                 },
                                 child: const Center(
                                   child: Text(
-                                    "Register",
+                                    "Reset Password",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 19,
@@ -295,27 +252,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Already have an account? ",
-                              style: TextStyle(color: Colors.grey[100]),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Get.to(() => LoginPage(),
-                                    transition: Transition.fadeIn);
-                              },
-                              child: const Text(
-                                'Login',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),
