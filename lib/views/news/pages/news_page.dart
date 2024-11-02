@@ -171,17 +171,19 @@ class _NewsPageState extends State<NewsPage>
                         )
                       ],
                     ),
-                    const SizedBox(height: 6),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(minHeight: 250),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: newsProvider.listArtikel.length,
-                        itemBuilder: (context, index) {
-                          final artikel = newsProvider.listArtikel[index];
-                          return CustomCard(artikel: artikel);
-                        },
+                    Transform.translate(
+                      offset: const Offset(0, -10),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(minHeight: 250),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: newsProvider.listArtikel.length,
+                          itemBuilder: (context, index) {
+                            final artikel = newsProvider.listArtikel[index];
+                            return CustomCard(artikel: artikel);
+                          },
+                        ),
                       ),
                     ),
                   ],
