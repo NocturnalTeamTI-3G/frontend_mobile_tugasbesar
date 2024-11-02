@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/views/check/check_page.dart';
 import 'package:frontend_mobile_tugasbesar/views/news/pages/news_page.dart';
-import 'package:frontend_mobile_tugasbesar/views/history/history_page.dart';
+import 'package:frontend_mobile_tugasbesar/views/history/pages/history_page.dart';
 import 'package:frontend_mobile_tugasbesar/views/home/home_page.dart';
 import 'package:frontend_mobile_tugasbesar/views/profile/profile_page.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';

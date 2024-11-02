@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomAppbar extends StatelessWidget {
+  final String title;
+
   const CustomAppbar({
     super.key,
+    required this.title,
   });
 
   @override
@@ -16,9 +19,9 @@ class CustomAppbar extends StatelessWidget {
             forceMaterialTransparency: true,
             centerTitle: true,
             backgroundColor: Colors.white,
-            title: const Text(
-              'Information',
-              style: TextStyle(
+            title: Text(
+              title,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
@@ -53,20 +56,14 @@ class CustomAppbar extends StatelessWidget {
                         size: 28,
                       )),
                   Positioned(
-                    right: 5,
-                    top: 3,
+                    right: 13,
+                    top: 12,
                     child: Container(
-                      padding: const EdgeInsets.all(4),
+                      height: 7,
+                      width: 7,
                       decoration: const BoxDecoration(
                         color: Colors.red,
                         shape: BoxShape.circle,
-                      ),
-                      child: const Text(
-                        '3',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
                       ),
                     ),
                   )

@@ -234,7 +234,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                     Text(
                                       '150',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black,
                                       ),
@@ -263,13 +263,13 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                   children: [
                                     Icon(
                                       Icons.thumb_up_alt_outlined,
-                                      size: 28,
+                                      size: 26,
                                     ),
                                     SizedBox(width: 5),
                                     Text(
                                       '150',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black,
                                       ),

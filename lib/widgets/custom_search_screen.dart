@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/views/news/pages/news_list_page.dart';
 
 class CustomSearchScreen extends StatefulWidget {
-  const CustomSearchScreen({Key? key}) : super(key: key);
+  final String? currentQuery;
+  const CustomSearchScreen({Key? key, this.currentQuery}) : super(key: key);
 
   @override
   _CustomSearchScreenState createState() => _CustomSearchScreenState();
@@ -12,6 +14,8 @@ class _CustomSearchScreenState extends State<CustomSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    searchController.text = widget.currentQuery ?? '';
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -58,6 +62,9 @@ class _CustomSearchScreenState extends State<CustomSearchScreen> {
                 icon: const Icon(Icons.close),
               ),
             ),
+            onEditingComplete: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => NewsListPage(searchQuery: searchController.text,)));
+            },
           ),
         ),
         toolbarHeight: 70,

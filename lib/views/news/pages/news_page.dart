@@ -24,12 +24,6 @@ class _NewsPageState extends State<NewsPage>
   void initState() {
     super.initState();
     tabController = TabController(length: 3, vsync: this);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // ignore: deprecated_member_use
-      if (WidgetsBinding.instance.window.viewInsets.bottom > 0.0) {
-        FocusScope.of(context).unfocus();
-      }
-    });
   }
 
   @override
@@ -46,7 +40,7 @@ class _NewsPageState extends State<NewsPage>
       backgroundColor: Colors.white,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(100),
-        child: CustomAppbar(),
+        child: CustomAppbar(title: 'Information',),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
