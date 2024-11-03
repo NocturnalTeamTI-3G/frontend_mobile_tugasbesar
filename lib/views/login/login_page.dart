@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/views/login/forgot_password_page.dart';
-import 'package:frontend_mobile_tugasbesar/views/login/register_page.dart';
-import 'package:frontend_mobile_tugasbesar/views/template.dart';
+import 'package:frontend_mobile_tugasbesar/utils/router.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 import 'package:get/get.dart';
 
@@ -201,8 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.only(right: 35),
                           child: TextButton(
                             onPressed: () {
-                              Get.to(() => const ForgotPasswordPage(),
-                                  transition: Transition.fadeIn);
+                              Get.toNamed(AppRouters.forgotPassword);
                             },
                             child: const Text(
                               'Forgot Password?',
@@ -215,53 +212,52 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                     const SizedBox(height: 35),
-                    Material(
-                      elevation: 3,
-                      borderRadius: BorderRadius.circular(15),
-                      child: Container(
-                        width: 280,
-                        height: 50,
-                        decoration: BoxDecoration(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      child: Material(
+                        elevation: 3,
+                        borderRadius: BorderRadius.circular(15),
+                        child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppColors.mainColor,
+                                  AppColors.secondaryColor,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )),
+                          child: Material(
                             borderRadius: BorderRadius.circular(15),
-                            gradient: LinearGradient(
-                              colors: [
-                                AppColors.mainColor,
-                                AppColors.secondaryColor,
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            )),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.transparent,
-                          child: InkWell(
-                            splashColor: AppColors.thirdColor,
-                            borderRadius: BorderRadius.circular(15),
-                            onTap: () {
-                              if (_formKey.currentState!.validate()) {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                                Future.delayed(const Duration(seconds: 1), () {
+                            color: Colors.transparent,
+                            child: InkWell(
+                              splashColor: AppColors.thirdColor,
+                              borderRadius: BorderRadius.circular(15),
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
                                   setState(() {
-                                    _isLoading = false;
+                                    _isLoading = true;
                                   });
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Template(),
-                                    ),
-                                  );
-                                });
-                              }
-                            },
-                            child: const Center(
-                              child: Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w500),
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                    Get.offAllNamed(AppRouters.main);
+                                  });
+                                }
+                              },
+                              child: const Center(
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ),
                             ),
                           ),
@@ -277,8 +273,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Get.to(() => const RegisterPage(),
-                                transition: Transition.fadeIn);
+                            Get.toNamed(AppRouters.registrasi);
                           },
                           child: const Text(
                             'Sign Up',

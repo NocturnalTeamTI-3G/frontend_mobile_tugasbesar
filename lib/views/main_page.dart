@@ -6,14 +6,14 @@ import 'package:frontend_mobile_tugasbesar/views/home/home_page.dart';
 import 'package:frontend_mobile_tugasbesar/views/profile/profile_page.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
 
-class Template extends StatefulWidget {
-  const Template({Key? key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  _TemplateState createState() => _TemplateState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _TemplateState extends State<Template> {
+class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [

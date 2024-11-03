@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/models/news/artikel_model.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
-import 'package:frontend_mobile_tugasbesar/views/news/pages/news_detail_page.dart';
+import 'package:frontend_mobile_tugasbesar/utils/router.dart';
+import 'package:get/get.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({
@@ -14,19 +15,11 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsetsDirectional.symmetric(
-          vertical: 10),
+      margin: const EdgeInsetsDirectional.symmetric(vertical: 10),
       child: MaterialButton(
         padding: const EdgeInsets.all(0),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NewsDetailPage(
-                artikel: artikel,
-              ),
-            ),
-          );
+          Get.toNamed(AppRouters.newsDetail, arguments: artikel);
         },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
@@ -46,8 +39,7 @@ class CustomCard extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.only(left: 12),
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Kategori',
@@ -70,31 +62,26 @@ class CustomCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CircleAvatar(
-                          radius: 13,
-                          backgroundImage: AssetImage(
-                              artikel.authorImg),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 13,
+                              backgroundImage: AssetImage(artikel.authorImg),
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              artikel.author,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 5),
-                        Text(
-                          artikel.author,
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        const SizedBox(width: 7),
-                        Container(
-                          width: 4,
-                          height: 4,
-                          decoration: const BoxDecoration(
-                            color: Colors.grey,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: 7),
                         Text(
                           artikel.date,
                           style: const TextStyle(

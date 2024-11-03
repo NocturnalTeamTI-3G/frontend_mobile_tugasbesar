@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/models/news/artikel_model.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
+import 'package:get/get.dart';
 
 class NewsDetailPage extends StatefulWidget {
-  final ArtikelType artikel;
-  const NewsDetailPage({Key? key, required this.artikel}) : super(key: key);
+  const NewsDetailPage({Key? key}) : super(key: key);
 
   @override
   _NewsDetailPageState createState() => _NewsDetailPageState();
@@ -17,6 +17,8 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ArtikelType artikel = Get.arguments as ArtikelType;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -24,7 +26,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
             Stack(
               children: [
                 Image.asset(
-                  widget.artikel.image,
+                  artikel.image,
                   fit: BoxFit.cover,
                   height: MediaQuery.of(context).size.height * 0.52,
                 ),
@@ -63,8 +65,8 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                   },
                                   child: ClipOval(
                                     child: BackdropFilter(
-                                      filter:
-                                          ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 5, sigmaY: 5),
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         color: Colors.black.withOpacity(0.3),
@@ -83,8 +85,8 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                   },
                                   child: ClipOval(
                                     child: BackdropFilter(
-                                      filter:
-                                          ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 5, sigmaY: 5),
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         color: Colors.black.withOpacity(0.3),
@@ -109,17 +111,17 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 6, horizontal: 16),
                                     decoration: BoxDecoration(
-                                      color: AppColors.white,
-                                      borderRadius: BorderRadius.circular(20),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.black.withOpacity(0.3),
+                                        color: AppColors.white,
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.3),
                                             spreadRadius: 1,
                                             blurRadius: 3,
                                             offset: const Offset(0, 1),
-                                        )
-                                      ]
-                                    ),
+                                          )
+                                        ]),
                                     child: Text(
                                       'Kategori',
                                       style: TextStyle(
@@ -132,7 +134,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                     height: 12,
                                   ),
                                   Text(
-                                    widget.artikel.title,
+                                    artikel.title,
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 24,
@@ -144,7 +146,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                     height: 12,
                                   ),
                                   Text(
-                                    widget.artikel.date,
+                                    artikel.date,
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -193,12 +195,12 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                   children: [
                                     CircleAvatar(
                                       backgroundImage:
-                                          AssetImage(widget.artikel.authorImg),
+                                          AssetImage(artikel.authorImg),
                                       radius: 16,
                                     ),
                                     const SizedBox(width: 10),
                                     Text(
-                                      widget.artikel.author,
+                                      artikel.author,
                                       style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
@@ -281,7 +283,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                           ),
                           const SizedBox(height: 20),
                           Text(
-                            widget.artikel.content,
+                            artikel.content,
                             style: const TextStyle(
                               fontSize: 16,
                               color: Colors.black,
@@ -339,17 +341,19 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                             height: 120,
                                             width: 200,
                                             decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  Colors.black.withOpacity(0.3),
-                                                  Colors.transparent,
-                                                  Colors.black.withOpacity(0.3),
-                                                ],
-                                                begin: Alignment.bottomCenter,
-                                                end: Alignment.topCenter,
-                                              ),
-                                              borderRadius: BorderRadius.circular(10)
-                                            ),
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Colors.black
+                                                        .withOpacity(0.3),
+                                                    Colors.transparent,
+                                                    Colors.black
+                                                        .withOpacity(0.3),
+                                                  ],
+                                                  begin: Alignment.bottomCenter,
+                                                  end: Alignment.topCenter,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
                                           ),
                                           Container(
                                             height: 120,
@@ -399,7 +403,8 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                                       style: const TextStyle(
                                                         fontSize: 16,
                                                         color: Colors.white,
-                                                        fontWeight: FontWeight.w700,
+                                                        fontWeight:
+                                                            FontWeight.w700,
                                                       ),
                                                     )
                                                   ],

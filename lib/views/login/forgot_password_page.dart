@@ -117,39 +117,42 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
                   ),
                   const SizedBox(height: 50),
-                  Material(
-                    elevation: 3,
-                    borderRadius: BorderRadius.circular(15),
-                    child: Container(
-                      width: 280,
-                      height: 50,
-                      decoration: BoxDecoration(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35),
+                    child: Material(
+                      elevation: 3,
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.mainColor,
+                                AppColors.secondaryColor,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )),
+                        child: Material(
                           borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.mainColor,
-                              AppColors.secondaryColor,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.transparent,
-                        child: InkWell(
-                          splashColor: AppColors.secondaryColor,
-                          borderRadius: BorderRadius.circular(15),
-                          onTap: () {
-                            Get.to(() => OtpVerifPage(),
-                                transition: Transition.fadeIn);
-                          },
-                          child: const Center(
-                            child: Text(
-                              "Send Code",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w500),
+                          color: Colors.transparent,
+                          child: InkWell(
+                            splashColor: AppColors.secondaryColor,
+                            borderRadius: BorderRadius.circular(15),
+                            onTap: () {
+                              Get.to(() => OtpVerifPage(),
+                                  transition: Transition.fadeIn);
+                            },
+                            child: const Center(
+                              child: Text(
+                                "Send Code",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w500),
+                              ),
                             ),
                           ),
                         ),

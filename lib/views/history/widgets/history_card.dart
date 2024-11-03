@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/models/history/history_model.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
-import 'package:frontend_mobile_tugasbesar/views/history/pages/history_detail_page.dart';
+import 'package:frontend_mobile_tugasbesar/utils/router.dart';
+import 'package:get/get.dart';
 
 class HistoryCard extends StatelessWidget {
   const HistoryCard({
@@ -23,12 +24,7 @@ class HistoryCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HistoryDetailPage(history: data),
-                ),
-              );
+              Get.toNamed(AppRouters.historyDetail, arguments: data);
             },
             child: Container(
               padding: const EdgeInsets.all(15),

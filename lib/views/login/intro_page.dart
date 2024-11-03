@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/utils/router.dart';
 import 'package:frontend_mobile_tugasbesar/views/login/login_page.dart';
 import 'package:frontend_mobile_tugasbesar/views/login/register_page.dart';
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
@@ -17,83 +18,6 @@ class _IntroPageState extends State<IntroPage> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   body: SingleChildScrollView(
-    //     child: Container(
-    //       height: MediaQuery.of(context).size.height,
-    //       width: MediaQuery.of(context).size.width,
-    //       decoration: BoxDecoration(
-    //         gradient: LinearGradient(
-    //           colors: [
-    //             AppColors.mainColor,
-    //             AppColors.secondaryColor,
-    //             AppColors.mainColor,
-    //           ],
-    //           begin: Alignment.topCenter,
-    //           end: Alignment.bottomCenter,
-    //         ),
-    //       ),
-    //       child: Padding(
-    //         padding: const EdgeInsets.only(left: 47, right: 47, top: 100, bottom: 70),
-    //         child: Column(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: [
-    //             const Text(
-    //               'The best app for your facial skin',
-    //               style: TextStyle(
-    //                   fontSize: 52,
-    //                   color: Colors.white,
-    //                   fontWeight: FontWeight.w600,
-    //                   height: 1.2
-    //                   ),
-    //             ),
-    //             Column(
-    //               mainAxisAlignment: MainAxisAlignment.end,
-    //               children: [
-    //                 ElevatedButton(
-    //                   onPressed: () {
-    //                     Get.to(() => const LoginPage(),
-    //                         transition: Transition.rightToLeft);
-    //                   },
-    //                   style: ElevatedButton.styleFrom(
-    //                     backgroundColor: AppColors.white,
-    //                     shape: RoundedRectangleBorder(
-    //                       borderRadius: BorderRadius.circular(15),
-    //                     ),
-    //                     minimumSize: const Size(double.infinity, 50),
-    //                   ),
-    //                   child: Text(
-    //                     'Sign in',
-    //                     style: TextStyle(
-    //                         color: AppColors.mainColor,
-    //                         fontSize: 19,
-    //                         fontWeight: FontWeight.w600),
-    //                   ),
-    //                 ),
-    //                 const SizedBox(height: 15),
-    //                 TextButton(
-    //                   onPressed: () {
-    //                     Get.to(() => RegisterPage(),
-    //                         transition: Transition.rightToLeft);
-    //                   },
-    //                   child: Text(
-    //                     'Create an account',
-    //                     style: TextStyle(
-    //                       color: AppColors.white,
-    //                       fontSize: 18,
-    //                       fontWeight: FontWeight.normal,
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ],
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
-
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -174,8 +98,7 @@ class _IntroPageState extends State<IntroPage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Get.to(() => const LoginPage(),
-                                    transition: Transition.rightToLeft);
+                                Get.toNamed(AppRouters.login);
                               },
                               child: Text(
                                 'Login',

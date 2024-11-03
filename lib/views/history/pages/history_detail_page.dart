@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/models/history/history_model.dart';
+import 'package:get/get.dart';
 
 class HistoryDetailPage extends StatelessWidget {
-  final HistoryType history;
-  const HistoryDetailPage({Key? key, required this.history}) : super(key: key);
+  const HistoryDetailPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final HistoryType history = Get.arguments as HistoryType;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

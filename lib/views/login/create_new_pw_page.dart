@@ -213,39 +213,42 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
                           ),
                         ),
                         const SizedBox(height: 50),
-                        Material(
-                          elevation: 3,
-                          borderRadius: BorderRadius.circular(15),
-                          child: Container(
-                            width: 280,
-                            height: 50,
-                            decoration: BoxDecoration(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 35),
+                          child: Material(
+                            elevation: 3,
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              width: double.infinity,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      AppColors.mainColor,
+                                      AppColors.secondaryColor,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )),
+                              child: Material(
                                 borderRadius: BorderRadius.circular(15),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.mainColor,
-                                    AppColors.secondaryColor,
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                )),
-                            child: Material(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.transparent,
-                              child: InkWell(
-                                splashColor: AppColors.mainColor,
-                                borderRadius: BorderRadius.circular(15),
-                                onTap: () {
-                                  Get.to(() => LoginPage(),
-                                      transition: Transition.fadeIn);
-                                },
-                                child: const Center(
-                                  child: Text(
-                                    "Reset Password",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.w500),
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  splashColor: AppColors.mainColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                  onTap: () {
+                                    Get.to(() => LoginPage(),
+                                        transition: Transition.fadeIn);
+                                  },
+                                  child: const Center(
+                                    child: Text(
+                                      "Reset Password",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w500),
+                                    ),
                                   ),
                                 ),
                               ),
