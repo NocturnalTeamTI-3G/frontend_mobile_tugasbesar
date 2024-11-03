@@ -56,13 +56,13 @@ class _TemplateState extends State<Template> {
             BoxShadow(
               color: Colors.black.withOpacity(0.1), // Warna shadow
               spreadRadius: 6,
-              blurRadius: 10, 
+              blurRadius: 10,
               offset: const Offset(0, 3), // Posisi shadow (x,y)
             ),
           ],
         ),
         child: BottomAppBar(
-          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
           notchMargin: 6,
           height: 60,
           shape: const CircularNotchedRectangle(),
@@ -70,138 +70,160 @@ class _TemplateState extends State<Template> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                minWidth: 15,
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                onPressed: () {
-                  setState(() {
-                    _selectedIndex = 0;
-                  });
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              Expanded(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(
-                      Icons.home,
-                      color: _selectedIndex == 0
-                          ? AppColors.mainColor
-                          : Colors.grey,
-                      size: 28,
-                    ),
-                    Text(
-                      "Home",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: _selectedIndex == 0
-                            ? AppColors.mainColor
-                            : Colors.grey,
+                    MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      minWidth: 15,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 15),
+                      onPressed: () {
+                        setState(() {
+                          _selectedIndex = 0;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.home,
+                            color: _selectedIndex == 0
+                                ? AppColors.mainColor
+                                : Colors.grey,
+                            size: 28,
+                          ),
+                          Text(
+                            "Home",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: _selectedIndex == 0
+                                  ? AppColors.mainColor
+                                  : Colors.grey,
+                            ),
+                          )
+                        ],
                       ),
-                    )
+                    ),
+                    MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      minWidth: 15,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 15),
+                      onPressed: () {
+                        setState(() {
+                          _selectedIndex = 1;
+                        });
+                      },
+                      // color: _selectedIndex == 1 ? Colors.grey[100] : null,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.history,
+                            color: _selectedIndex == 1
+                                ? AppColors.mainColor
+                                : Colors.grey,
+                            size: 28,
+                          ),
+                          Text(
+                            "History",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: _selectedIndex == 1
+                                  ? AppColors.mainColor
+                                  : Colors.grey,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                minWidth: 15,
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                onPressed: () {
-                  setState(() {
-                    _selectedIndex = 1;
-                  });
-                },
-                // color: _selectedIndex == 1 ? Colors.grey[100] : null,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              const Spacer(
+                flex: 1,
+              ),
+              Expanded(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(
-                      Icons.history,
-                      color: _selectedIndex == 1
-                          ? AppColors.mainColor
-                          : Colors.grey,
-                      size: 28,
-                    ),
-                    Text(
-                      "History",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: _selectedIndex == 1
-                            ? AppColors.mainColor
-                            : Colors.grey,
+                    MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      minWidth: 15,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 15),
+                      onPressed: () {
+                        setState(() {
+                          _selectedIndex = 2;
+                        });
+                      },
+                      // color: _selectedIndex == 2 ? Colors.grey[100] : null,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.newspaper,
+                            color: _selectedIndex == 2
+                                ? AppColors.mainColor
+                                : Colors.grey,
+                            size: 28,
+                          ),
+                          Text(
+                            "News",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: _selectedIndex == 2
+                                  ? AppColors.mainColor
+                                  : Colors.grey,
+                            ),
+                          )
+                        ],
                       ),
-                    )
+                    ),
+                    MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      minWidth: 15,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 15),
+                      onPressed: () {
+                        setState(() {
+                          _selectedIndex = 3;
+                        });
+                      },
+                      // color: _selectedIndex == 3 ? Colors.grey[100] : null,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.category,
+                            color: _selectedIndex == 3
+                                ? AppColors.mainColor
+                                : Colors.grey,
+                            size: 28,
+                          ),
+                          Text(
+                            "Product",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: _selectedIndex == 3
+                                  ? AppColors.mainColor
+                                  : Colors.grey,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              const Spacer(),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                minWidth: 15,
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                onPressed: () {
-                  setState(() {
-                    _selectedIndex = 2;
-                  });
-                },
-                // color: _selectedIndex == 2 ? Colors.grey[100] : null,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.newspaper,
-                      color: _selectedIndex == 2
-                          ? AppColors.mainColor
-                          : Colors.grey,
-                      size: 28,
-                    ),
-                    Text(
-                      "News",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: _selectedIndex == 2
-                            ? AppColors.mainColor
-                            : Colors.grey,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                minWidth: 15,
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                onPressed: () {
-                  setState(() {
-                    _selectedIndex = 3;
-                  });
-                },
-                // color: _selectedIndex == 3 ? Colors.grey[100] : null,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.category,
-                      color: _selectedIndex == 3
-                          ? AppColors.mainColor
-                          : Colors.grey,
-                      size: 28,
-                    ),
-                    Text(
-                      "Product",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: _selectedIndex == 3
-                            ? AppColors.mainColor
-                            : Colors.grey,
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              )
             ],
           ),
         ),
