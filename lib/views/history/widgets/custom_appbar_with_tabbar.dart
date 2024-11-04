@@ -13,6 +13,17 @@ class CustomAppbarWithTabbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: AppBar(
         forceMaterialTransparency: true,
         centerTitle: true,
@@ -86,7 +97,7 @@ class CustomAppbarWithTabbar extends StatelessWidget {
           controller: _tabController,
           indicatorColor: AppColors.mainColor,
           labelColor: AppColors.mainColor,
-          indicatorSize: TabBarIndicatorSize.tab,
+          dividerHeight: 0,
           unselectedLabelColor: Colors.grey,
           labelStyle: const TextStyle(
             fontSize: 16,

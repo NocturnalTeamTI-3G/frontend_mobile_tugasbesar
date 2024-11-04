@@ -33,7 +33,9 @@ class _NewsListPageState extends State<NewsListPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         titleSpacing: 0,
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -50,7 +52,9 @@ class _NewsListPageState extends State<NewsListPage>
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => CustomSearchScreen(currentQuery: widget.searchQuery ?? '',),
+                builder: (context) => CustomSearchScreen(
+                  currentQuery: widget.searchQuery ?? '',
+                ),
               ),
             );
           },
@@ -96,7 +100,7 @@ class _NewsListPageState extends State<NewsListPage>
             Tab(text: 'Terfavorit'),
           ],
           indicatorColor: AppColors.mainColor,
-          indicatorSize: TabBarIndicatorSize.tab,
+          dividerHeight: 0,
           labelColor: AppColors.mainColor,
           unselectedLabelColor: Colors.grey,
           overlayColor: const WidgetStatePropertyAll(Colors.transparent),

@@ -37,6 +37,7 @@ class CustomCard extends StatelessWidget {
             ),
             Expanded(
               child: Container(
+                height: 95,
                 margin: const EdgeInsets.only(left: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,18 +50,19 @@ class CustomCard extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const Spacer(flex: 2,),
                     Text(
                       artikel.title,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       style: const TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        height: 1.1,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const Spacer(flex: 1,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
