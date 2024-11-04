@@ -1,16 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/views/template.dart';
+import 'package:frontend_mobile_tugasbesar/models/history/history_model.dart';
+import 'package:frontend_mobile_tugasbesar/utils/router.dart';
 import 'dart:math' as math;
 
 import 'package:frontend_mobile_tugasbesar/utils/color.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class DisplayPictureScreen extends StatefulWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({Key? key, required this.imagePath})
-      : super(key: key);
+  const DisplayPictureScreen({Key? key}) : super(key: key);
 
   @override
   _DisplayPictureScreenState createState() => _DisplayPictureScreenState();
@@ -32,7 +31,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     });
   }
 
-   void _onDragEnd(double size) {
+  void _onDragEnd(double size) {
     if (size < 0.35) {
       _scrollController.animateTo(
         0.2,
@@ -50,6 +49,9 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final String imagePath = Get.arguments;
+    List<HistoryType> historyList = HistoryData().getAllHistory();
+
     return Scaffold(
       body: _isLoading
           ? Center(
@@ -63,7 +65,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                     transform: Matrix4.rotationY(
                         math.pi), // Membalikkan pratinjau kamera depan
                     child: Image.file(
-                      File(widget.imagePath),
+                      File(imagePath),
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
@@ -205,13 +207,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                                     height: 50,
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Template(),
-                                          ),
-                                        );
+                                        Get.toNamed(AppRouters.main);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.white,
@@ -237,13 +233,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                                     height: 50,
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Template(),
-                                          ),
-                                        );
+                                        Get.toNamed(AppRouters.historyDetail, arguments: historyList[0]);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: AppColors.mainColor,
