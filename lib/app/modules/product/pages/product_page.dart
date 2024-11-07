@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/app/models/product/product_model.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_detail_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_list_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/providers/product_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/widgets/product_card.dart';
 import 'package:frontend_mobile_tugasbesar/app/widgets/custom_appbar.dart';
 import 'package:frontend_mobile_tugasbesar/app/widgets/custom_search_screen.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -14,36 +19,23 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   int _selectedIndex = 0;
-  List<ProductModel> normalProducts =
-      ProductData().getProductByCategory('Normal');
-  List<ProductModel> whiteheadProducts =
-      ProductData().getProductByCategory('Whitehead');
-  List<ProductModel> blackheadProducts =
-      ProductData().getProductByCategory('Blackhead');
-  List<ProductModel> pustulaProducts =
-      ProductData().getProductByCategory('Pustula');
-  List<ProductModel> papulaProducts =
-      ProductData().getProductByCategory('Papula');
+  final ScrollController _scrollController = ScrollController();
 
-  List<List<ProductModel>> listProducts = [];
-
-  List<ProductModel> bundleProducts = ProductData().getProductBundle();
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    listProducts.add(normalProducts);
-    listProducts.add(whiteheadProducts);
-    listProducts.add(blackheadProducts);
-    listProducts.add(pustulaProducts);
-    listProducts.add(papulaProducts);
+    final productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(100),
-        child: CustomAppbar(
-          title: 'Products',
-        ),
+        preferredSize: Size.fromHeight(80),
+        child: CustomAppbar(),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -94,12 +86,12 @@ class _ProductPageState extends State<ProductPage> {
               child: SizedBox(
                 height: 78,
                 child: ListView.builder(
-                  padding:
-                      const EdgeInsets.only(left: 20, top: 20, bottom: 20, right: 12),
+                  padding: const EdgeInsets.only(
+                      left: 20, top: 20, bottom: 20, right: 12),
                   scrollDirection: Axis.horizontal,
+                  controller: _scrollController,
                   itemCount: 5, // Number of buttons
                   itemBuilder: (context, index) {
-                    // Define text and colors for each button
                     final buttonText = [
                       'Normal Skin',
                       'Whitehead',
@@ -108,29 +100,27 @@ class _ProductPageState extends State<ProductPage> {
                       'Papula'
                     ][index];
                     final isSelected = index == _selectedIndex;
-                    final buttonColor =
-                        isSelected ? AppColors.mainColor : AppColors.white;
                     final textColor =
-                        isSelected ? Colors.white : Colors.grey[600];
+                        isSelected ? AppColors.mainColor : Colors.grey[500];
                     final borderColor =
                         isSelected ? AppColors.mainColor : Colors.grey.shade300;
 
                     return Padding(
-                      padding: const EdgeInsets.only(
-                          right: 8.0), // Spacing between buttons
+                      padding: const EdgeInsets.only(right: 8.0),
                       child: MaterialButton(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
-                        color: buttonColor,
+                        color: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: borderColor, width: 1.5),
+                          side: BorderSide(color: borderColor, width: 1),
                         ),
-                        elevation: 2,
+                        elevation: 1,
                         onPressed: () {
                           setState(() {
                             _selectedIndex = index;
                           });
+                          _scrollToCenter(index);
                         },
                         child: Text(
                           buttonText,
@@ -148,10 +138,14 @@ class _ProductPageState extends State<ProductPage> {
             SizedBox(
               height: 280,
               child: ListView.builder(
-                padding: const EdgeInsets.only(left: 20, bottom: 20),
+                padding: const EdgeInsets.only(left: 20, bottom: 15),
                 scrollDirection: Axis.horizontal,
-                itemCount: listProducts[_selectedIndex].length,
+                itemCount: productProvider
+                    .getProductsByCategory(_selectedIndex)
+                    .length,
                 itemBuilder: (context, index) {
+                  final product = productProvider
+                      .getProductsByCategory(_selectedIndex)[index];
                   return Padding(
                     padding: const EdgeInsets.only(right: 20.0),
                     child: MaterialButton(
@@ -160,52 +154,86 @@ class _ProductPageState extends State<ProductPage> {
                         borderRadius: BorderRadius.circular(20),
                         side: BorderSide(color: Colors.grey.shade300),
                       ),
-                      color: AppColors.bgColor1,
                       elevation: 2,
                       onPressed: () {
-                        setState(() {});
+                        setState(() {
+                          Get.to(const ProductDetailPage(), arguments: product);
+                        });
                       },
                       child: Container(
-                        width: 180,
+                        width: 190,
+                        height: 265,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                         ),
+                        padding: const EdgeInsets.all(6),
                         child: Column(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
+                            Container(
+                              height: 165,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppColors.secondaryColor,
+                                    AppColors.cardColor,
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(14),
+                              ),
                               child: Image.network(
-                                listProducts[_selectedIndex][index].imageUrl,
+                                product.imageUrl,
+                                width: double.infinity,
                                 fit: BoxFit.cover,
-                                height: 160,
-                                width: 180,
+                                loadingBuilder: (context, child,
+                                        loadingProgress) =>
+                                    loadingProgress == null
+                                        ? child
+                                        : _buildSkeletonImage(),
                               ),
                             ),
-                            Text(
-                              listProducts[_selectedIndex][index].name,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                            Container(
+                              padding: const EdgeInsets.only(top: 8),
+                              width: double.infinity,
+                              height: 88,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    product.name,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(
+                                    product
+                                        .type,
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      '\$${product.price.toString()}',
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Text(
-                              listProducts[_selectedIndex][index].type,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              '\$${listProducts[_selectedIndex][index].price.toString()}',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 22,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -227,27 +255,59 @@ class _ProductPageState extends State<ProductPage> {
                             fontSize: 21, fontWeight: FontWeight.w600),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(const ProductListPage());
+                        },
                         icon: const Icon(Icons.arrow_forward),
                       )
                     ],
                   ),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(minHeight: 250),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: bundleProducts.length,
-                      itemBuilder: (context, index) {
-                        final product = bundleProducts[index];
-                        return ProductCard(product: product);
-                      },
+                  Transform.translate(
+                    offset: const Offset(0, -5),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 250),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: productProvider.getBundleProducts().length,
+                        itemBuilder: (context, index) {
+                          final product =
+                              productProvider.getBundleProducts()[index];
+                          return ProductCard(product: product);
+                        },
+                      ),
                     ),
                   ),
                 ],
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  void _scrollToCenter(int index) {
+    const itemWidth = 120;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final offset = (index * itemWidth) - (screenWidth / 2) + (itemWidth / 2);
+    _scrollController.animateTo(
+      offset,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  _buildSkeletonImage() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        height: 165,
+        width: 190,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
         ),
       ),
     );
