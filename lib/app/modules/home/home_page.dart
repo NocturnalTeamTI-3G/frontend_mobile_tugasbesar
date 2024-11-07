@@ -26,38 +26,67 @@ class _mainHomePageState extends State<MainHomePage> {
         child: Column(
           children: [
             const SizedBox(height: 25),
-            Container(
-              padding: const EdgeInsets.only(left: 20),
-              decoration: BoxDecoration(
-                color: Colors.pink[100],
-              ),
-              child: Row(
-                children: [
-                  // animation of cute pictures
-                  Container(
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      color: Colors.deepPurple,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.pink[100],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    // animation of cute pictures
+                    Container(
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        color: Colors.deepPurple,
+                      ),
                     ),
-                  ),
-                  // how do you feel today?
-                  Column(
-                    children: [
-                      Text(
-                        "How do you feel?",
+                    SizedBox(width: 25),
+                    // how do you feel today?
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hasil Diagnosis",
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 0),
+                          Text(
+                            "tanggal diagnosis",
+                            style: GoogleFonts.poppins(
+                              fontSize: 10,
+                            ),
+                          ),
+                          SizedBox(height: 15),
+                          Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple[300],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Selengkapnya",
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                      Text(
-                        "Fill out your medical card right now!",
-                      ),
-                      Container(
-                        child: Center(
-                          child: Text("Get started"),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
