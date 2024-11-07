@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/setting_page.dart';
+import 'package:get/get.dart';
 
 class CustomAppbar extends StatelessWidget {
-  final String title;
-
   const CustomAppbar({
     super.key,
-    required this.title,
   });
 
   @override
@@ -17,58 +16,46 @@ class CustomAppbar extends StatelessWidget {
         children: [
           AppBar(
             forceMaterialTransparency: true,
-            centerTitle: true,
             backgroundColor: Colors.white,
-            title: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+            leading: Container(
+              height: double.infinity,
+              alignment: Alignment.center,
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.stacked_line_chart,
+                    color: Colors.deepPurple,
+                    size: 30,
+                  ),
+                  SizedBox(
+                    width: 6,
+                  ),
+                  Text(
+                    'SkinAssist',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
             ),
-            leading: GestureDetector(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: const Color.fromARGB(255, 53, 40, 40),
-                  ),
-                  shape: BoxShape.circle,
-                ),
+            leadingWidth: 130,
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  Get.to(() => const SettingPage());
+                },
                 child: ClipOval(
                   child: Image.asset(
                     'assets/images/profile.jpg',
                     fit: BoxFit.cover,
+                    height: 40,
+                    width: 40,
                   ),
                 ),
               ),
-            ),
-            leadingWidth: 60,
-            actions: [
-              Stack(
-                children: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.notifications_rounded,
-                        size: 28,
-                      )),
-                  Positioned(
-                    right: 13,
-                    top: 12,
-                    child: Container(
-                      height: 7,
-                      width: 7,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  )
-                ],
-              )
             ],
             toolbarHeight: 60,
           ),

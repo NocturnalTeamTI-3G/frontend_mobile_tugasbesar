@@ -35,7 +35,7 @@ class _HistoryPageState extends State<HistoryPage>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(140),
+        preferredSize: const Size.fromHeight(120),
         child: CustomAppbarWithTabbar(tabController: _tabController),
       ),
       body: TabBarView(

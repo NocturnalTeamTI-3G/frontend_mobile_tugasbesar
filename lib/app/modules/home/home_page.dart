@@ -17,10 +17,8 @@ class _mainHomePageState extends State<MainHomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(100),
-        child: CustomAppbar(
-          title: 'Home',
-        ),
+        preferredSize: Size.fromHeight(80),
+        child: CustomAppbar(),
       ),
       body: SafeArea(
         child: Column(

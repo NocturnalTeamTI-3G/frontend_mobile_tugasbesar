@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/product/product_model.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_detail_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
+import 'package:get/get.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -13,10 +15,12 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsetsDirectional.symmetric(vertical: 10),
+      margin: const EdgeInsetsDirectional.symmetric(vertical: 8),
       child: MaterialButton(
         padding: const EdgeInsets.all(0),
-        onPressed: () {},
+        onPressed: () {
+          Get.to(const ProductDetailPage(), arguments: product);
+        },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -26,9 +30,15 @@ class ProductCard extends StatelessWidget {
               height: 80,
               width: 80,
               decoration: BoxDecoration(
-                color: AppColors.bgColor1,
-                borderRadius: BorderRadius.circular(10
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.secondaryColor,
+                    AppColors.cardColor,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
+                borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                   image: NetworkImage(product.imageUrl),
                   fit: BoxFit.cover,
@@ -54,6 +64,7 @@ class ProductCard extends StatelessWidget {
                         height: 1.1,
                       ),
                     ),
+                    const SizedBox(height: 4),
                     Text(
                       product.type,
                       style: TextStyle(

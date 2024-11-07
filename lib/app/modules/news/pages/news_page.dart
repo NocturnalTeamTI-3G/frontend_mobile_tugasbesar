@@ -39,10 +39,8 @@ class _NewsPageState extends State<NewsPage>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(100),
-        child: CustomAppbar(
-          title: 'Information',
-        ),
+        preferredSize: Size.fromHeight(80),
+        child: CustomAppbar(),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -88,7 +86,7 @@ class _NewsPageState extends State<NewsPage>
                 ),
               ),
             ),
-      
+
             // Carousel Section
             Container(
               margin: const EdgeInsets.only(top: 20),
@@ -124,8 +122,8 @@ class _NewsPageState extends State<NewsPage>
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 4, horizontal: 3),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 3),
                     height: 10,
                     width: i == newsProvider.currentPage ? 30 : 10,
                     decoration: BoxDecoration(
@@ -138,7 +136,7 @@ class _NewsPageState extends State<NewsPage>
                   ),
               ],
             ),
-      
+
             // Article List Section
             Padding(
               padding: const EdgeInsets.only(

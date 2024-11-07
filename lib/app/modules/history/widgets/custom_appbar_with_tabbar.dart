@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/setting_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
+import 'package:get/get.dart';
 
 class CustomAppbarWithTabbar extends StatelessWidget {
   const CustomAppbarWithTabbar({
@@ -12,7 +14,7 @@ class CustomAppbarWithTabbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -26,69 +28,48 @@ class CustomAppbarWithTabbar extends StatelessWidget {
       ),
       child: AppBar(
         forceMaterialTransparency: true,
-        centerTitle: true,
         backgroundColor: Colors.white,
-        title: const Text(
-          'Result',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
+        leading: Container(
+          height: double.infinity,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.only(left: 20),
+          child: const Row(
+            children: [
+              Icon(
+                Icons.stacked_line_chart,
+                color: Colors.deepPurple,
+                size: 30,
+              ),
+              SizedBox(
+                width: 6,
+              ),
+              Text(
+                'SkinAssist',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
         ),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: GestureDetector(
-            onTap: () {
-              // Add functionality for leading button tap here
-            },
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  color: const Color.fromARGB(255, 53, 40, 40),
-                ),
-                shape: BoxShape.circle,
-              ),
+        leadingWidth: 150,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const SettingPage());
+              },
               child: ClipOval(
                 child: Image.asset(
                   'assets/images/profile.jpg',
                   fit: BoxFit.cover,
-                  width: 40, // Ensure fixed width and height for the image
                   height: 40,
+                  width: 40,
                 ),
               ),
-            ),
-          ),
-        ),
-        leadingWidth: 80,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Stack(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    // Add functionality for notifications button tap here
-                  },
-                  icon: const Icon(
-                    Icons.notifications_rounded,
-                    size: 28,
-                  ),
-                ),
-                Positioned(
-                  right: 13,
-                  top: 12,
-                  child: Container(
-                    height: 7,
-                    width: 7,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
         ],

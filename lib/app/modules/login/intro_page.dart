@@ -29,7 +29,7 @@ class _IntroPageState extends State<IntroPage> {
                 _buildPage(
                   context,
                   'assets/images/intro/face-check.png',
-                  'Acne Detection',
+                  'Deteksi Jerawat',
                   'Deteksi jerawat pada wajahmu dengan cepat dan akurat',
                 ),
                 _buildPage(
