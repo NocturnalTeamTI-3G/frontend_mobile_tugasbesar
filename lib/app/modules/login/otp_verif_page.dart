@@ -19,79 +19,90 @@ class _OtpVerifPageState extends State<OtpVerifPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.orangeAccent,
-      resizeToAvoidBottomInset: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-              height: 37,
-              width: 37,
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.mainColor, width: 3),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Icon(
-                Icons.arrow_back_ios_new,
-                color: AppColors.mainColor,
-                size: 23,
-              ),
-            )),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Container(
+            height: 37,
+            width: 37,
             decoration: BoxDecoration(
-              // color: Colors.orangeAccent[400]
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.mainColor,
-                  AppColors.mainColor,
-                  AppColors.secondaryColor,
-                  AppColors.mainColor,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              border: Border.all(color: AppColors.white, width: 3),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Icon(
+              Icons.arrow_back_ios_new,
+              color: AppColors.white,
+              size: 23,
             ),
           ),
-          SingleChildScrollView(
-            child: Center(
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Container(
+              height: 290,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.mainColor,
+                    AppColors.secondaryColor,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      height: 70,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'SkinAssist App',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: AppColors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 250),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                ),
+              ),
+              padding: const EdgeInsets.only(top: 30),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ClipPath(
-                    clipper: BottomWaveClipper(),
-                    child: Image.asset(
-                      'assets/images/login.jpg',
-                      height: 300,
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const Text(
+                  Text(
                     'OTP Verification',
                     style: TextStyle(
-                        fontSize: 35,
-                        color: Colors.white,
+                        fontSize: 32,
+                        color: AppColors.mainColor,
                         fontWeight: FontWeight.w500),
                   ),
-                  const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: Text(
-                      'Enter the verification code sent to your email',
-                      style: TextStyle(fontSize: 16, color: Colors.grey[300]),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(height: 35),
+                  const SizedBox(height: 32),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35),
                     child: Row(
@@ -199,14 +210,14 @@ class _OtpVerifPageState extends State<OtpVerifPage> {
                     children: [
                       Text(
                         "Didn't received code? ",
-                        style: TextStyle(color: Colors.grey[100]),
+                        style: TextStyle(color: Colors.grey[500]),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: const Text(
                           'Resend',
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -214,8 +225,8 @@ class _OtpVerifPageState extends State<OtpVerifPage> {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -230,20 +241,4 @@ class _OtpVerifPageState extends State<OtpVerifPage> {
     }
     super.dispose();
   }
-}
-
-class BottomWaveClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0.0, size.height - 100); // Start from the bottom left
-    path.quadraticBezierTo(size.width / 2, size.height, size.width,
-        size.height - 100); // Create wave
-    path.lineTo(size.width, 0.0); // Top-right corner
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
