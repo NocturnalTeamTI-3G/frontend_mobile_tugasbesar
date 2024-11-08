@@ -122,7 +122,7 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
                       style: TextStyle(
                         fontSize: 32,
                         color: AppColors.mainColor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                     ),

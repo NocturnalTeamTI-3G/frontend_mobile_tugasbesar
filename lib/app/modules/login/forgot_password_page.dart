@@ -97,7 +97,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     style: TextStyle(
                         fontSize: 32,
                         color: AppColors.mainColor,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 32),
                   Padding(

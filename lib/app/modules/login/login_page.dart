@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                               fontSize: 32,
                               color: AppColors.mainColor,
-                              fontWeight: FontWeight.w500),
+                              fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 30),
                         Padding(
