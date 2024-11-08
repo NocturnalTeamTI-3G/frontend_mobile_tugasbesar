@@ -33,17 +33,17 @@ class CustomAppbarWithTabbar extends StatelessWidget {
           height: double.infinity,
           alignment: Alignment.center,
           padding: const EdgeInsets.only(left: 20),
-          child: const Row(
+          child: Row(
             children: [
-              Icon(
-                Icons.stacked_line_chart,
-                color: Colors.deepPurple,
-                size: 30,
+              Image.asset(
+                'assets/images/logo.png',
+                height: 30,
+                fit: BoxFit.cover,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 6,
               ),
-              Text(
+              const Text(
                 'SkinAssist',
                 style: TextStyle(
                   color: Colors.black,

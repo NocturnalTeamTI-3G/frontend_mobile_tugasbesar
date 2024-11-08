@@ -36,7 +36,9 @@ class ProductDetailPage extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(width: 8,),
+                SizedBox(
+                  width: 8,
+                ),
                 Text(
                   '-',
                   style: TextStyle(
@@ -45,7 +47,9 @@ class ProductDetailPage extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(width: 8,),
+                SizedBox(
+                  width: 8,
+                ),
                 Icon(
                   Icons.shopping_bag_rounded,
                   color: Colors.white,
@@ -54,6 +58,57 @@ class ProductDetailPage extends StatelessWidget {
             ),
           ),
         ),
+      ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 20, top: 8, bottom: 8),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: ClipOval(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  color: Colors.black.withOpacity(0.3),
+                  child: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white,
+                    size: 25,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        leadingWidth: 60,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: GestureDetector(
+              onTap: () {},
+              child: ClipOval(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    color: Colors.black.withOpacity(0.3),
+                    child: const Icon(
+                      Icons.more_horiz_rounded,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Stack(
@@ -76,53 +131,6 @@ class ProductDetailPage extends StatelessWidget {
                   child: Image.network(
                     product.imageUrl,
                     fit: BoxFit.cover,
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      MaterialButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: ClipOval(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              color: Colors.black.withOpacity(0.3),
-                              child: const Icon(
-                                Icons.arrow_back_ios_new_rounded,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      MaterialButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: ClipOval(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              color: Colors.black.withOpacity(0.3),
-                              child: const Icon(
-                                Icons.more_horiz_rounded,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ],

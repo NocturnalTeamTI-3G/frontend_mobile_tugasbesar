@@ -20,17 +20,17 @@ class CustomAppbar extends StatelessWidget {
             leading: Container(
               height: double.infinity,
               alignment: Alignment.center,
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(
-                    Icons.stacked_line_chart,
-                    color: Colors.deepPurple,
-                    size: 30,
+                  Image.asset(
+                    'assets/images/logo.png',
+                    fit: BoxFit.cover,
+                    height: 30,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 6,
                   ),
-                  Text(
+                  const Text(
                     'SkinAssist',
                     style: TextStyle(
                       color: Colors.black,

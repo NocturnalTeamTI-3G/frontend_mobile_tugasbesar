@@ -71,13 +71,25 @@ class _IntroPageState extends State<IntroPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'SkinAssist',
-                          style: TextStyle(
-                            color: AppColors.mainColor,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/logo.png',
+                              height: 30,
+                              fit: BoxFit.cover,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'SkinAssist',
+                              style: TextStyle(
+                                color: AppColors.black,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
