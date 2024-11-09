@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/login/otp_verif_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/otp_verif_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 

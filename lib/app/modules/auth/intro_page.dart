@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/login/login_page.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/login/register_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/login_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -91,37 +90,18 @@ class _IntroPageState extends State<IntroPage> {
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                Get.to(() => const RegisterPage(),
-                                    transition: Transition.rightToLeft);
-                              },
-                              child: Text(
-                                'Privasi',
-                                style: TextStyle(
-                                  color: AppColors.mainColor,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                        TextButton(
+                          onPressed: () {
+                            Get.toNamed(AppRouters.login);
+                          },
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                              color: AppColors.mainColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
                             ),
-                            TextButton(
-                              onPressed: () {
-                                Get.toNamed(AppRouters.login);
-                              },
-                              child: Text(
-                                'Login',
-                                style: TextStyle(
-                                  color: AppColors.mainColor,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         )
                       ],
                     ),

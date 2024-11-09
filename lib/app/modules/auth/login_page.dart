@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,13 +13,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   bool _isPasswordFilled = false;
   bool _isShowPassword = false;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -32,6 +33,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -39,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Stack(
               children: [
                 Container(
-                  height: 290,
+                  height: 270,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -78,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 250),
+                  margin: const EdgeInsets.only(top: 230),
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -102,22 +105,24 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: TextFormField(
-                            // validator: (value) {
-                            //   if (value == null || value.isEmpty) {
-                            //     return 'Please fill the username';
-                            //   }
-                            //   return null;
-                            // },
-                            controller: _usernameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please fill the email';
+                              }
+                              return null;
+                            },
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
                             style: TextStyle(color: AppColors.mainColor),
                             cursorColor: AppColors.mainColor,
+                            cursorErrorColor: AppColors.mainColor,
                             decoration: InputDecoration(
                               errorStyle:
                                   TextStyle(color: Colors.redAccent[700]),
-                              hintText: 'Username',
+                              hintText: 'Email',
                               hintStyle: TextStyle(color: AppColors.mainColor),
                               prefixIcon: Icon(
-                                Icons.person,
+                                Icons.email,
                                 color: AppColors.mainColor,
                               ),
                               fillColor: Colors.white,
@@ -151,8 +156,15 @@ class _LoginPageState extends State<LoginPage> {
                           child: TextFormField(
                             controller: _passwordController,
                             obscureText: !_isShowPassword,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please fill the password';
+                              }
+                              return null;
+                            },
                             style: TextStyle(color: AppColors.mainColor),
                             cursorColor: AppColors.mainColor,
+                            cursorErrorColor: AppColors.mainColor,
                             decoration: InputDecoration(
                               hintText: 'Password',
                               hintStyle: TextStyle(color: AppColors.mainColor),
@@ -187,6 +199,16 @@ class _LoginPageState extends State<LoginPage> {
                                 borderSide: BorderSide(
                                     color: AppColors.mainColor, width: 2),
                               ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide(
+                                    color: AppColors.mainColor, width: 2),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide:
+                                    BorderSide(color: AppColors.mainColor),
+                              ),
                             ),
                           ),
                         ),
@@ -209,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: Material(
@@ -234,18 +256,12 @@ class _LoginPageState extends State<LoginPage> {
                                 child: InkWell(
                                   splashColor: AppColors.thirdColor,
                                   borderRadius: BorderRadius.circular(15),
-                                  onTap: () {
+                                  onTap: () async {
                                     if (_formKey.currentState!.validate()) {
-                                      setState(() {
-                                        _isLoading = true;
-                                      });
-                                      Future.delayed(const Duration(seconds: 1),
-                                          () {
-                                        setState(() {
-                                          _isLoading = false;
-                                        });
-                                        Get.offAllNamed(AppRouters.main);
-                                      });
+                                      await _authProvider.login(
+                                        _emailController.text,
+                                        _passwordController.text,
+                                      );
                                     }
                                   },
                                   child: const Center(
@@ -291,6 +307,7 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 15),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
+                          // margin: const EdgeInsets.only(bottom: 20),
                           child: MaterialButton(
                             onPressed: () {},
                             color: Colors.white,
@@ -328,7 +345,7 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
-          if (_isLoading)
+          if (_authProvider.isLoading)
             Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
