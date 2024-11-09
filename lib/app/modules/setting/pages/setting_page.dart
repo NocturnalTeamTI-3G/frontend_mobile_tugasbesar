@@ -3,8 +3,10 @@ import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/about_app_p
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/account_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/change_password_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/faq_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/setting/providers/setting_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ class _SettingPageState extends State<SettingPage> {
   bool isDarkMode = false;
   @override
   Widget build(BuildContext context) {
+    final settingProvider = Provider.of<SettingProvider>(context);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -26,13 +30,14 @@ class _SettingPageState extends State<SettingPage> {
         leading: Padding(
           padding: const EdgeInsets.only(left: 30),
           child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-              )),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -55,23 +60,38 @@ class _SettingPageState extends State<SettingPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ClipOval(
-                    child: Image.asset(
-                      'assets/images/profile.jpg',
-                      fit: BoxFit.cover,
-                      height: 120,
-                      width: 120,
-                    ),
+                  FutureBuilder(
+                    future: settingProvider.getUser(),
+                    builder: (context, snapshot) {
+                      return ClipOval(
+                        child: (settingProvider.user?.profileImg != null)
+                            ? Image.asset(
+                                settingProvider.user!.profileImg,
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                              )
+                            : const Icon(
+                                Icons.person,
+                                color: Colors.white,
+                                size: 120,
+                              ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    'Hello, Blue',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  )
+                  FutureBuilder(
+                      future: settingProvider.getUser(),
+                      builder: (context, snapshot) {
+                        return Text(
+                          '''Hello, ${settingProvider.user?.username ?? 'User'}''',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        );
+                      })
                 ],
               ),
             ),
@@ -268,7 +288,9 @@ class _SettingPageState extends State<SettingPage> {
                             color: Colors.black,
                             size: 26,
                           ),
-                          onTap: () {},
+                          onTap: () async {
+                            await settingProvider.logout();
+                          },
                         ),
                       ],
                     ),
