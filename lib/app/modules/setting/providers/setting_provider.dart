@@ -18,17 +18,18 @@ class SettingProvider extends ChangeNotifier {
 
   File? _image;
   final ImagePicker _picker = ImagePicker();
-
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-
+  String? _selectedValue;
   UserModel? user;
+  bool _isLoading = false;
+  bool _isFetch = false;
+
+  bool get isLoading => _isLoading;
+  File? get image => _image;
+  String? get selectedValue => _selectedValue;
 
   SettingProvider() {
     getUser();
   }
-
-  File? get image => _image;
 
   Future<void> logout() async {
     Get.dialog(
@@ -87,6 +88,9 @@ class SettingProvider extends ChangeNotifier {
   }
 
   Future<void> getUser() async {
+    if (_isFetch) return;
+    _isFetch = true;
+
     try {
       final response = await _userService.getUser();
 
@@ -94,6 +98,7 @@ class SettingProvider extends ChangeNotifier {
         final data = response.data['data'];
         user = UserModel.fromJson(data);
         _selectedValue = user!.gender;
+        notifyListeners();
       } else {
         throw ('Anda tidak terautentikasi');
       }
@@ -177,14 +182,11 @@ class SettingProvider extends ChangeNotifier {
 
       _isLoading = false;
       notifyListeners();
+      print(e);
     }
   }
 
-  String? _selectedValue;
-
-  String? get selectedValue => _selectedValue;
-
-  void updateSelectedValue(String value) {
+  Future<void> updateSelectedValue(String value) async {
     _selectedValue = value;
     notifyListeners();
   }

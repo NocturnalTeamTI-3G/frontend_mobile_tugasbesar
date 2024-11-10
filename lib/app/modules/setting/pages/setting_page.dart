@@ -71,10 +71,11 @@ class _SettingPageState extends State<SettingPage> {
                                 height: 120,
                                 fit: BoxFit.cover,
                               )
-                            : const Icon(
-                                Icons.person,
-                                color: Colors.white,
-                                size: 120,
+                            : Image.asset(
+                                'assets/images/default_profile.png',
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
                               ),
                       );
                     },

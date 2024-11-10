@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/setting_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/setting/providers/setting_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class CustomAppbarWithTabbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _authProvider = Provider.of<AuthProvider>(context);
+    final _settingProvider = Provider.of<SettingProvider>(context);
 
     return Container(
       padding: const EdgeInsets.only(top: 10),
@@ -63,18 +65,30 @@ class CustomAppbarWithTabbar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: _authProvider.isLoggedIn
-                ? GestureDetector(
-                    onTap: () {
-                      Get.to(() => const SettingPage());
+                ? FutureBuilder(
+                    future: _settingProvider.getUser(),
+                    builder: (context, snapshot) {
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(() => const SettingPage());
+                        },
+                        child: (_settingProvider.user?.profileImg != null)
+                            ? ClipOval(
+                                child: Image.asset(
+                                  _settingProvider.user!.profileImg,
+                                  fit: BoxFit.cover,
+                                  height: 40,
+                                  width: 40,
+                                ),
+                              )
+                            : const CircleAvatar(
+                                radius: 20,
+                                backgroundImage: AssetImage(
+                                  'assets/images/default_profile.png',
+                                ),
+                              ),
+                      );
                     },
-                    child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/profile.jpg',
-                        fit: BoxFit.cover,
-                        height: 40,
-                        width: 40,
-                      ),
-                    ),
                   )
                 : ElevatedButton(
                     onPressed: () {

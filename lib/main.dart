@@ -28,7 +28,10 @@ void main() async {
         ChangeNotifierProvider(create: (_) => NewsListProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider())
       ],
-      child: MyApp(isLoggedIn: isLoggedIn, onBoardingComplete: onBoardingComplete,),
+      child: MyApp(
+        isLoggedIn: isLoggedIn,
+        onBoardingComplete: onBoardingComplete,
+      ),
     ),
   );
 }
@@ -36,13 +39,18 @@ void main() async {
 class MyApp extends StatelessWidget {
   final bool isLoggedIn;
   final bool onBoardingComplete;
-  const MyApp({Key? key, required this.isLoggedIn, required this.onBoardingComplete}) : super(key: key);
+  const MyApp(
+      {Key? key, required this.isLoggedIn, required this.onBoardingComplete})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Splash(isLoggedIn: isLoggedIn, onBoardingComplete: onBoardingComplete,),
+      home: Splash(
+        isLoggedIn: isLoggedIn,
+        onBoardingComplete: onBoardingComplete,
+      ),
       getPages: AppPages.pages,
     );
   }
