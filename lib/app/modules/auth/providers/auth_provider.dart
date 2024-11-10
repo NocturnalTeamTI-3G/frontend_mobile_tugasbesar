@@ -9,15 +9,7 @@ class AuthProvider with ChangeNotifier {
   String? _token;
 
   bool get isLoading => _isLoading;
-
-  Future<void> _loadToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString('token');
-    if (_token != null) {
-      // await fetchUserData();
-    }
-    notifyListeners();
-  }
+  bool get isLoggedIn => _token != null;
 
   Future<void> login(String email, String password) async {
     try {
@@ -31,6 +23,7 @@ class AuthProvider with ChangeNotifier {
 
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', _token!);
+        await prefs.setBool('isLoggedIn', true);
 
         Get.offAllNamed('/main');
       } else {
@@ -56,7 +49,11 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  bool get isAuth => _token != null;
+  Future<void> completeBoarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onBoardingComplete', true);
+    Get.toNamed('/main');
+  }
 
   Future<void> register(
       String email, String password, String name, String gender) async {

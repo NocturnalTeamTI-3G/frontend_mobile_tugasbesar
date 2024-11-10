@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/check/pages/check_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/news/pages/news_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/history/pages/history_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/home/home_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -31,15 +34,48 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<AuthProvider>(context);
+
+    void showLoginDialog() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: const Text(
+              'Diperlukan Login Untuk Mengakses Fitur Ini',
+              style: TextStyle(fontSize: 16),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Kembali', style: TextStyle(fontSize: 16)),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.toNamed(AppRouters.login);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.mainColor,
+                ),
+                child: const Text('Login', style: TextStyle(fontSize: 16, color: Colors.white)),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       body: _pages[_selectedIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CheckPage(),
-              ));
+          if (_authProvider.isLoggedIn) {
+            await Get.toNamed(AppRouters.camera);
+          } else {
+            showLoginDialog();
+          }
         },
         backgroundColor: AppColors.mainColor,
         shape: const CircleBorder(),

@@ -251,31 +251,35 @@ class _AccountPageState extends State<AccountPage> {
                         Container(
                           width: double.infinity,
                           alignment: Alignment.center,
-                          child: MaterialButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                await settingProvider.updateProfile(
-                                  _nameController.text,
-                                  _emailController.text,
-                                  settingProvider.selectedValue!,
-                                  settingProvider.image!.path,
-                                );
-                              }
-                            },
-                            color: AppColors.mainColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 10),
-                            child: Text(
-                              'Save Changes',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                          child: Consumer<SettingProvider>(
+                            builder: (context, settingProvider, child) {
+                              return MaterialButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    await settingProvider.updateProfile(
+                                      _nameController.text,
+                                      _emailController.text,
+                                      settingProvider.selectedValue!,
+                                      settingProvider.image!.path,
+                                    );
+                                  }
+                                },
+                                color: AppColors.mainColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 10),
+                                child: Text(
+                                  'Save Changes',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                            }
                           ),
                         )
                       ],

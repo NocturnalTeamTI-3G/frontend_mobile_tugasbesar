@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/setting_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class CustomAppbarWithTabbar extends StatelessWidget {
   const CustomAppbarWithTabbar({
@@ -13,6 +15,8 @@ class CustomAppbarWithTabbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<AuthProvider>(context);
+
     return Container(
       padding: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
@@ -58,19 +62,37 @@ class CustomAppbarWithTabbar extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              onTap: () {
-                Get.to(() => const SettingPage());
-              },
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/images/profile.jpg',
-                  fit: BoxFit.cover,
-                  height: 40,
-                  width: 40,
-                ),
-              ),
-            ),
+            child: _authProvider.isLoggedIn
+                ? GestureDetector(
+                    onTap: () {
+                      Get.to(() => const SettingPage());
+                    },
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/images/profile.jpg',
+                        fit: BoxFit.cover,
+                        height: 40,
+                        width: 40,
+                      ),
+                    ),
+                  )
+                : ElevatedButton(
+                    onPressed: () {
+                      Get.toNamed('/login');
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(AppColors.mainColor),
+                    ),
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
           ),
         ],
         toolbarHeight: 60,

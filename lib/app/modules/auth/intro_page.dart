@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/login_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroPage extends StatefulWidget {
@@ -17,6 +18,8 @@ class _IntroPageState extends State<IntroPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -130,9 +133,8 @@ class _IntroPageState extends State<IntroPage> {
                           child: InkWell(
                             splashColor: AppColors.thirdColor,
                             borderRadius: BorderRadius.circular(15),
-                            onTap: () {
-                              Get.to(() => const LoginPage(),
-                                  transition: Transition.rightToLeft);
+                            onTap: () async {
+                              await _authProvider.completeBoarding();
                             },
                             child: const Center(
                               child: Text(

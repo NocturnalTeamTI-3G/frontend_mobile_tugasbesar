@@ -10,13 +10,10 @@ import 'package:frontend_mobile_tugasbesar/app/modules/auth/register_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/main_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/news/pages/news_detail_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/news/pages/news_list_page.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/splash.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
 class AppRouters {
-  static const splash = '/splash';
-
   // Login dan Registrasi
   static const intro = '/intro';
   static const login = '/login';
@@ -42,10 +39,6 @@ class AppRouters {
 
 class AppPages {
   static final pages = [
-    GetPage(
-      name: AppRouters.splash,
-      page: () => Splash(),
-    ),
     GetPage(
       name: AppRouters.intro,
       page: () => IntroPage(),
