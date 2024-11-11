@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,23 +14,24 @@ class SettingService {
   }
 
   Future<Response> updateProfile(
-      String name, String email, String gender, String profileImg) async {
+      String name, String email, String gender, String? profileImg) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
+    final Response response;
 
-    final response = await _dio.patch(
+    final formData = FormData.fromMap({
+      'username': name,
+      'email': email,
+      'gender': gender,
+       if(profileImg != null) 'profile_img': await MultipartFile.fromFile(profileImg),
+    });
+    response = await _dio.patch(
       '/api/users/current',
       options: Options(headers: {
         'Authorization': '$token',
       }),
-      data: {
-        'username': name,
-        'email': email,
-        'gender': gender,
-        'profile_img': profileImg,
-      },
+      data: formData,
     );
-
     return response;
   }
 }

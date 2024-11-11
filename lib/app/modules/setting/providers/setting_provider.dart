@@ -138,7 +138,7 @@ class SettingProvider extends ChangeNotifier {
   }
 
   Future<void> updateProfile(
-      String name, String email, String gender, String imageProfile) async {
+      String name, String email, String gender) async {
     try {
       _isLoading = true;
       notifyListeners();
@@ -147,7 +147,7 @@ class SettingProvider extends ChangeNotifier {
         name,
         email,
         gender,
-        imageProfile,
+        _image?.path,
       );
 
       if (response.statusCode == 200) {

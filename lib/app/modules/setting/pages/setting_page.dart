@@ -4,6 +4,7 @@ import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/account_pag
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/change_password_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/faq_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/providers/setting_provider.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     final settingProvider = Provider.of<SettingProvider>(context);
+    final String url = Api.baseUrl + '/api/image/user/';
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -65,11 +67,18 @@ class _SettingPageState extends State<SettingPage> {
                     builder: (context, snapshot) {
                       return ClipOval(
                         child: (settingProvider.user?.profileImg != null)
-                            ? Image.asset(
-                                settingProvider.user!.profileImg,
+                            ? Image.network(
+                                '${url}${settingProvider.user?.profileImg}',
                                 width: 120,
                                 height: 120,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Image.asset(
+                                  'assets/images/default_profile.png',
+                                  fit: BoxFit.cover,
+                                  height: 120,
+                                  width: 120,
+                                ),
                               )
                             : Image.asset(
                                 'assets/images/default_profile.png',
