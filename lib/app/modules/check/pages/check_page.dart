@@ -4,6 +4,7 @@ import 'package:frontend_mobile_tugasbesar/app/modules/check/providers/camera_pr
 import 'dart:math' as math;
 
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class CheckPage extends StatelessWidget {
@@ -174,6 +175,20 @@ class CheckPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                Consumer<CameraProvider>(
+                    builder: (builder, cameraProvider, child) {
+                  return cameraProvider.isLoading
+                      ? Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.white,
+                          child: Center(
+                            child: Lottie.asset('assets/lottie/camera.json',
+                                width: 300),
+                          ),
+                        )
+                      : const SizedBox();
+                })
               ],
             ),
           );
