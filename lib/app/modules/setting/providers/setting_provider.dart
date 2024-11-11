@@ -52,6 +52,7 @@ class SettingProvider extends ChangeNotifier {
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.remove('token');
                   await prefs.setBool('isLoggedIn', false);
+                  _isFetch = false;
 
                   Get.snackbar('Berhasil', 'Anda berhasil keluar dari akun',
                       backgroundColor: Colors.green, colorText: Colors.white);

@@ -14,11 +14,14 @@ class UserService {
   Future<Response> getUser() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
+    // print(token);
 
     final response = await _dio.get('/api/users/current',
         options: Options(headers: {
           'Authorization': '$token',
         }));
+
+    // print(response);
     return response;
   }
 }

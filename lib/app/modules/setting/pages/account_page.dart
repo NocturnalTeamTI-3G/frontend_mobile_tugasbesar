@@ -260,7 +260,7 @@ class _AccountPageState extends State<AccountPage> {
                                     _nameController.text,
                                     _emailController.text,
                                     settingProvider.selectedValue!,
-                                    settingProvider.image!.path,
+                                    settingProvider.image?.path ?? settingProvider.user!.profileImg,
                                   );
                                 }
                               },

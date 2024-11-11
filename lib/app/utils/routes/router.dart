@@ -23,7 +23,7 @@ class AppRouters {
   static const newPassword = '/newPassword';
 
   // Main page
-  static const main = '/';
+  static const main = '/home';
 
   // History
   static const historyDetail = '/historyDetail';

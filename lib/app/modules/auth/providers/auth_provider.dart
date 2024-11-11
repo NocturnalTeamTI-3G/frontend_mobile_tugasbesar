@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/auth/services/auth_service.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +11,19 @@ class AuthProvider with ChangeNotifier {
 
   bool get isLoading => _isLoading;
   bool get isLoggedIn => _token != null;
+
+  AuthProvider() {
+    checkLogin();
+  }
+
+  Future<void> checkLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token != null) {
+      _token = token;
+      notifyListeners();
+    }
+  }
 
   Future<void> login(String email, String password) async {
     try {
@@ -25,7 +39,7 @@ class AuthProvider with ChangeNotifier {
         await prefs.setString('token', _token!);
         await prefs.setBool('isLoggedIn', true);
 
-        Get.offAllNamed('/main');
+        Get.offAllNamed(AppRouters.main);
       } else {
         Get.snackbar(
           'Terjadi Kesalahan',
@@ -52,7 +66,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> completeBoarding() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onBoardingComplete', true);
-    Get.toNamed('/main');
+    Get.toNamed(AppRouters.main);
   }
 
   Future<void> register(
@@ -92,6 +106,4 @@ class AuthProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
   }
-
-  
 }
