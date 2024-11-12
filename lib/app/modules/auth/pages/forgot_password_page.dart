@@ -1,40 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/login_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/otp_verif_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 
-class CreateNewPasswordPage extends StatefulWidget {
-  const CreateNewPasswordPage({Key? key}) : super(key: key);
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<CreateNewPasswordPage> createState() => _CreateNewPasswordPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
-  final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confPasswordController = TextEditingController();
-
-  bool _isPasswordNewFilled = false;
-  bool _isShowPasswordNew = false;
-  bool _isPasswordConfFilled = false;
-  bool _isShowPasswordConf = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _newPasswordController.addListener(() {
-      setState(() {
-        _isPasswordNewFilled = _newPasswordController.text.isNotEmpty;
-      });
-    });
-
-    _confPasswordController.addListener(() {
-      setState(() {
-        _isPasswordConfFilled = _confPasswordController.text.isNotEmpty;
-      });
-    });
-  }
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -115,90 +92,25 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: Text(
-                      'Create New Password',
-                      style: TextStyle(
+                  Text(
+                    'Forgot Password?',
+                    style: TextStyle(
                         fontSize: 32,
                         color: AppColors.mainColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                        fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 32),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35),
                     child: TextField(
-                      controller: _newPasswordController,
-                      obscureText: !_isShowPasswordNew,
+                      controller: _emailController,
                       style: TextStyle(color: AppColors.mainColor),
                       cursorColor: AppColors.mainColor,
                       decoration: InputDecoration(
-                        hintText: 'New Password',
+                        hintText: 'Email',
                         hintStyle: TextStyle(color: AppColors.mainColor),
-                        suffixIcon: _isPasswordNewFilled
-                            ? IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isShowPasswordNew = !_isShowPasswordNew;
-                                  });
-                                },
-                                icon: Icon(
-                                  (_isShowPasswordNew)
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: AppColors.mainColor,
-                                ),
-                              )
-                            : null,
                         prefixIcon: Icon(
-                          Icons.lock,
-                          color: AppColors.mainColor,
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: AppColors.mainColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: AppColors.mainColor, width: 2),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: TextField(
-                      controller: _confPasswordController,
-                      obscureText: !_isShowPasswordConf,
-                      style: TextStyle(color: AppColors.mainColor),
-                      cursorColor: AppColors.mainColor,
-                      decoration: InputDecoration(
-                        hintText: 'Confirm Password',
-                        hintStyle: TextStyle(color: AppColors.mainColor),
-                        suffixIcon: _isPasswordConfFilled
-                            ? IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isShowPasswordConf = !_isShowPasswordConf;
-                                  });
-                                },
-                                icon: Icon(
-                                  (_isShowPasswordConf)
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: AppColors.mainColor,
-                                ),
-                              )
-                            : null,
-                        prefixIcon: Icon(
-                          Icons.lock,
+                          Icons.email,
                           color: AppColors.mainColor,
                         ),
                         fillColor: Colors.white,
@@ -238,15 +150,15 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.transparent,
                           child: InkWell(
-                            splashColor: AppColors.mainColor,
+                            splashColor: AppColors.secondaryColor,
                             borderRadius: BorderRadius.circular(15),
                             onTap: () {
-                              Get.to(() => LoginPage(),
+                              Get.to(() => OtpVerifPage(),
                                   transition: Transition.fadeIn);
                             },
                             child: const Center(
                               child: Text(
-                                "Reset Password",
+                                "Send Code",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 19,

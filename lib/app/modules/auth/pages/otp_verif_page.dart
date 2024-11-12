@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/create_new_pw_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/create_new_pw_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 
