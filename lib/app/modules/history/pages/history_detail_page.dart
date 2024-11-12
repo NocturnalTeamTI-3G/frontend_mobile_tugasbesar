@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/history/history_model.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:get/get.dart';
 
 class HistoryDetailPage extends StatelessWidget {
@@ -7,13 +8,17 @@ class HistoryDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HistoryType history = Get.arguments as HistoryType;
+    final HistoryModel history = Get.arguments as HistoryModel;
+    final String url = Api.baseUrl + '/api/image/history_scan/';
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Your Result Detail',
-            style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500)),
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w500)),
         centerTitle: true,
         forceMaterialTransparency: true,
       ),
@@ -24,38 +29,36 @@ class HistoryDetailPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                history.date,
-                style: const TextStyle(fontSize: 13),
+                '11 November 2024',
+                style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(
-                height: 4,
+                height: 6,
               ),
               Center(
                 child: Text(
-                  history.type,
-                  style:
-                      const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  history.disease,
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(
-                height: 8,
+                height: 10,
               ),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.25),
-                        spreadRadius: 2,
-                        blurRadius: 10,
-                        offset: const Offset(0, 3)
-                    )
-                  ]
-                ),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          offset: const Offset(0, 3))
+                    ]),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: Image.asset(
-                    history.image,
+                  child: Image.network(
+                    '${url}${history.image}',
                     fit: BoxFit.cover,
                     height: 200,
                     width: double.infinity,
@@ -63,10 +66,45 @@ class HistoryDetailPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 24,
+              ),
+              Text(
+                'Deskripsi',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 history.description,
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                'Solusi',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                history.solution,
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                'Rekomendasi Produk',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                history.product,
                 style: const TextStyle(fontSize: 16),
               ),
             ],

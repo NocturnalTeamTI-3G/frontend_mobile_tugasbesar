@@ -131,9 +131,9 @@ class CustomAppbarWithTabbar extends StatelessWidget {
           ),
           overlayColor: const WidgetStatePropertyAll(Colors.transparent),
           tabs: const [
-            Tab(text: 'All'),
-            Tab(text: 'Success'),
-            Tab(text: 'Fail'),
+            Tab(text: 'Semua'),
+            Tab(text: 'Sehat'),
+            Tab(text: 'Jerawat'),
           ],
         ),
       ),

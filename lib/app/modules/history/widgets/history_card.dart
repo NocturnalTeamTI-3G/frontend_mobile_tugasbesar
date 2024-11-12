@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/history/history_model.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:get/get.dart';
@@ -10,10 +11,12 @@ class HistoryCard extends StatelessWidget {
     required this.data,
   });
 
-  final HistoryType data;
+  final HistoryModel data;
 
   @override
   Widget build(BuildContext context) {
+    final String url = Api.baseUrl + '/api/image/history_scan/';
+
     return Stack(
       children: [
         Container(
@@ -46,8 +49,8 @@ class HistoryCard extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      data.image,
+                    child: Image.network(
+                      '$url${data.image}',
                       fit: BoxFit.cover,
                       width: 60,
                       height: 60,
@@ -60,7 +63,7 @@ class HistoryCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            data.type,
+                            data.disease,
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w600,
@@ -68,7 +71,7 @@ class HistoryCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            data.date,
+                            '11 November 2024',
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.grey,
@@ -79,12 +82,11 @@ class HistoryCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    data.status,
+                    data.disease == 'Sehat' ? 'Sehat' : 'Jerawat',
                     style: TextStyle(
                       fontSize: 14,
-                      color: data.status == 'Success'
-                          ? Colors.green
-                          : Colors.red,
+                      color:
+                          data.disease == 'Sehat' ? Colors.green : Colors.red,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -102,9 +104,7 @@ class HistoryCard extends StatelessWidget {
               height: 20,
               width: 5,
               decoration: BoxDecoration(
-                color: data.status == 'Success'
-                    ? Colors.green
-                    : Colors.red,
+                color: data.disease == 'Sehat' ? Colors.green : Colors.red,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
                   bottomLeft: Radius.circular(10),

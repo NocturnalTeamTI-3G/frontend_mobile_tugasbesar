@@ -43,7 +43,6 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   @override
   Widget build(BuildContext context) {
     final String imagePath = Get.arguments;
-    List<HistoryType> historyList = HistoryData().getAllHistory();
 
     return Scaffold(
       body: Stack(
@@ -220,8 +219,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Get.toNamed(AppRouters.historyDetail,
-                                      arguments: historyList[0]);
+                                  // Get.toNamed(AppRouters.historyDetail,
+                                      // arguments: historyList[0]);
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.mainColor,

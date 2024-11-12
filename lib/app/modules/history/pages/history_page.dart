@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/app/models/history/history_model.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/history/providers/history_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/history/widgets/custom_appbar_with_tabbar.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/history/widgets/history_list.dart';
+import 'package:provider/provider.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -13,11 +14,21 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  bool _isInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      Provider.of<HistoryProvider>(context, listen: false).getHistory();
+      _isInitialized = true;
+    }
   }
 
   @override
@@ -28,10 +39,6 @@ class _HistoryPageState extends State<HistoryPage>
 
   @override
   Widget build(BuildContext context) {
-    List<HistoryType> historyList = HistoryData().getAllHistory();
-    List<HistoryType> successHistoryList = HistoryData().getSuccessHistory();
-    List<HistoryType> failHistoryList = HistoryData().getFailHistory();
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -41,9 +48,27 @@ class _HistoryPageState extends State<HistoryPage>
       body: TabBarView(
         controller: _tabController,
         children: [
-          HistoryList(list: historyList),
-          HistoryList(list: successHistoryList),
-          HistoryList(list: failHistoryList),
+          Consumer<HistoryProvider>(
+            builder: (context, historyProvider, child) {
+              return historyProvider.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : HistoryList(list: historyProvider.historyList);
+            },
+          ),
+          Consumer<HistoryProvider>(
+            builder: (context, historyProvider, child) {
+              return historyProvider.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : HistoryList(list: historyProvider.healthyHistoryList);
+            },
+          ),
+          Consumer<HistoryProvider>(
+            builder: (context, historyProvider, child) {
+              return historyProvider.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : HistoryList(list: historyProvider.acneHistoryList);
+            },
+          ),
         ],
       ),
     );
