@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/history/history_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/history/providers/history_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
-import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -34,10 +34,20 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'Detail History',
-          style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
-        ),
+        title: FutureBuilder(
+            future: _historyFuture,
+            builder: (context, snapshot) {
+              final history = snapshot.data as HistoryModel;
+              final DateTime dateTime = DateTime.parse(history.date);
+              String formattedDate = DateFormat('d MMMM yyyy').format(dateTime);
+              return Text(
+                formattedDate,
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+              );
+            }),
         centerTitle: true,
         forceMaterialTransparency: true,
       ),
@@ -52,8 +62,6 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
             return const Center(child: Text("Data tidak ditemukan"));
           } else {
             final history = snapshot.data!;
-            final DateTime dateTime = DateTime.parse(history.date);
-            final String formattedDate = DateFormat('d MMMM yyyy').format(dateTime);
 
             return SingleChildScrollView(
               child: Padding(
@@ -64,7 +72,8 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
                     Center(
                       child: Text(
                         history.disease,
-                        style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 26, fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -92,7 +101,8 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
                     const SizedBox(height: 26),
                     const Text(
                       'Deskripsi',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -103,7 +113,8 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
                     const SizedBox(height: 16),
                     const Text(
                       'Solusi',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       history.solution,
@@ -116,7 +127,8 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
                       children: [
                         const Text(
                           'Rekomendasi Produk',
-                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                         IconButton(
                           onPressed: () {},
@@ -134,42 +146,52 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
                           return Container(
                             width: 200,
                             margin: const EdgeInsets.only(right: 20),
-                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: AppColors.cardColor2,
+                              color: Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
-                                  child: Image.network(
-                                    history.products[index].imageUrl,
-                                    height: 120,
-                                    width: 200,
-                                    fit: BoxFit.cover,
+                            child: MaterialButton(
+                              onPressed: () {
+                                Get.toNamed(AppRouters.productDetail,
+                                    arguments: history.products[index].id);
+                              },
+                              padding: const EdgeInsets.all(10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: Image.network(
+                                      history.products[index].imageUrl,
+                                      height: 120,
+                                      width: 200,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  history.products[index].name,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    history.products[index].name,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  history.products[index].nutrition.split(',')[0],
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey,
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    history.products[index].nutrition
+                                        .split(',')[0],
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
