@@ -19,9 +19,11 @@ class CameraProvider extends ChangeNotifier {
   // Fungsi untuk inisialisasi kamera depan
   Future<void> initializeCamera() async {
     final cameras = await availableCameras();
+    final selectedCamera = cameras.length > 1 ? cameras[1] : cameras[0];
+    
     try {
       _cameraController = CameraController(
-        cameras[1],
+        selectedCamera,
         ResolutionPreset.high,
         enableAudio: false,
       );
