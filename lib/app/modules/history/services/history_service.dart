@@ -22,4 +22,16 @@ class HistoryService {
 
     return response;
   }
+
+  Future<Response> getHistoryById(int id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    final response = await _dio.get('/api/histories/$id',
+        options: Options(headers: {
+          'Authorization': '$token',
+        }));
+
+    return response;
+  }
 }

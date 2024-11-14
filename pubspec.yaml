@@ -39,6 +39,7 @@ dependencies:
   get: ^4.6.6
   google_fonts: ^6.2.1
   image_picker: ^1.1.2
+  intl: ^0.20.0
   lottie: ^3.1.2
   permission_handler: ^11.3.1
   provider: ^6.1.2
@@ -105,3 +106,7 @@ flutter:
     - assets/images/news/artikel/
     - assets/svgs/
     - assets/lottie/
+
+proxy:
+  local:
+    server: "http://192.168.1.12:3000"

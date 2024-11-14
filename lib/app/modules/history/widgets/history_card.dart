@@ -4,6 +4,7 @@ import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class HistoryCard extends StatelessWidget {
   const HistoryCard({
@@ -16,6 +17,8 @@ class HistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String url = Api.baseUrl + '/api/image/history_scan/';
+    final DateTime dateTime = DateTime.parse(data.date);
+    final String formatedDate = DateFormat('d MMMM yyyy').format(dateTime);
 
     return Stack(
       children: [
@@ -27,7 +30,7 @@ class HistoryCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             onPressed: () {
-              Get.toNamed(AppRouters.historyDetail, arguments: data);
+              Get.toNamed(AppRouters.historyDetail, arguments: data.id);
             },
             child: Container(
               padding: const EdgeInsets.all(15),
@@ -71,7 +74,7 @@ class HistoryCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            '11 November 2024',
+                            formatedDate,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.grey,

@@ -22,9 +22,10 @@ class HistoryProvider extends ChangeNotifier {
         final data = response.data['data'];
         historyList = List<HistoryModel>.from(
             data.map((json) => HistoryModel.fromJson(json)));
-        acneHistoryList = historyList.where((element) => element.disease != 'Sehat').toList();
-        healthyHistoryList = historyList.where((element) => element.disease == 'Sehat').toList();
-        notifyListeners();
+        acneHistoryList =
+            historyList.where((element) => element.disease != 'Sehat').toList();
+        healthyHistoryList =
+            historyList.where((element) => element.disease == 'Sehat').toList();
       } else {
         throw ('Anda tidak terautentikasi');
       }
@@ -39,6 +40,35 @@ class HistoryProvider extends ChangeNotifier {
       );
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<HistoryModel?> getHistoryById(int id) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+
+      HistoryModel history;
+
+      final response = await _historyService.getHistoryById(id);
+      if (response.statusCode == 200) {
+        final data = response.data['data'];
+        history = HistoryModel.fromJson(data);
+      } else {
+        throw ('History tidak ditemukan');
+      }
+
+      return history;
+    } catch (e) {
+      Get.snackbar(
+        'Terjadi Kesalahan',
+        'Tidak dapat mengambil data history user. Silahkan coba lagi atau Hubungi admin.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      _isLoading = false;
+      notifyListeners();
+      return null;
     }
   }
 }

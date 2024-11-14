@@ -1,3 +1,5 @@
+import 'package:frontend_mobile_tugasbesar/app/models/product/product_model.dart';
+
 class HistoryModel {
   final int id;
   final String disease;
@@ -5,8 +7,8 @@ class HistoryModel {
   final String image;
   final int user;
   final String solution;
-  final String product;
-  final String productDesc;
+  final String date;
+  final List<ProductModel> products;
 
   HistoryModel({
     required this.id,
@@ -15,20 +17,24 @@ class HistoryModel {
     required this.description,
     required this.image,
     required this.solution,
-    required this.product,
-    required this.productDesc,
+    required this.date,
+    required this.products,
   });
 
   factory HistoryModel.fromJson(Map<String, dynamic> json) {
+    var productList = (json['products'] as List)
+        .map((product) => ProductModel.fromJson(product))
+        .toList();
+
     return HistoryModel(
       id: json['id'],
       user: json['userId'],
       disease: json['disease'],
       description: json['description_disease'],
       solution: json['solution_disease'],
-      product: json['product'],
-      productDesc: json['description_product'],
       image: json['face_img'],
+      date: json['created_at'],
+      products: productList,
     );
   }
 }
