@@ -89,6 +89,13 @@ class SettingProvider extends ChangeNotifier {
   }
 
   Future<void> getUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      return;
+    }
+
     if (_isFetch) return;
     _isFetch = true;
 
@@ -137,8 +144,7 @@ class SettingProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateProfile(
-      String name, String email, String gender) async {
+  Future<void> updateProfile(String name, String email, String gender) async {
     try {
       _isLoading = true;
       notifyListeners();
