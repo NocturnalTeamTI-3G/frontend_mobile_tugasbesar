@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/product/product_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_detail_page.dart';
-import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 
 class ProductCard extends StatelessWidget {
@@ -19,7 +18,7 @@ class ProductCard extends StatelessWidget {
       child: MaterialButton(
         padding: const EdgeInsets.all(0),
         onPressed: () {
-          Get.to(const ProductDetailPage(), arguments: product);
+          Get.to(const ProductDetailPage(), arguments: product.id);
         },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
@@ -30,18 +29,29 @@ class ProductCard extends StatelessWidget {
               height: 80,
               width: 80,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.secondaryColor,
-                    AppColors.cardColor,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+                // gradient: LinearGradient(
+                //   colors: [
+                //     AppColors.secondaryColor,
+                //     AppColors.cardColor,
+                //   ],
+                //   begin: Alignment.topLeft,
+                //   end: Alignment.bottomRight,
+                // ),
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                   image: NetworkImage(product.imageUrl),
                   fit: BoxFit.cover,
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  product.imageUrl,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) =>
+                      loadingProgress == null
+                          ? child
+                          : const CircularProgressIndicator(),
                 ),
               ),
             ),
@@ -51,8 +61,8 @@ class ProductCard extends StatelessWidget {
                 margin: const EdgeInsets.only(left: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Spacer(),
                     Text(
                       product.name,
                       overflow: TextOverflow.ellipsis,
@@ -66,26 +76,26 @@ class ProductCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      product.type,
+                      product.nutrition.split(',')[0],
                       style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    const Spacer(),
                   ],
                 ),
               ),
             ),
-            Text(
-              '\$${product.price.toString()}',
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            // Text(
+            //   '',
+            //   '\$${product.price.toString()}',
+            //   style: const TextStyle(
+            //     color: Colors.black,
+            //     fontSize: 20,
+            //     fontWeight: FontWeight.w600,
+            //   ),
+            // ),
           ],
         ),
       ),

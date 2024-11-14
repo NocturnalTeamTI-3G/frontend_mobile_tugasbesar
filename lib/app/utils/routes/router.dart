@@ -10,6 +10,8 @@ import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/register_page.
 import 'package:frontend_mobile_tugasbesar/app/modules/main_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/news/pages/news_detail_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/news/pages/news_list_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_detail_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_list_page.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
@@ -35,6 +37,10 @@ class AppRouters {
   // News
   static const newsDetail = '/newsDetail';
   static const newsList = '/newsList';
+
+  // product
+  static const productDetail = '/productDetail';
+  static const productList = '/productList';
 }
 
 class AppPages {
@@ -91,6 +97,14 @@ class AppPages {
     GetPage(
       name: AppRouters.newsList,
       page: () => NewsListPage(),
+    ),
+    GetPage(
+      name: AppRouters.productDetail,
+      page: () => ProductDetailPage(),
+    ),
+    GetPage(
+      name: AppRouters.productList,
+      page: () => ProductListPage(),
     ),
   ];
 }

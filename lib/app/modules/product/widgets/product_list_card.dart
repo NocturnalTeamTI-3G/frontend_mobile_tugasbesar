@@ -17,12 +17,12 @@ class ProductListCard extends StatelessWidget {
     return MaterialButton(
       padding: const EdgeInsets.all(0),
       onPressed: () {
-        Get.to(ProductDetailPage(), arguments: product);
+        Get.to(ProductDetailPage(), arguments: product.id);
       },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
         side: BorderSide(
-          color: Colors.grey.shade100,
+          color: Colors.grey.shade200,
         ),
       ),
       child: Column(
@@ -37,9 +37,15 @@ class ProductListCard extends StatelessWidget {
                 topRight: Radius.circular(10),
               ),
             ),
-            child: Image.network(
-              product.imageUrl,
-              fit: BoxFit.cover,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
+              child: Image.network(
+                product.imageUrl,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Container(
@@ -51,7 +57,7 @@ class ProductListCard extends StatelessWidget {
                 Text(
                   product.name,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
+                  maxLines: 2,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -59,25 +65,27 @@ class ProductListCard extends StatelessWidget {
                     height: 1.0,
                   ),
                 ),
+                const SizedBox(height: 5),
                 Text(
-                  product.type,
+                  product.nutrition.split(',')[0],
                   style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    '\$${product.price.toString()}',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )
+                // Container(
+                //   alignment: Alignment.centerRight,
+                //   child: Text(
+                //     '',
+                //     // '\$${product.price.toString()}',
+                //     style: const TextStyle(
+                //       color: Colors.black,
+                //       fontSize: 20,
+                //       fontWeight: FontWeight.w500,
+                //     ),
+                //   ),
+                // )
               ],
             ),
           )
