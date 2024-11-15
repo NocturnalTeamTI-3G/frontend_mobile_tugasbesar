@@ -1,22 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/news/artikel_model.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CardCarousel extends StatelessWidget {
-  final ArtikelType artikel;
   const CardCarousel({Key? key, required this.artikel}) : super(key: key);
+  final ArtikelModel artikel;
 
   @override
   Widget build(BuildContext context) {
+    final String url = '${Api.baseUrl}/api/image/user/';
+    final DateTime dateTime = DateTime.parse(artikel.date);
+    final String formatedDate = DateFormat('d MMMM yyyy').format(dateTime);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      child: Material(
+      child: MaterialButton(
+        onPressed: () {
+          Get.toNamed(AppRouters.newsDetail, arguments: artikel.id);
+        },
+        padding: EdgeInsets.zero,
         elevation: 8,
-        borderRadius: BorderRadius.circular(20),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         child: Stack(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
+              child: Image.network(
                 artikel.image,
                 fit: BoxFit.cover,
                 height: 250,
@@ -26,63 +40,89 @@ class CardCarousel extends StatelessWidget {
               bottom: 0,
               left: 0,
               right: 0,
+              top: 0,
               child: Container(
-                height: 125,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
                       Colors.black,
                       Colors.transparent,
+                      Colors.transparent,
                     ],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                   ),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    artikel.title,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                    decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: const Offset(0, 1),
+                          )
+                        ]),
+                    child: Text(
+                      artikel.category,
+                      style: TextStyle(
+                          color: AppColors.mainColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
-                  const SizedBox(height: 14),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
                     children: [
+                      Text(
+                        artikel.title,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(height: 14),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(
-                            radius: 15,
-                            backgroundImage: AssetImage(artikel.authorImg),
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 15,
+                                backgroundImage:
+                                    NetworkImage('$url${artikel.authorImg}'),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                artikel.author,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 12),
                           Text(
-                            artikel.author,
+                            formatedDate,
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400),
                           ),
                         ],
-                      ),
-                      Text(
-                        artikel.date,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),

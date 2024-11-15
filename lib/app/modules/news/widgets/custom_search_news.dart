@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/news/pages/news_list_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
+import 'package:get/get.dart';
 
-class CustomSearchScreen extends StatefulWidget {
+class CustomSearchNews extends StatefulWidget {
   final String? currentQuery;
-  const CustomSearchScreen({Key? key, this.currentQuery}) : super(key: key);
+  const CustomSearchNews({Key? key, this.currentQuery}) : super(key: key);
 
   @override
-  _CustomSearchScreenState createState() => _CustomSearchScreenState();
+  _CustomSearchNewsState createState() => _CustomSearchNewsState();
 }
 
-class _CustomSearchScreenState extends State<CustomSearchScreen> {
-  TextEditingController searchController = TextEditingController();
+class _CustomSearchNewsState extends State<CustomSearchNews> {
+  late TextEditingController searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    // Inisialisasi searchController hanya sekali pada initState
+    searchController = TextEditingController(text: widget.currentQuery ?? '');
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    searchController.text = widget.currentQuery ?? '';
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -63,7 +75,11 @@ class _CustomSearchScreenState extends State<CustomSearchScreen> {
               ),
             ),
             onEditingComplete: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => NewsListPage(searchQuery: searchController.text,)));
+              Get.toNamed(AppRouters.newsList,
+                  arguments: searchController.text);
+            },
+            onSubmitted: (value) {
+              Get.toNamed(AppRouters.newsList, arguments: value);
             },
           ),
         ),

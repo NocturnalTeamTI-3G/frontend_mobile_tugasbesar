@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/news/providers/news_list_provider.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/news/providers/news_provider.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/news/widgets/custom_card.dart';
-import 'package:frontend_mobile_tugasbesar/app/widgets/custom_search_screen.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/news/widgets/custom_search_news.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class NewsListPage extends StatefulWidget {
@@ -17,11 +19,21 @@ class NewsListPage extends StatefulWidget {
 class _NewsListPageState extends State<NewsListPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late String query;
+  late NewsProvider _newsProvider;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    query = Get.arguments as String? ?? '';
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _newsProvider = Provider.of<NewsProvider>(context);
+    if (query.isNotEmpty) _newsProvider.searchArticle(query);
   }
 
   @override
@@ -32,109 +44,125 @@ class _NewsListPageState extends State<NewsListPage>
 
   @override
   Widget build(BuildContext context) {
-    final newsProvider = Provider.of<NewsListProvider>(context);
-    
+    final newsProvider = Provider.of<NewsProvider>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        titleSpacing: 0,
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios_new, color: AppColors.mainColor),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(65),
+        child: Container(
+          // padding: const EdgeInsets.only(top: 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-        ),
-        leadingWidth: 40,
-        title: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CustomSearchScreen(
-                  currentQuery: widget.searchQuery ?? '',
+          child: AppBar(
+            backgroundColor: Colors.white,
+            forceMaterialTransparency: true,
+            titleSpacing: 0,
+            leading: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon:
+                    Icon(Icons.arrow_back_ios_new, color: AppColors.mainColor),
+              ),
+            ),
+            leadingWidth: 40,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: IconButton(
+                  onPressed: () {
+                    Get.toNamed(AppRouters.main);
+                  },
+                  icon: Icon(Icons.home_filled, color: AppColors.mainColor),
                 ),
               ),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Material(
-              elevation: 2,
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
+            ],
+            title: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CustomSearchNews(
+                      currentQuery: query,
+                    ),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 10),
+                child: Material(
+                  elevation: 2,
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: AppColors.mainColor),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(widget.searchQuery ?? 'Search for news',
-                          style: const TextStyle(
-                              color: Colors.black54,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400)),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: AppColors.mainColor),
                     ),
-                    const Icon(
-                      Icons.search,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                              query.isNotEmpty ? query : 'Search for Article',
+                              style: const TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
+                        ),
+                        const Icon(
+                          Icons.search,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-        // actions: [
-        //   IconButton(onPressed: () {}, icon: Icon(Icons.filter_list_alt, color: AppColors.mainColor)),
-        // ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'For You'),
-            Tab(text: 'Terbaru'),
-            Tab(text: 'Terfavorit'),
-          ],
-          indicatorColor: AppColors.mainColor,
-          dividerHeight: 0,
-          labelColor: AppColors.mainColor,
-          unselectedLabelColor: Colors.grey,
-          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-        ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildArticleList(newsProvider.listArtikel),
-          _buildArticleList(newsProvider.listArtikel),
-          _buildArticleList(newsProvider.listArtikel),
-        ],
-      ),
-    );
-  }
-
-  SingleChildScrollView _buildArticleList(dynamic listArtikel) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 250),
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: listArtikel.length,
-            itemBuilder: (context, index) {
-              return CustomCard(artikel: listArtikel[index]);
-            },
-          ),
-        ),
-      ),
+      body: newsProvider.listArticle.isEmpty
+          ? const Center(
+              child: Text(
+                'No article found',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: 250),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: newsProvider.listArticle.length,
+                    itemBuilder: (context, index) {
+                      return CustomCard(
+                          artikel: newsProvider.listArticle[index]);
+                    },
+                  ),
+                ),
+              ),
+            ),
     );
   }
 }

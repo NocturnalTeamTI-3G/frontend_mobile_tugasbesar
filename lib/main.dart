@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/check/providers/camera_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/history/providers/history_provider.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/news/providers/news_list_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/news/providers/news_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/providers/product_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/providers/setting_provider.dart';
@@ -26,7 +25,6 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SettingProvider()),
         ChangeNotifierProvider(create: (_) => NewsProvider()),
         ChangeNotifierProvider(create: (_) => CameraProvider()),
-        ChangeNotifierProvider(create: (_) => NewsListProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => HistoryProvider()),
       ],
