@@ -32,4 +32,9 @@ class SettingService {
     );
     return response;
   }
+
+  Future<Response> getFaq() async {
+    final response = await _dio.get('/api/faqs');
+    return response;
+  }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/app/models/faq/faq_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/user/user_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/auth/services/auth_service.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/home/services/user_service.dart';
@@ -20,6 +21,7 @@ class SettingProvider extends ChangeNotifier {
   final ImagePicker _picker = ImagePicker();
   String? _selectedValue;
   UserModel? user;
+  List<FaqModel>? faqs;
   bool _isLoading = false;
   bool _isFetch = false;
 
@@ -196,5 +198,25 @@ class SettingProvider extends ChangeNotifier {
   Future<void> updateSelectedValue(String value) async {
     _selectedValue = value;
     notifyListeners();
+  }
+
+  Future<void> getFaqs() async {
+    try {
+      final response = await _settingService.getFaq();
+
+      if (response.statusCode == 200) {
+        final data = response.data['data'];
+        faqs = List<FaqModel>.from(data.map((json) => FaqModel.fromJson(json)));
+      } else {
+        throw ('Terjadi kesalahan dalam pengambilan data faq');
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Terjadi Kesalahan',
+        'Tidak dapat mengambil data faq. Silahkan coba lagi atau Hubungi admin.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 }
