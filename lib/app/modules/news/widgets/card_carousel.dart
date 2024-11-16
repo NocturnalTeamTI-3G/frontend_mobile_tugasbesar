@@ -5,6 +5,7 @@ import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CardCarousel extends StatelessWidget {
   const CardCarousel({Key? key, required this.artikel}) : super(key: key);
@@ -34,6 +35,21 @@ class CardCarousel extends StatelessWidget {
                 artikel.image,
                 fit: BoxFit.cover,
                 height: 250,
+                loadingBuilder: (context, child, loadingProgress) =>
+                    loadingProgress == null
+                        ? child
+                        : Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              height: 250,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                          ),
               ),
             ),
             Positioned(

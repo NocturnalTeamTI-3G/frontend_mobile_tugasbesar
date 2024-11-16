@@ -5,6 +5,7 @@ import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({
@@ -39,6 +40,21 @@ class CustomCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 height: 95,
                 width: 95,
+                loadingBuilder: (context, child, loadingProgress) =>
+                    loadingProgress == null
+                        ? child
+                        : Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              height: 95,
+                              width: 95,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                          ),
               ),
             ),
             Expanded(
@@ -81,7 +97,8 @@ class CustomCard extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 13,
-                              backgroundImage: NetworkImage('$url${artikel.authorImg}'),
+                              backgroundImage:
+                                  NetworkImage('$url${artikel.authorImg}'),
                             ),
                             const SizedBox(width: 5),
                             Text(
