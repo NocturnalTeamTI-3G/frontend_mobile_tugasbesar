@@ -106,7 +106,8 @@ class _ProductPageState extends State<ProductPage> {
                         'Pustula',
                         'Papula'
                       ][index];
-                      final isSelected = index == productProvider.selectedCategory;
+                      final isSelected =
+                          index == productProvider.selectedCategory;
                       final textColor =
                           isSelected ? AppColors.mainColor : Colors.grey[500];
                       final borderColor = isSelected
@@ -215,7 +216,23 @@ class _ProductPageState extends State<ProductPage> {
                                                   loadingProgress) =>
                                               loadingProgress == null
                                                   ? child
-                                                  : CircularProgressIndicator(),
+                                                  : Shimmer.fromColors(
+                                                      baseColor:
+                                                          Colors.grey.shade300,
+                                                      highlightColor:
+                                                          Colors.grey.shade100,
+                                                      child: Container(
+                                                        height: 165,
+                                                        width: double.infinity,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(14),
+                                                        ),
+                                                      ),
+                                                    ),
                                         ),
                                       ),
                                     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/product/product_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_detail_page.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -38,10 +39,6 @@ class ProductCard extends StatelessWidget {
                 //   end: Alignment.bottomRight,
                 // ),
                 borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  image: NetworkImage(product.imageUrl),
-                  fit: BoxFit.cover,
-                ),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
@@ -51,7 +48,18 @@ class ProductCard extends StatelessWidget {
                   loadingBuilder: (context, child, loadingProgress) =>
                       loadingProgress == null
                           ? child
-                          : const CircularProgressIndicator(),
+                          : Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                              ),
+                            ),
                 ),
               ),
             ),

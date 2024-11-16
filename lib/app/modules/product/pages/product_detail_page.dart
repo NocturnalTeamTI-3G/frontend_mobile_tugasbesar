@@ -30,20 +30,33 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+      bottomNavigationBar: Container(
+        height: 80,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade200,
+              blurRadius: 5,
+              spreadRadius: 1,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric( horizontal: 20),
         child: MaterialButton(
-          onPressed: () async {
-
-          },
+          onPressed: () async {},
           color: AppColors.mainColor,
+          padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(vertical: 14),
-            child: Row(
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
