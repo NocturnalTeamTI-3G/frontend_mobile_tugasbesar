@@ -20,6 +20,9 @@ class NewsProvider extends ChangeNotifier {
   int _likeCount = 0;
   int get likeCount => _likeCount;
 
+  bool _isLiked = false;
+  bool get isLiked => _isLiked;
+
   void setCurrentPage(int index) {
     _currentPage.value = index;
   }
@@ -85,6 +88,7 @@ class NewsProvider extends ChangeNotifier {
           ..shuffle()
           ..take(3).toList();
         _likeCount = article.likes;
+        _isLiked = data['isLiked'];
       } else {
         throw ('Artikel tidak ditemukan');
       }
@@ -100,21 +104,19 @@ class NewsProvider extends ChangeNotifier {
     }
   }
 
-  bool _like = false;
-  bool get like => _like;
-
   Future<void> likeArticle(int id) async {
-    if (_like) {
-      _like = false;
+    if (_isLiked) {
+      _isLiked = false;
     } else {
-      _like = true;
+      _isLiked = true;
     }
 
     try {
-      final response = await _newsService.likeArticle(id, _like);
+      final response = await _newsService.likeArticle(id, _isLiked);
 
       if (response.statusCode == 200) {
-        final data = response.data['data'];
+        final newResp = await _newsService.getArticleById(id);
+        final data = newResp.data['data'];
         _likeCount = data['likes'];
       }
       notifyListeners();

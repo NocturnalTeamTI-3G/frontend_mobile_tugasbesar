@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewsService {
   final Dio _dio = Dio();
@@ -17,13 +18,21 @@ class NewsService {
   }
 
   Future<Response> getArticleById(int id) async {
-    final response = await _dio.get('/api/posts/$id?post_clicked=true');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    final response = await _dio.get('/api/posts/$id?post_clicked=true',
+        options: Options(headers: {'Authorization': '$token'}));
 
     return response;
   }
 
   Future<Response> likeArticle(int id, bool like) async {
-    final response = await _dio.get('/api/posts/$id/likes?like=$like');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    
+    final response = await _dio.get('/api/posts/$id/likes?like=$like',
+        options: Options(headers: {'Authorization': '$token'}));
 
     return response;
   }

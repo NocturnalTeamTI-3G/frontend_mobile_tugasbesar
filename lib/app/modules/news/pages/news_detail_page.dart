@@ -303,7 +303,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Icon(
-                                            newsProvider.like
+                                            newsProvider.isLiked
                                                 ? Icons.thumb_up_alt
                                                 : Icons.thumb_up_alt_outlined,
                                             size: 26,
