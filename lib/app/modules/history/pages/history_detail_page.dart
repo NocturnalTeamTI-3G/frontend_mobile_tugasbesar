@@ -37,16 +37,25 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
         title: FutureBuilder(
             future: _historyFuture,
             builder: (context, snapshot) {
-              final history = snapshot.data as HistoryModel;
-              final DateTime dateTime = DateTime.parse(history.date);
-              String formattedDate = DateFormat('d MMMM yyyy').format(dateTime);
-              return Text(
-                formattedDate,
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
-              );
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Text('Loading...');
+              } else if (snapshot.hasError) {
+                return const Text('Error');
+              } else if (!snapshot.hasData) {
+                return const Text('Data not found');
+              } else {
+                final history = snapshot.data as HistoryModel;
+                final DateTime dateTime = DateTime.parse(history.date);
+                String formattedDate =
+                    DateFormat('d MMMM yyyy').format(dateTime);
+                return Text(
+                  formattedDate,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                );
+              }
             }),
         centerTitle: true,
         forceMaterialTransparency: true,

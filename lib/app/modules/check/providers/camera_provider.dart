@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/app/models/history/history_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/check/services/camera_services.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:get/get.dart';
+import 'package:image/image.dart' as img;
 
 class CameraProvider extends ChangeNotifier {
   CameraController? _cameraController;
@@ -20,7 +24,7 @@ class CameraProvider extends ChangeNotifier {
   Future<void> initializeCamera() async {
     final cameras = await availableCameras();
     final selectedCamera = cameras.length > 1 ? cameras[1] : cameras[0];
-    
+
     try {
       _cameraController = CameraController(
         selectedCamera,
@@ -43,13 +47,28 @@ class CameraProvider extends ChangeNotifier {
         notifyListeners();
 
         final image = await _cameraController!.takePicture();
+        final imageFile = File(image.path);
 
-        final response = await _cameraServices.postImage(image.path);
+        // Decode gambar menggunakan pustaka `image`
+        final originalImage = img.decodeImage(await imageFile.readAsBytes());
 
-        if (response.statusCode == 200) _isLoading = false;
-        notifyListeners();
-        Get.toNamed(AppRouters.cameraResult, arguments: image.path);
+        // Balik gambar secara horizontal
+        final fixedImage = img.flipHorizontal(originalImage!);
 
+        // Simpan hasil gambar yang sudah diperbaiki
+        final fixedImageFile = File(image.path)
+          ..writeAsBytesSync(img.encodeJpg(fixedImage));
+
+        late HistoryModel history;
+
+        final response = await _cameraServices.ScanDisease(fixedImageFile.path);
+
+        if (response.statusCode == 200) {
+          final data = response.data['data'];
+          history = HistoryModel.fromJson(data);
+        }
+
+        Get.toNamed(AppRouters.cameraResult, arguments: history);
         _isLoading = false;
         notifyListeners();
       } catch (e) {

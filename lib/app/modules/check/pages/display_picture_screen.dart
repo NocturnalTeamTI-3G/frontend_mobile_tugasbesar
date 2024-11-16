@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/history/history_model.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'dart:math' as math;
 
@@ -42,22 +43,19 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String imagePath = Get.arguments;
+    final HistoryModel result = Get.arguments;
+
+    final String url = '${Api.baseUrl}/api/image/history_scan/';
 
     return Scaffold(
       body: Stack(
         children: [
           Positioned.fill(
-            child: Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.rotationY(
-                  math.pi), // Membalikkan pratinjau kamera depan
-              child: Image.file(
-                File(imagePath),
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-              ),
+            child: Image.network(
+              '$url${result.image}',
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
             ),
           ),
           Positioned(
@@ -179,7 +177,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          'Sehat',
+                          result.disease,
                           style: TextStyle(
                               fontSize: 20,
                               color: AppColors.mainColor,
@@ -219,8 +217,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  // Get.toNamed(AppRouters.historyDetail,
-                                      // arguments: historyList[0]);
+                                  Get.toNamed(AppRouters.historyDetail,
+                                      arguments: result.id);
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.mainColor,
