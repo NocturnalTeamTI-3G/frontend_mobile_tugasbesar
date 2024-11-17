@@ -59,7 +59,8 @@ class _MainPageState extends State<MainPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainColor,
                 ),
-                child: const Text('Login', style: TextStyle(fontSize: 16, color: Colors.white)),
+                child: const Text('Login',
+                    style: TextStyle(fontSize: 16, color: Colors.white)),
               ),
             ],
           );
@@ -151,9 +152,13 @@ class _MainPageState extends State<MainPage> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 15),
                       onPressed: () {
-                        setState(() {
-                          _selectedIndex = 1;
-                        });
+                        if (_authProvider.isLoggedIn) {
+                          setState(() {
+                            _selectedIndex = 1;
+                          });
+                        } else {
+                          showLoginDialog();
+                        }
                       },
                       // color: _selectedIndex == 1 ? Colors.grey[100] : null,
                       child: Column(
@@ -196,9 +201,13 @@ class _MainPageState extends State<MainPage> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 15),
                       onPressed: () {
-                        setState(() {
-                          _selectedIndex = 2;
-                        });
+                        if (_authProvider.isLoggedIn) {
+                          setState(() {
+                            _selectedIndex =2;
+                          });
+                        } else {
+                          showLoginDialog();
+                        }
                       },
                       // color: _selectedIndex == 2 ? Colors.grey[100] : null,
                       child: Column(
