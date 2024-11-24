@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/login_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class CreateNewPasswordPage extends StatefulWidget {
   const CreateNewPasswordPage({Key? key}) : super(key: key);
@@ -18,6 +20,8 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
   bool _isShowPasswordNew = false;
   bool _isPasswordConfFilled = false;
   bool _isShowPasswordConf = false;
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -38,6 +42,9 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<AuthProvider>(context);
+    final email = Get.arguments;
+
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: Container(
@@ -112,153 +119,179 @@ class _CreateNewPasswordPageState extends State<CreateNewPasswordPage> {
                 ),
               ),
               padding: const EdgeInsets.only(top: 30),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: Text(
-                      'Create New Password',
-                      style: TextStyle(
-                        fontSize: 32,
-                        color: AppColors.mainColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: TextField(
-                      controller: _newPasswordController,
-                      obscureText: !_isShowPasswordNew,
-                      style: TextStyle(color: AppColors.mainColor),
-                      cursorColor: AppColors.mainColor,
-                      decoration: InputDecoration(
-                        hintText: 'New Password',
-                        hintStyle: TextStyle(color: AppColors.mainColor),
-                        suffixIcon: _isPasswordNewFilled
-                            ? IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isShowPasswordNew = !_isShowPasswordNew;
-                                  });
-                                },
-                                icon: Icon(
-                                  (_isShowPasswordNew)
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: AppColors.mainColor,
-                                ),
-                              )
-                            : null,
-                        prefixIcon: Icon(
-                          Icons.lock,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      child: Text(
+                        'Create New Password',
+                        style: TextStyle(
+                          fontSize: 32,
                           color: AppColors.mainColor,
+                          fontWeight: FontWeight.bold,
                         ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: AppColors.mainColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: AppColors.mainColor, width: 2),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'New Password cannot be empty';
+                          } else if (value.length < 8) {
+                            return 'Password must be at least 8 characters';
+                          }
+                          return null;
+                        },
+                        controller: _newPasswordController,
+                        obscureText: !_isShowPasswordNew,
+                        style: TextStyle(color: AppColors.mainColor),
+                        cursorColor: AppColors.mainColor,
+                        decoration: InputDecoration(
+                          hintText: 'New Password',
+                          hintStyle: TextStyle(color: AppColors.mainColor),
+                          suffixIcon: _isPasswordNewFilled
+                              ? IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isShowPasswordNew = !_isShowPasswordNew;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    (_isShowPasswordNew)
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: AppColors.mainColor,
+                                  ),
+                                )
+                              : null,
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: AppColors.mainColor,
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: AppColors.mainColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                                color: AppColors.mainColor, width: 2),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: TextField(
-                      controller: _confPasswordController,
-                      obscureText: !_isShowPasswordConf,
-                      style: TextStyle(color: AppColors.mainColor),
-                      cursorColor: AppColors.mainColor,
-                      decoration: InputDecoration(
-                        hintText: 'Confirm Password',
-                        hintStyle: TextStyle(color: AppColors.mainColor),
-                        suffixIcon: _isPasswordConfFilled
-                            ? IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isShowPasswordConf = !_isShowPasswordConf;
-                                  });
-                                },
-                                icon: Icon(
-                                  (_isShowPasswordConf)
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: AppColors.mainColor,
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Confirm Password cannot be empty';
+                          } else if (value.length < 8) {
+                            return 'Password must be at least 8 characters';
+                          } else if (value != _newPasswordController.text) {
+                            return 'Password does not match';
+                          }
+                          return null;
+                        },
+                        controller: _confPasswordController,
+                        obscureText: !_isShowPasswordConf,
+                        style: TextStyle(color: AppColors.mainColor),
+                        cursorColor: AppColors.mainColor,
+                        decoration: InputDecoration(
+                          hintText: 'Confirm Password',
+                          hintStyle: TextStyle(color: AppColors.mainColor),
+                          suffixIcon: _isPasswordConfFilled
+                              ? IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isShowPasswordConf =
+                                          !_isShowPasswordConf;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    (_isShowPasswordConf)
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: AppColors.mainColor,
+                                  ),
+                                )
+                              : null,
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: AppColors.mainColor,
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: AppColors.mainColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                                color: AppColors.mainColor, width: 2),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      child: Material(
+                        elevation: 3,
+                        borderRadius: BorderRadius.circular(15),
+                        child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppColors.mainColor,
+                                  AppColors.secondaryColor,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )),
+                          child: Material(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.transparent,
+                            child: InkWell(
+                              splashColor: AppColors.mainColor,
+                              borderRadius: BorderRadius.circular(15),
+                              onTap: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await _authProvider.updatePassword(
+                                    email,
+                                    _confPasswordController.text,
+                                  );
+                                }
+                              },
+                              child: const Center(
+                                child: Text(
+                                  "Reset Password",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w500),
                                 ),
-                              )
-                            : null,
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: AppColors.mainColor,
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: AppColors.mainColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide:
-                              BorderSide(color: AppColors.mainColor, width: 2),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: Material(
-                      elevation: 3,
-                      borderRadius: BorderRadius.circular(15),
-                      child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            gradient: LinearGradient(
-                              colors: [
-                                AppColors.mainColor,
-                                AppColors.secondaryColor,
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            )),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.transparent,
-                          child: InkWell(
-                            splashColor: AppColors.mainColor,
-                            borderRadius: BorderRadius.circular(15),
-                            onTap: () {
-                              Get.to(() => LoginPage(),
-                                  transition: Transition.fadeIn);
-                            },
-                            child: const Center(
-                              child: Text(
-                                "Reset Password",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

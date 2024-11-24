@@ -78,6 +78,12 @@ class AuthProvider with ChangeNotifier {
       final response =
           await _authService.register(email, password, name, gender);
       if (response.statusCode == 200) {
+        Get.snackbar(
+          'Berhasil',
+          'Registrasi Berhasil, Silahkan Login',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
         Get.offAllNamed('/login');
       } else {
         Get.snackbar(
@@ -102,8 +108,123 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> forgotPassword(String email) async {
+  Future<void> updatePassword(String email, String password) async {
     _isLoading = true;
     notifyListeners();
+
+    try {
+      final response = await _authService.updatePassword(password, email);
+
+      if (response.statusCode == 200 && response.data['data']) {
+        Get.snackbar(
+          'Berhasil',
+          'Password Berhasil Diubah',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        _isLoading = false;
+        notifyListeners();
+        Get.offAllNamed(AppRouters.login);
+      } else {
+        Get.snackbar(
+          'Gagal',
+          'Password Gagal Diubah',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      Get.snackbar(
+        'Gagal',
+        'Password Gagal Diubah, Silahkan Coba Lagi',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> sendEmail(String email) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final response = await _authService.sendEmail(email);
+      if (response.statusCode == 200) {
+        final data = response.data['data']['email'];
+        Get.snackbar(
+          'Berhasil',
+          'Email Berhasil Dikirim',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        _isLoading = false;
+        notifyListeners();
+        Get.offNamed(AppRouters.otp, arguments: data);
+      } else {
+        Get.snackbar(
+          'Gagal',
+          'Email Gagal Dikirim',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      Get.snackbar(
+        'Gagal',
+        'Email Gagal Dikirim',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> verifyToken(String email, String token) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final response = await _authService.checkToken(token);
+      if (response.statusCode == 200) {
+        final data = response.data['data'];
+        if (data) {
+          Get.snackbar(
+            'Berhasil',
+            'Kode OTP berhasil diverifikasi',
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+          _isLoading = false;
+          notifyListeners();
+          Get.offNamed(AppRouters.newPassword, arguments: email);
+        } else {
+          Get.snackbar(
+            'Gagal',
+            'Kode OTP gagal diverifikasi',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
+      }
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      Get.snackbar(
+        'Gagal',
+        'Kode OTP gagal diverifikasi, silahkan coba lagi',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }
