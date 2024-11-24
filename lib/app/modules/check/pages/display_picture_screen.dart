@@ -1,13 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/history/history_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
-import 'dart:math' as math;
 
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 
 class DisplayPictureScreen extends StatefulWidget {
   const DisplayPictureScreen({Key? key}) : super(key: key);
