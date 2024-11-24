@@ -47,4 +47,35 @@ class AuthService {
         }));
     return response;
   }
+
+  Future<Response> sendEmail(String email) async {
+    final response = await _dio.post(
+      '/api/forgot-password',
+      data: {
+        'email': email,
+      },
+    );
+    return response;
+  }
+
+  Future<Response> checkToken(String token) async {
+    final response = await _dio.post(
+      '/api/forgot-password/check',
+      data: {
+        'token': token,
+      },
+    );
+
+    return response;
+  }
+
+  Future<Response> updatePassword(String password, String email) async {
+    final response = await _dio.post(
+      '/api/forgot-password/update?email=$email',
+      data: {
+        'password': password,
+      },
+    );
+    return response;
+  }
 }

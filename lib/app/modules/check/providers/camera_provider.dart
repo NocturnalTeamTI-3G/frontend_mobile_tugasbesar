@@ -40,7 +40,7 @@ class CameraProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> takePicture() async {
+  Future<void> takePicture(BuildContext context) async {
     if (_cameraController != null && _isCameraInitialized) {
       try {
         _isLoading = true;
@@ -49,19 +49,30 @@ class CameraProvider extends ChangeNotifier {
         final image = await _cameraController!.takePicture();
         final imageFile = File(image.path);
 
-        // Decode gambar menggunakan pustaka `image`
+        // flip image
         final originalImage = img.decodeImage(await imageFile.readAsBytes());
-
-        // Balik gambar secara horizontal
         final fixedImage = img.flipHorizontal(originalImage!);
 
-        // Simpan hasil gambar yang sudah diperbaiki
-        final fixedImageFile = File(image.path)
-          ..writeAsBytesSync(img.encodeJpg(fixedImage));
+        // crop image
+        final screenHeight = MediaQuery.of(context).size.height;
+        final targetHeight = (screenHeight * 0.7).toInt();
+
+        final screenWidth = MediaQuery.of(context).size.width;
+        final targetWidth = (screenWidth * 0.95).toInt();
+
+        final cropX = (fixedImage.width - targetWidth) ~/ 2;
+        final cropY = (fixedImage.height - targetHeight) ~/ 2;
+
+        final croppedImage = img.copyCrop(fixedImage,
+            x: cropX, y: cropY, width: targetWidth, height: targetHeight);
+
+        final processedImageFile = File(imageFile.path)
+          ..writeAsBytesSync(img.encodeJpg(croppedImage));
 
         late HistoryModel history;
 
-        final response = await _cameraServices.ScanDisease(fixedImageFile.path);
+        final response =
+            await _cameraServices.scanDisease(processedImageFile.path);
 
         if (response.statusCode == 200) {
           final data = response.data['data'];

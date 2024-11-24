@@ -70,6 +70,8 @@ class CheckPage extends StatelessWidget {
                   child: Image.asset(
                     'assets/images/overlay.png',
                     height: MediaQuery.of(context).size.height * 0.48,
+                    width: MediaQuery.of(context).size.width * 0.725,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Expanded(
@@ -148,7 +150,7 @@ class CheckPage extends StatelessWidget {
                                   splashColor: AppColors.thirdColor,
                                   borderRadius: BorderRadius.circular(50),
                                   onTap: () {
-                                    cameraProvider.takePicture();
+                                    cameraProvider.takePicture(context);
                                   },
                                   child: Center(
                                     child: Icon(

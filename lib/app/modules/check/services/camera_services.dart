@@ -7,11 +7,11 @@ class CameraServices {
 
   CameraServices() {
     _dio.options.baseUrl = Api.baseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 10);
-    _dio.options.receiveTimeout = const Duration(seconds: 10);
+    _dio.options.connectTimeout = const Duration(seconds: 20);
+    _dio.options.receiveTimeout = const Duration(seconds: 20);
   }
 
-  Future<Response> ScanDisease(String imagePath) async {
+  Future<Response> scanDisease(String imagePath) async {
     final formData = FormData.fromMap({
       'face_img': await MultipartFile.fromFile(imagePath),
     });

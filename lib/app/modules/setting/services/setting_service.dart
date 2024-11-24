@@ -21,7 +21,8 @@ class SettingService {
       'username': name,
       'email': email,
       'gender': gender,
-       if(profileImg != null) 'profile_img': await MultipartFile.fromFile(profileImg),
+      if (profileImg != null)
+        'profile_img': await MultipartFile.fromFile(profileImg),
     });
     response = await _dio.patch(
       '/api/users/current',
@@ -29,6 +30,23 @@ class SettingService {
         'Authorization': '$token',
       }),
       data: formData,
+    );
+    return response;
+  }
+
+  Future<Response> changePassword(String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    final Response response;
+   
+    response = await _dio.patch(
+      '/api/users/current',
+      options: Options(headers: {
+        'Authorization': '$token',
+      }),
+      data: {
+        'password': password,
+      },
     );
     return response;
   }

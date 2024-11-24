@@ -26,9 +26,9 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   }
 
   void _onDragEnd(double size) {
-    if (size < 0.35) {
+    if (size < 0.45) {
       _scrollController.animateTo(
-        0.2,
+        0.4,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -50,10 +50,12 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
             child: Image.network(
               '$url${result.image}',
-              height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),
@@ -136,11 +138,11 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
           // Here, we use DraggableScrollableSheet
           DraggableScrollableSheet(
             initialChildSize: 0.52, // Start at 25% of screen height
-            minChildSize: 0.2, // Minimum height
+            minChildSize: 0.4, // Minimum height
             maxChildSize: 0.52, // Maximum height
             controller: _scrollController,
             snap: true,
-            snapSizes: [0.2, 0.52],
+            snapSizes: [0.4, 0.52],
             builder: (BuildContext context, ScrollController controller) {
               return Container(
                 decoration: const BoxDecoration(

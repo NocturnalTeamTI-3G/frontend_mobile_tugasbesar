@@ -98,6 +98,7 @@ class SettingProvider extends ChangeNotifier {
       return;
     }
 
+    if (user == null) _isFetch = false;
     if (_isFetch) return;
     _isFetch = true;
 
@@ -217,6 +218,45 @@ class SettingProvider extends ChangeNotifier {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
+    }
+  }
+
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final response = await _settingService.changePassword(newPassword);
+
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          'Berhasil',
+          'Password berhasil diubah',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        Get.snackbar(
+          'Terjadi Kesalahan',
+          'Tidak dapat mengubah password. Silahkan coba lagi.',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      Get.snackbar(
+        'Terjadi Kesalahan',
+        'Tidak dapat mengubah password. Silahkan coba lagi atau Tunggu beberapa saat.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+
+      _isLoading = false;
+      notifyListeners();
+      print(e);
     }
   }
 }

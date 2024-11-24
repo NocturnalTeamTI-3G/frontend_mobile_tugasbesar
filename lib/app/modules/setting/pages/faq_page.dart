@@ -35,13 +35,13 @@ class _FaqState extends State<FaqPage> {
               )),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: AppColors.mainColor,
-          child: const Icon(
-            Icons.chat_rounded,
-            color: Colors.white,
-          )),
+      // floatingActionButton: FloatingActionButton(
+      //     onPressed: () {},
+      //     backgroundColor: AppColors.mainColor,
+      //     child: const Icon(
+      //       Icons.chat_rounded,
+      //       color: Colors.white,
+      //     )),
       body: SingleChildScrollView(
         child: Stack(
           children: <Widget>[
@@ -97,8 +97,13 @@ class _FaqState extends State<FaqPage> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Container(
+                            height: 500,
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
                           );
                         } else {
                           return ListView.builder(

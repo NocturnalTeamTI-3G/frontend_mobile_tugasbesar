@@ -17,10 +17,10 @@ class ProductProvider extends ChangeNotifier {
 
   List<String> categories = [
     'Normal',
-    'Whitehead',
-    'Blackhead',
-    'Pustula',
-    'Papula',
+    'Acne Nodules',
+    'Rosacea',
+    'Melanoma',
+    'Dermatitis Perioral',
   ];
   
 

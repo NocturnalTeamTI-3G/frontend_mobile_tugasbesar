@@ -101,10 +101,10 @@ class _ProductPageState extends State<ProductPage> {
                     itemBuilder: (context, index) {
                       final buttonText = [
                         'Normal',
-                        'Whitehead',
-                        'Blackhead',
-                        'Pustula',
-                        'Papula'
+                        'Acne Nodules',
+                        'Rosacea',
+                        'Melenoma',
+                        'Dermatitis Perioral'
                       ][index];
                       final isSelected =
                           index == productProvider.selectedCategory;
