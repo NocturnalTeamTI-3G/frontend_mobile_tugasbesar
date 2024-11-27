@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/product/product_model.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_detail_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductListCard extends StatelessWidget {
   const ProductListCard({
@@ -17,40 +18,40 @@ class ProductListCard extends StatelessWidget {
     return MaterialButton(
       padding: const EdgeInsets.all(0),
       onPressed: () {
-        Get.to(ProductDetailPage(), arguments: product.id);
+        Get.toNamed(AppRouters.productDetail, arguments: product.id);
       },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: BorderSide(
-          color: Colors.grey.shade200,
-        ),
       ),
       child: Column(
         children: [
-          Container(
-            height: 170,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.cardColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-              child: Image.network(
-                product.imageUrl,
-                fit: BoxFit.cover,
-              ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.network(
+              product.imageUrl,
+              height: 170,
+              width: 170,
+              fit: BoxFit.fill,
+              loadingBuilder: (context, child, loadingProgress) =>
+                  loadingProgress == null
+                      ? child
+                      : Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
+                          child: Container(
+                            height: 170,
+                            width: 170,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                        ),
             ),
           ),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -68,6 +69,8 @@ class ProductListCard extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   product.nutrition.split(',')[0],
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 12,

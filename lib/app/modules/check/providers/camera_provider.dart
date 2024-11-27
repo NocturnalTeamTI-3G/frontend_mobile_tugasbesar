@@ -90,6 +90,44 @@ class CameraProvider extends ChangeNotifier {
     }
   }
 
+  // Fungsi untuk mengganti kamera antara depan dan belakang
+  Future<void> switchCamera() async {
+    final cameras = await availableCameras();
+
+    // Periksa apakah kamera saat ini adalah kamera depan
+    if (_cameraController != null) {
+      final currentLensDirection = _cameraController!.description.lensDirection;
+
+      // Tentukan kamera berikutnya berdasarkan lens direction
+      final CameraDescription? newCamera = cameras.firstWhere(
+        (camera) =>
+            camera.lensDirection != currentLensDirection, // Pilih yang berbeda
+        orElse: () =>
+            cameras.first, // Default kamera pertama jika tidak ditemukan
+      );
+
+      if (newCamera != null) {
+        try {
+          // Hentikan kamera saat ini
+          await _cameraController?.dispose();
+
+          // Inisialisasi kamera baru
+          _cameraController = CameraController(
+            newCamera,
+            ResolutionPreset.high,
+            enableAudio: false,
+          );
+
+          await _cameraController?.initialize();
+          _isCameraInitialized = true;
+          notifyListeners();
+        } catch (e) {
+          print('Error switching camera: $e');
+        }
+      }
+    }
+  }
+
   @override
   void dispose() {
     _cameraController?.dispose();

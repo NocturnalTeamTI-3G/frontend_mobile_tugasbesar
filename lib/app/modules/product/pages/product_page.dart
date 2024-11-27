@@ -24,8 +24,10 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void initState() {
     super.initState();
-    productProvider = Provider.of<ProductProvider>(context, listen: false);
-    productProvider.getAllProduct();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      productProvider = Provider.of<ProductProvider>(context, listen: false);
+      productProvider.getAllProduct();
+    });
   }
 
   @override
@@ -163,21 +165,16 @@ class _ProductPageState extends State<ProductPage> {
                   : SizedBox(
                       height: 280,
                       child: ListView.builder(
-                        padding: const EdgeInsets.only(left: 20, bottom: 15),
+                        padding: const EdgeInsets.only(left: 20, bottom: 15, right: 5),
                         scrollDirection: Axis.horizontal,
                         itemCount: productProvider.carouselProducts.length,
                         itemBuilder: (context, index) {
                           final product =
                               productProvider.carouselProducts[index];
                           return Padding(
-                            padding: const EdgeInsets.only(right: 20.0),
+                            padding: const EdgeInsets.only(right: 15),
                             child: MaterialButton(
                               padding: const EdgeInsets.all(0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                side: BorderSide(color: Colors.grey.shade300),
-                              ),
-                              elevation: 2,
                               onPressed: () {
                                 setState(() {
                                   Get.to(const ProductDetailPage(),
@@ -211,7 +208,7 @@ class _ProductPageState extends State<ProductPage> {
                                         child: Image.network(
                                           product.imageUrl,
                                           width: double.infinity,
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.fill,
                                           loadingBuilder: (context, child,
                                                   loadingProgress) =>
                                               loadingProgress == null
@@ -253,12 +250,14 @@ class _ProductPageState extends State<ProductPage> {
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 17,
-                                              fontWeight: FontWeight.w600,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                           const SizedBox(height: 5),
                                           Text(
                                             product.nutrition.split(',')[0],
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: Colors.grey[600],
                                               fontSize: 14,

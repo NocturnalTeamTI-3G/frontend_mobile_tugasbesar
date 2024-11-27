@@ -22,6 +22,8 @@ class _NewsListPageState extends State<NewsListPage>
   late String query;
   late NewsProvider _newsProvider;
 
+  bool _isInitialized = false;
+
   @override
   void initState() {
     super.initState();
@@ -32,8 +34,24 @@ class _NewsListPageState extends State<NewsListPage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _newsProvider = Provider.of<NewsProvider>(context);
-    if (query.isNotEmpty) _newsProvider.searchArticle(query);
+
+    if (!_isInitialized) {
+      _newsProvider = Provider.of<NewsProvider>(context);
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_newsProvider.listAllArticle.isEmpty) {
+          _newsProvider.getAllArticles();
+        }
+
+        _newsProvider.searchArticle(query);
+      });
+
+      _isInitialized = true;
+    } else if (query.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _newsProvider.searchArticle(query);
+      });
+    }
   }
 
   @override
@@ -44,8 +62,6 @@ class _NewsListPageState extends State<NewsListPage>
 
   @override
   Widget build(BuildContext context) {
-    final newsProvider = Provider.of<NewsProvider>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -84,8 +100,9 @@ class _NewsListPageState extends State<NewsListPage>
                 child: IconButton(
                   onPressed: () {
                     Get.toNamed(AppRouters.main);
+                    query = '';
                   },
-                  icon: Icon(Icons.home_filled, color: AppColors.mainColor),
+                  icon: Icon(Icons.home, color: AppColors.mainColor, size: 30),
                 ),
               ),
             ],
@@ -135,33 +152,33 @@ class _NewsListPageState extends State<NewsListPage>
           ),
         ),
       ),
-      body: newsProvider.listArticle.isEmpty
-          ? const Center(
-              child: Text(
-                'No article found',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                ),
+      body: _newsProvider.listArticle.isEmpty
+          ? Center(
+              child: CircularProgressIndicator(
+                color: AppColors.mainColor,
               ),
             )
-          : SingleChildScrollView(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(minHeight: 250),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: newsProvider.listArticle.length,
-                    itemBuilder: (context, index) {
-                      return CustomCard(
-                          artikel: newsProvider.listArticle[index]);
-                    },
+          : Consumer<NewsProvider>(
+              builder: (builder, newsProvider, child) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 250),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: newsProvider.listArticle.length,
+                        itemBuilder: (context, index) {
+                          return CustomCard(
+                              artikel: newsProvider.listArticle[index]);
+                        },
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
     );
   }

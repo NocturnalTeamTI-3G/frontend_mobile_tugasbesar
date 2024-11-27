@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 class ProductProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  ProductService _productService = ProductService();
+  final ProductService _productService = ProductService();
   List<ProductModel> listAllProducts = [];
   List<ProductModel> listProducts = [];
   List<ProductModel> carouselProducts = [];
@@ -22,7 +22,6 @@ class ProductProvider extends ChangeNotifier {
     'Melanoma',
     'Dermatitis Perioral',
   ];
-  
 
   void setSelectedCategory(int index) {
     _selectedCategory = index;
@@ -84,9 +83,6 @@ class ProductProvider extends ChangeNotifier {
 
   Future<ProductModel?> getProductById(int id) async {
     try {
-      _isLoading = true;
-      notifyListeners();
-
       ProductModel product;
 
       final response = await _productService.getProductById(id);
@@ -97,8 +93,6 @@ class ProductProvider extends ChangeNotifier {
         throw ('Produk tidak ditemukan');
       }
 
-      _isLoading = false;
-      notifyListeners();
       return product;
     } catch (e) {
       Get.snackbar(
@@ -107,8 +101,7 @@ class ProductProvider extends ChangeNotifier {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
-      _isLoading = false;
-      notifyListeners();
+
       return null;
     }
   }

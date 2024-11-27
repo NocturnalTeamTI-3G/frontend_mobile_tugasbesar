@@ -13,10 +13,9 @@ class HistoryProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<void> getHistory() async {
+    _isLoading = true;
+    notifyListeners();
     try {
-      _isLoading = true;
-      notifyListeners();
-
       final response = await _historyService.getHistory();
       if (response.statusCode == 200) {
         final data = response.data['data'];
@@ -58,6 +57,8 @@ class HistoryProvider extends ChangeNotifier {
         throw ('History tidak ditemukan');
       }
 
+      _isLoading = false;
+      notifyListeners();
       return history;
     } catch (e) {
       Get.snackbar(

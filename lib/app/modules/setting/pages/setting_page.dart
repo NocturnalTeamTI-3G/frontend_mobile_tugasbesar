@@ -68,22 +68,30 @@ class _SettingPageState extends State<SettingPage> {
                       return ClipOval(
                         child: (settingProvider.user?.profileImg != null)
                             ? Image.network(
-                                '${url}${settingProvider.user?.profileImg}',
-                                width: 120,
-                                height: 120,
+                                '$url${settingProvider.user?.profileImg}',
+                                width: 140,
+                                height: 140,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) =>
                                     Image.asset(
                                   'assets/images/default_profile.png',
                                   fit: BoxFit.cover,
-                                  height: 120,
-                                  width: 120,
+                                  height: 140,
+                                  width: 140,
                                 ),
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  } else {
+                                    return const CircularProgressIndicator();
+                                  }
+                                },
                               )
                             : Image.asset(
                                 'assets/images/default_profile.png',
-                                width: 120,
-                                height: 120,
+                                width: 140,
+                                height: 140,
                                 fit: BoxFit.cover,
                               ),
                       );
@@ -190,29 +198,29 @@ class _SettingPageState extends State<SettingPage> {
                             Get.to(ChangePasswordPage());
                           },
                         ),
-                        SwitchListTile(
-                          contentPadding: EdgeInsets.zero,
-                          secondary: const Icon(
-                            Icons.dark_mode_rounded,
-                            color: Colors.black,
-                            size: 26,
-                          ),
-                          title: const Text(
-                            'Theme',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          value:
-                              isDarkMode, // Variabel untuk menyimpan status switch
-                          onChanged: (bool value) {
-                            setState(() {
-                              isDarkMode = value;
-                            });
-                          },
-                        ),
+                        // SwitchListTile(
+                        //   contentPadding: EdgeInsets.zero,
+                        //   secondary: const Icon(
+                        //     Icons.dark_mode_rounded,
+                        //     color: Colors.black,
+                        //     size: 26,
+                        //   ),
+                        //   title: const Text(
+                        //     'Theme',
+                        //     style: TextStyle(
+                        //       color: Colors.black,
+                        //       fontSize: 18,
+                        //       fontWeight: FontWeight.w500,
+                        //     ),
+                        //   ),
+                        //   value:
+                        //       isDarkMode, // Variabel untuk menyimpan status switch
+                        //   onChanged: (bool value) {
+                        //     setState(() {
+                        //       isDarkMode = value;
+                        //     });
+                        //   },
+                        // ),
                       ],
                     ),
                   ),

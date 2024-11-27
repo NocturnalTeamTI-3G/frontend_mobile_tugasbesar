@@ -16,7 +16,7 @@ class CustomAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final _authProvider = Provider.of<AuthProvider>(context);
     final _settingProvider = Provider.of<SettingProvider>(context);
-    final String url = Api.baseUrl + '/api/image/user/';
+    final String url = '${Api.baseUrl}/api/image/user/';
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -56,34 +56,52 @@ class CustomAppbar extends StatelessWidget {
                   ? FutureBuilder(
                       future: _settingProvider.getUser(),
                       builder: (context, snapshot) {
-                        return GestureDetector(
-                          onTap: () {
-                            Get.to(() => const SettingPage());
-                          },
-                          child: (_settingProvider.user?.profileImg != null)
-                              ? ClipOval(
-                                  child: Image.network(
-                                    '${url}${_settingProvider.user?.profileImg}',
-                                    fit: BoxFit.cover,
-                                    height: 40,
-                                    width: 40,
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Image.asset(
-                                      'assets/images/default_profile.png',
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircleAvatar(
+                            radius: 20,
+                            backgroundImage: AssetImage(
+                              'assets/images/default_profile.png',
+                            ),
+                          );
+                        } else if (snapshot.hasData ||
+                            _settingProvider.user != null) {
+                          return GestureDetector(
+                            onTap: () {
+                              Get.to(() => const SettingPage());
+                            },
+                            child: (_settingProvider.user?.profileImg != null)
+                                ? ClipOval(
+                                    child: Image.network(
+                                      '$url${_settingProvider.user!.profileImg}',
                                       fit: BoxFit.cover,
                                       height: 40,
                                       width: 40,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Image.asset(
+                                        'assets/images/default_profile.png',
+                                        fit: BoxFit.cover,
+                                        height: 40,
+                                        width: 40,
+                                      ),
+                                      loadingBuilder: (context, child,
+                                              loadingProgress) =>
+                                          loadingProgress == null
+                                              ? child
+                                              : const CircularProgressIndicator(),
+                                    ),
+                                  )
+                                : const CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: AssetImage(
+                                      'assets/images/default_profile.png',
                                     ),
                                   ),
-                                )
-                              : const CircleAvatar(
-                                  radius: 20,
-                                  backgroundImage: AssetImage(
-                                    'assets/images/default_profile.png',
-                                  ),
-                                ),
-                        );
+                          );
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
                       },
                     )
                   : ElevatedButton(

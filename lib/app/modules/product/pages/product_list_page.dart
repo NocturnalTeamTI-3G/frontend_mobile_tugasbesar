@@ -20,6 +20,7 @@ class _ProductListPageState extends State<ProductListPage> {
   final ScrollController _scrollController = ScrollController();
   late String query;
   late ProductProvider _productProvider;
+  bool _isInitialized = false;
 
   @override
   void initState() {
@@ -30,8 +31,24 @@ class _ProductListPageState extends State<ProductListPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _productProvider = Provider.of<ProductProvider>(context);
-    if (query.isNotEmpty) _productProvider.searchProduct(query);
+
+    if (!_isInitialized) {
+      _productProvider = Provider.of<ProductProvider>(context);
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_productProvider.listAllProducts.isEmpty) {
+          _productProvider.getAllProduct();
+        }
+
+        _productProvider.searchProduct(query);
+      });
+
+      _isInitialized = true;
+    } else if (query.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _productProvider.searchProduct(query);
+      });
+    }
   }
 
   @override
@@ -80,8 +97,9 @@ class _ProductListPageState extends State<ProductListPage> {
                 child: IconButton(
                   onPressed: () {
                     Get.toNamed(AppRouters.main);
+                    query = '';
                   },
-                  icon: Icon(Icons.home_filled, color: AppColors.mainColor),
+                  icon: Icon(Icons.home, color: AppColors.mainColor, size: 30),
                 ),
               ),
             ],
@@ -131,29 +149,41 @@ class _ProductListPageState extends State<ProductListPage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 220),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 20,
-                childAspectRatio: 0.6,
+      body: _productProvider.listProducts.isEmpty
+          ? Center(
+              child: CircularProgressIndicator(
+                color: AppColors.mainColor,
               ),
-              itemCount: _productProvider.listProducts.length,
-              itemBuilder: (context, index) {
-                final product = _productProvider.listProducts[index];
-                return ProductListCard(product: product);
+            )
+          : Consumer<ProductProvider>(
+              builder: (context, productProvider, _) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 220),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 0.61,
+                        ),
+                        itemCount: productProvider.listProducts.length,
+                        itemBuilder: (context, index) {
+                          final product = productProvider.listProducts[index];
+                          return ProductListCard(product: product);
+                        },
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
-          ),
-        ),
-      ),
     );
   }
 }

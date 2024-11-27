@@ -14,21 +14,16 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  bool _isInitialized = false;
+  late HistoryProvider historyProvider;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_isInitialized) {
-      Provider.of<HistoryProvider>(context, listen: false).getHistory();
-      _isInitialized = true;
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      historyProvider = Provider.of<HistoryProvider>(context, listen: false);
+      historyProvider.getHistory();
+    });
   }
 
   @override

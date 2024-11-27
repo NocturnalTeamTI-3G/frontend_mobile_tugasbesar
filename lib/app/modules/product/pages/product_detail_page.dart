@@ -6,6 +6,7 @@ import 'package:frontend_mobile_tugasbesar/app/modules/product/providers/product
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({Key? key}) : super(key: key);
@@ -15,20 +16,19 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
-  late Future<ProductModel?> productFuture;
-  late ProductProvider productProvider;
   late int id;
 
   @override
   void initState() {
     super.initState();
     id = Get.arguments as int;
-    productProvider = Provider.of<ProductProvider>(context, listen: false);
-    productFuture = productProvider.getProductById(id);
   }
 
   @override
   Widget build(BuildContext context) {
+    final productProvider =
+        Provider.of<ProductProvider>(context, listen: false);
+
     return Scaffold(
       bottomNavigationBar: Container(
         height: 80,
@@ -45,7 +45,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ],
         ),
         alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric( horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: MaterialButton(
           onPressed: () async {},
           color: AppColors.mainColor,
@@ -142,10 +142,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ],
       ),
       body: FutureBuilder(
-          future: productFuture,
+          future: productProvider.getProductById(id),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data == null) {
+              return const Center(child: Text('Product not found'));
             } else {
               final product = snapshot.data!;
 
@@ -154,29 +158,33 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   children: <Widget>[
                     Stack(
                       children: [
-                        Container(
+                        Image.network(
+                          product.imageUrl,
                           width: double.infinity,
-                          height: 350,
-                          // decoration: BoxDecoration(
-                          //   gradient: LinearGradient(
-                          //     colors: [
-                          //       AppColors.secondaryColor,
-                          //       Colors.white,
-                          //     ],
-                          //     begin: Alignment.topLeft,
-                          //     end: Alignment.bottomRight,
-                          //   ),
-                          // ),
-                          child: Image.network(
-                            product.imageUrl,
-                            fit: BoxFit.cover,
-                          ),
+                          height: 365,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) =>
+                              loadingProgress == null
+                                  ? child
+                                  : Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        height: 365,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                        ),
+                                      ),
+                                    ),
                         ),
                       ],
                     ),
                     Container(
                       width: double.infinity,
-                      margin: const EdgeInsets.only(top: 340),
+                      margin: const EdgeInsets.only(top: 345),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
@@ -188,7 +196,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 color: Colors.grey.shade200,
                                 blurRadius: 5,
                                 spreadRadius: 1,
-                                offset: Offset(0, -2)),
+                                offset: const Offset(0, -2)),
                           ]),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
