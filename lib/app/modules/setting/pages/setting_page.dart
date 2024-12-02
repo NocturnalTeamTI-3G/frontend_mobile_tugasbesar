@@ -62,54 +62,63 @@ class _SettingPageState extends State<SettingPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FutureBuilder(
-                    future: settingProvider.getUser(),
-                    builder: (context, snapshot) {
+                  Consumer<SettingProvider>(
+                    builder: (context, settingProvider, child) {
+                      final profileImg = settingProvider.user?.profileImg;
+
+                      if (profileImg == 'null') {
+                        return ClipOval(
+                          child: Image.asset(
+                            'assets/images/default_profile.png',
+                            width: 140,
+                            height: 140,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      }
+
+                      final imageUrl = '$url$profileImg';
                       return ClipOval(
-                        child: (settingProvider.user?.profileImg != null)
-                            ? Image.network(
-                                '$url${settingProvider.user?.profileImg}',
-                                width: 140,
-                                height: 140,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Image.asset(
-                                  'assets/images/default_profile.png',
-                                  fit: BoxFit.cover,
-                                  height: 140,
-                                  width: 140,
-                                ),
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  } else {
-                                    return const CircularProgressIndicator();
-                                  }
-                                },
-                              )
-                            : Image.asset(
-                                'assets/images/default_profile.png',
-                                width: 140,
-                                height: 140,
-                                fit: BoxFit.cover,
-                              ),
+                        child: Image.network(
+                          imageUrl,
+                          width: 140,
+                          height: 140,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset(
+                            'assets/images/default_profile.png',
+                            width: 140,
+                            height: 140,
+                            fit: BoxFit.cover,
+                          ),
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            } else {
+                              return const SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
+                        ),
                       );
                     },
                   ),
                   const SizedBox(height: 20),
-                  FutureBuilder(
-                      future: settingProvider.getUser(),
-                      builder: (context, snapshot) {
-                        return Text(
-                          '''Hello, ${settingProvider.user?.username ?? 'User'}''',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        );
-                      })
+                  Consumer<SettingProvider>(
+                    builder: (context, settingProvider, child) {
+                      return Text(
+                        '''Hello, ${settingProvider.user?.username ?? 'User'}''',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

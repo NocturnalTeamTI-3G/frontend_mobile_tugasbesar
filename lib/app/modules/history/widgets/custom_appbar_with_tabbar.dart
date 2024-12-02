@@ -18,7 +18,6 @@ class CustomAppbarWithTabbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _authProvider = Provider.of<AuthProvider>(context);
-    final _settingProvider = Provider.of<SettingProvider>(context);
     final String url = '${Api.baseUrl}/api/image/user/';
 
     return Container(
@@ -67,17 +66,29 @@ class CustomAppbarWithTabbar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: _authProvider.isLoggedIn
-                ? FutureBuilder(
-                    future: _settingProvider.getUser(),
-                    builder: (context, snapshot) {
+                ? Consumer<SettingProvider>(
+                    builder: (context, settingProvider, child) {
+                      if (settingProvider.user == null) {
+                        return const CircleAvatar(
+                          radius: 20,
+                          backgroundImage:
+                              AssetImage('assets/images/default_profile.png'),
+                        );
+                      }
+
                       return GestureDetector(
                         onTap: () {
                           Get.to(() => const SettingPage());
                         },
-                        child: (_settingProvider.user?.profileImg != null)
-                            ? ClipOval(
+                        child: (settingProvider.user?.profileImg == 'null')
+                            ? const CircleAvatar(
+                                radius: 20,
+                                backgroundImage: AssetImage(
+                                    'assets/images/default_profile.png'),
+                              )
+                            : ClipOval(
                                 child: Image.network(
-                                  '$url${_settingProvider.user?.profileImg}',
+                                  '$url${settingProvider.user!.profileImg}',
                                   fit: BoxFit.cover,
                                   height: 40,
                                   width: 40,
@@ -93,12 +104,6 @@ class CustomAppbarWithTabbar extends StatelessWidget {
                                       loadingProgress == null
                                           ? child
                                           : const CircularProgressIndicator(),
-                                ),
-                              )
-                            : const CircleAvatar(
-                                radius: 20,
-                                backgroundImage: AssetImage(
-                                  'assets/images/default_profile.png',
                                 ),
                               ),
                       );

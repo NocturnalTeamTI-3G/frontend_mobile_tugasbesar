@@ -110,20 +110,27 @@ class _AccountPageState extends State<AccountPage> {
                           builder: (context, settingProvider, child) {
                             return ClipOval(
                               child: settingProvider.image == null
-                                  ? Image.network(
-                                      '${url}${settingProvider.user?.profileImg}',
-                                      width: 120,
-                                      height: 120,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              Image.asset(
-                                        'assets/images/default_profile.png',
-                                        fit: BoxFit.cover,
-                                        height: 120,
-                                        width: 120,
-                                      ),
-                                    )
+                                  ? settingProvider.user?.profileImg == 'null'
+                                      ? Image.asset(
+                                          'assets/images/default_profile.png',
+                                          fit: BoxFit.cover,
+                                          height: 120,
+                                          width: 120,
+                                        )
+                                      : Image.network(
+                                          '${url}${settingProvider.user?.profileImg}',
+                                          width: 120,
+                                          height: 120,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  Image.asset(
+                                            'assets/images/default_profile.png',
+                                            fit: BoxFit.cover,
+                                            height: 120,
+                                            width: 120,
+                                          ),
+                                        )
                                   : Image.file(
                                       settingProvider.image!,
                                       width: 120,

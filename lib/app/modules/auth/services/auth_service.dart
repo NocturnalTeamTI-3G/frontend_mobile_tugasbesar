@@ -27,7 +27,7 @@ class AuthService {
       'password': password,
       'username': name,
       'role_id': 1,
-      'profile_img': null,
+      'profile_img': 'null',
       'gender': gender,
     });
     return response;
