@@ -7,8 +7,8 @@ class SettingService {
 
   SettingService() {
     _dio.options.baseUrl = Api.baseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 10);
-    _dio.options.receiveTimeout = const Duration(seconds: 10);
+    _dio.options.connectTimeout = const Duration(seconds: 60);
+    _dio.options.receiveTimeout = const Duration(seconds: 60);
   }
 
   Future<Response> updateProfile(

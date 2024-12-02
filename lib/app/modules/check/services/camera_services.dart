@@ -7,8 +7,8 @@ class CameraServices {
 
   CameraServices() {
     _dio.options.baseUrl = Api.baseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 20);
-    _dio.options.receiveTimeout = const Duration(seconds: 20);
+    _dio.options.connectTimeout = const Duration(seconds: 60);
+    _dio.options.receiveTimeout = const Duration(seconds: 60);
   }
 
   Future<Response> scanDisease(String imagePath) async {

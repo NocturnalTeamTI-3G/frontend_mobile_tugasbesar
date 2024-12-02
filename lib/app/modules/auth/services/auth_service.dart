@@ -7,8 +7,8 @@ class AuthService {
 
   AuthService() {
     _dio.options.baseUrl = Api.baseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 10);
-    _dio.options.receiveTimeout = const Duration(seconds: 10);
+    _dio.options.connectTimeout = const Duration(seconds: 60);
+    _dio.options.receiveTimeout = const Duration(seconds: 60);
   }
 
   Future<Response> login(String email, String password) async {
@@ -27,7 +27,7 @@ class AuthService {
       'password': password,
       'username': name,
       'role_id': 1,
-      'profile_img': 'assets/images/profile.jpg',
+      'profile_img': null,
       'gender': gender,
     });
     return response;
