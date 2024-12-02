@@ -77,9 +77,14 @@ class CameraProvider extends ChangeNotifier {
         if (response.statusCode == 200) {
           final data = response.data['data'];
           history = HistoryModel.fromJson(data);
+          Get.toNamed(AppRouters.cameraResult, arguments: history);
+        } else {
+          Get.snackbar(
+            'Error',
+            'Failed to scan disease',
+           );
         }
 
-        Get.toNamed(AppRouters.cameraResult, arguments: history);
         _isLoading = false;
         notifyListeners();
       } catch (e) {

@@ -102,7 +102,7 @@ class _ProductPageState extends State<ProductPage> {
                     itemCount: 5, // Number of buttons
                     itemBuilder: (context, index) {
                       final buttonText = [
-                        'Normal',
+                        'Sehat',
                         'Acne Nodules',
                         'Rosacea',
                         'Melenoma',

@@ -16,7 +16,7 @@ class ProductProvider extends ChangeNotifier {
   int get selectedCategory => _selectedCategory;
 
   List<String> categories = [
-    'Normal',
+    'Sehat',
     'Acne Nodules',
     'Rosacea',
     'Melanoma',

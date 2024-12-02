@@ -23,7 +23,6 @@ class SettingProvider extends ChangeNotifier {
   UserModel? user;
   List<FaqModel>? faqs;
   bool _isLoading = false;
-  bool _isFetch = false;
 
   bool get isLoading => _isLoading;
   File? get image => _image;
@@ -54,7 +53,6 @@ class SettingProvider extends ChangeNotifier {
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.remove('token');
                   await prefs.setBool('isLoggedIn', false);
-                  _isFetch = false;
 
                   Get.snackbar('Berhasil', 'Anda berhasil keluar dari akun',
                       backgroundColor: Colors.green, colorText: Colors.white);
@@ -98,10 +96,6 @@ class SettingProvider extends ChangeNotifier {
       return;
     }
 
-    if (user == null) _isFetch = false;
-    if (_isFetch) return;
-    _isFetch = true;
-
     try {
       final response = await _userService.getUser();
 
@@ -127,6 +121,13 @@ class SettingProvider extends ChangeNotifier {
 
   Future<void> getImageFromGallery() async {
     if (await Permission.storage.request().isGranted) {
+      final XFile? image = await _picker.pickImage(
+          source: ImageSource.gallery, maxHeight: 500, imageQuality: 50);
+      if (image != null) {
+        _image = File(image.path);
+        notifyListeners();
+      }
+    } else if (await Permission.manageExternalStorage.request().isGranted) {
       final XFile? image = await _picker.pickImage(
           source: ImageSource.gallery, maxHeight: 500, imageQuality: 50);
       if (image != null) {
