@@ -7,7 +7,6 @@ import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:frontend_mobile_tugasbesar/app/widgets/custom_appbar.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -21,6 +20,15 @@ class MainHomePage extends StatefulWidget {
 
 // ignore: camel_case_types
 class _mainHomePageState extends State<MainHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final homeProvider = Provider.of<HomeProvider>(context, listen: false);
+      homeProvider.setHistory();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -111,107 +119,186 @@ class _mainHomePageState extends State<MainHomePage> {
               child: authProvider.isLoggedIn
                   ? Consumer<HomeProvider>(
                       builder: (context, homeProvider, child) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          if (homeProvider.history == null) {
-                            homeProvider.setHistory();
-                          }
-                        });
-
-                        if (homeProvider.history == null) {
+                        if (homeProvider.isLoading) {
                           return const Center(
-                              child: CircularProgressIndicator());
-                        }
-
-                        final history = homeProvider.history!;
-                        final DateTime dateTime =
-                            DateTime.parse(history['created_at']);
-                        String formattedDate =
-                            DateFormat('d MMMM yyyy').format(dateTime);
-
-                        return Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.network(
-                                '$urlImage${history['face_img']}',
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return Shimmer.fromColors(
-                                    baseColor: Colors.grey.shade300,
-                                    highlightColor: Colors.grey.shade100,
-                                    child: Container(
-                                      height: 100,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Icon(Icons.error,
-                                      size: 100, color: Colors.red);
-                                },
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (homeProvider.history == null ||
+                            homeProvider.history!.isEmpty) {
+                          return Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.asset(
+                                  'assets/images/icon/face-id.png',
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 25),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    history['disease'],
-                                    style: const TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    formattedDate,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 15),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.toNamed(AppRouters.historyDetail,
-                                          arguments: history['id']);
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.mainColor,
-                                        borderRadius: BorderRadius.circular(12),
+                              const SizedBox(width: 25),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      "Check your facial skin condition",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      child: const Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Selengkapnya",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.bold,
+                                    ),
+                                    const SizedBox(height: 15),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.mainColor,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Take Picture - ",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                            SizedBox(width: 2),
+                                            Icon(
+                                              Icons.camera_alt_rounded,
+                                              color: Colors.white,
+                                              size: 20,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        } else {
+                          final history = homeProvider.history!;
+                          if (history['created_at'] == null ||
+                              history['disease'] == null) {
+                            return const Center(
+                              child: Text(
+                                'Data tidak ditemukan',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            );
+                          }
+
+                          final DateTime dateTime =
+                              DateTime.parse(history['created_at']);
+                          String formattedDate =
+                              DateFormat('d MMMM yyyy').format(dateTime);
+
+                          return Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.network(
+                                  '$urlImage${history['face_img']}',
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/icon/face-id.png',
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 25),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      history['disease'] ?? 'Tidak diketahui',
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  )
-                                ],
+                                    Text(
+                                      formattedDate,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(AppRouters.historyDetail,
+                                            arguments: history['id']);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.mainColor,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Selengkapnya",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        );
+                            ],
+                          );
+                        }
                       },
                     )
                   : Row(
@@ -426,9 +513,9 @@ class _mainHomePageState extends State<MainHomePage> {
                         height: 260,
                         child: Consumer<HomeProvider>(
                           builder: (context, homeProvider, child) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) async {
                               if (homeProvider.news == null) {
-                                homeProvider.setNews();
+                                await homeProvider.setNews();
                               }
                             });
 
@@ -438,16 +525,6 @@ class _mainHomePageState extends State<MainHomePage> {
                               );
                             }
 
-                            if (homeProvider.news == null ||
-                                homeProvider.news!.isEmpty) {
-                              return const Center(
-                                child: Text(
-                                  "No news available",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey),
-                                ),
-                              );
-                            }
                             return ListView.builder(
                               itemCount: homeProvider.news!.length,
                               scrollDirection: Axis.horizontal,
@@ -578,6 +655,22 @@ class _mainHomePageState extends State<MainHomePage> {
                                                           width: 30,
                                                           height: 30,
                                                           fit: BoxFit.cover,
+                                                          errorBuilder: (context,
+                                                                  error,
+                                                                  stackTrace) =>
+                                                              Image.asset(
+                                                            'assets/images/default_profile.png',
+                                                            fit: BoxFit.cover,
+                                                            height: 30,
+                                                            width: 30,
+                                                          ),
+                                                          loadingBuilder: (context,
+                                                                  child,
+                                                                  loadingProgress) =>
+                                                              loadingProgress ==
+                                                                      null
+                                                                  ? child
+                                                                  : const CircularProgressIndicator(),
                                                         ),
                                                       ),
                                                       const SizedBox(width: 8),

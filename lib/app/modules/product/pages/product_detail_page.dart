@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/app/models/product/product_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/providers/product_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';

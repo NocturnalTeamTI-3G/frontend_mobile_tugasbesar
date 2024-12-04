@@ -116,10 +116,25 @@ class CardCarousel extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              CircleAvatar(
-                                radius: 15,
-                                backgroundImage:
-                                    NetworkImage('$url${artikel.authorImg}'),
+                              ClipOval(
+                                child: Image.network(
+                                  '$url${artikel.authorImg}',
+                                  height: 40,
+                                  width: 40,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Image.asset(
+                                    'assets/images/default_profile.png',
+                                    fit: BoxFit.cover,
+                                    height: 40,
+                                    width: 40,
+                                  ),
+                                  loadingBuilder: (context, child,
+                                          loadingProgress) =>
+                                      loadingProgress == null
+                                          ? child
+                                          : const CircularProgressIndicator(),
+                                ),
                               ),
                               const SizedBox(width: 12),
                               Text(

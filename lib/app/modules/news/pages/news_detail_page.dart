@@ -220,10 +220,26 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            '$url${artikel.authorImg}'),
-                                        radius: 16,
+                                      ClipOval(
+                                        child: Image.network(
+                                          '$url${artikel.authorImg}',
+                                          height: 32,
+                                          width: 32,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  Image.asset(
+                                            'assets/images/default_profile.png',
+                                            fit: BoxFit.cover,
+                                            height: 32,
+                                            width: 32,
+                                          ),
+                                          loadingBuilder: (context, child,
+                                                  loadingProgress) =>
+                                              loadingProgress == null
+                                                  ? child
+                                                  : const CircularProgressIndicator(),
+                                        ),
                                       ),
                                       const SizedBox(width: 10),
                                       SizedBox(
@@ -454,11 +470,29 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                                     ),
                                                     Row(
                                                       children: [
-                                                        CircleAvatar(
-                                                          radius: 15,
-                                                          backgroundImage:
-                                                              NetworkImage(
-                                                                  '$url${article.authorImg}'),
+                                                        ClipOval(
+                                                          child: Image.network(
+                                                            '$url${article.authorImg}',
+                                                            height: 30,
+                                                            width: 30,
+                                                            fit: BoxFit.cover,
+                                                            errorBuilder: (context,
+                                                                    error,
+                                                                    stackTrace) =>
+                                                                Image.asset(
+                                                              'assets/images/default_profile.png',
+                                                              fit: BoxFit.cover,
+                                                              height: 30,
+                                                              width: 30,
+                                                            ),
+                                                            loadingBuilder: (context,
+                                                                    child,
+                                                                    loadingProgress) =>
+                                                                loadingProgress ==
+                                                                        null
+                                                                    ? child
+                                                                    : const CircularProgressIndicator(),
+                                                          ),
                                                         ),
                                                         const SizedBox(
                                                             width: 8),

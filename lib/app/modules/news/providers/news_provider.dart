@@ -14,6 +14,12 @@ class NewsProvider extends ChangeNotifier {
   List<ArtikelModel> newestArticle = [];
   List<ArtikelModel> recommendedArticle = [];
 
+  NewsProvider() {
+    if (listAllArticle.isEmpty) {
+      getAllArticles();
+    }
+  }
+
   final ValueNotifier<int> _currentPage = ValueNotifier<int>(0);
   ValueNotifier<int> get currentPage => _currentPage;
 

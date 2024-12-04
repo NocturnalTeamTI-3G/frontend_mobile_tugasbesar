@@ -95,10 +95,25 @@ class CustomCard extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            CircleAvatar(
-                              radius: 13,
-                              backgroundImage:
-                                  NetworkImage('$url${artikel.authorImg}'),
+                            ClipOval(
+                              child: Image.network(
+                                '$url${artikel.authorImg}',
+                                height: 26,
+                                width: 26,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Image.asset(
+                                  'assets/images/default_profile.png',
+                                  fit: BoxFit.cover,
+                                  height: 26,
+                                  width: 26,
+                                ),
+                                loadingBuilder: (context, child,
+                                        loadingProgress) =>
+                                    loadingProgress == null
+                                        ? child
+                                        : const CircularProgressIndicator(),
+                              ),
                             ),
                             const SizedBox(width: 5),
                             Text(

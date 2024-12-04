@@ -150,6 +150,30 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
                             fit: BoxFit.cover,
                             width: 225,
                             height: 400,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/icon/face-id.png',
+                                width: 225,
+                                height: 225,
+                                fit: BoxFit.cover,
+                              );
+                            },
+                            loadingBuilder: (context, child, loadingProgress) =>
+                                loadingProgress == null
+                                    ? child
+                                    : Shimmer.fromColors(
+                                        baseColor: Colors.grey.shade300,
+                                        highlightColor: Colors.grey.shade100,
+                                        child: Container(
+                                          height: 225,
+                                          width: 400,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(14),
+                                          ),
+                                        ),
+                                      ),
                           ),
                         ),
                       ),
@@ -252,22 +276,29 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
                                           height: 150,
                                           width: 150,
                                           fit: BoxFit.cover,
-                                          loadingBuilder:
-                                              (context, child, loadingProgress) {
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
                                             return loadingProgress == null
                                                 ? child
                                                 : Shimmer.fromColors(
-                                                    baseColor: Colors.grey.shade300,
+                                                    baseColor:
+                                                        Colors.grey.shade300,
                                                     highlightColor:
                                                         Colors.grey.shade100,
                                                     child: Container(
                                                       height: 150,
                                                       width: 150,
-                                                      decoration: const BoxDecoration(
+                                                      decoration:
+                                                          const BoxDecoration(
                                                         color: Colors.white,
-                                                        borderRadius: BorderRadius.only(
-                                                          topLeft: Radius.circular(10),
-                                                          topRight: Radius.circular(10),
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  10),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  10),
                                                         ),
                                                       ),
                                                     ),

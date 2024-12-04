@@ -17,7 +17,7 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String url = Api.baseUrl + '/api/image/history_scan/';
+    final String url = '${Api.baseUrl}/api/image/history_scan/';
     final DateTime dateTime = DateTime.parse(data.date);
     final String formatedDate = DateFormat('d MMMM yyyy').format(dateTime);
 
@@ -58,6 +58,14 @@ class HistoryCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       width: 60,
                       height: 60,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/icon/face-id.png',
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        );
+                      },
                       loadingBuilder: (context, child, loadingProgress) =>
                           loadingProgress == null
                               ? child
