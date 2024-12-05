@@ -59,7 +59,7 @@ class ProductProvider extends ChangeNotifier {
             data.map((json) => ProductModel.fromJson(json)));
         listProducts = listAllProducts;
         carouselProducts = listAllProducts
-            .where((element) => element.category == 'Normal')
+            .where((element) => element.category == 'Sehat')
             .take(3)
             .toList();
         newestProducts = listAllProducts.take(5).toList();

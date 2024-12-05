@@ -101,8 +101,8 @@ class _IntroPageState extends State<IntroPage> {
                             'Login',
                             style: TextStyle(
                               color: AppColors.mainColor,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         )

@@ -190,19 +190,6 @@ class _mainHomePageState extends State<MainHomePage> {
                           );
                         } else {
                           final history = homeProvider.history!;
-                          if (history['created_at'] == null ||
-                              history['disease'] == null) {
-                            return const Center(
-                              child: Text(
-                                'Data tidak ditemukan',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            );
-                          }
-
                           final DateTime dateTime =
                               DateTime.parse(history['created_at']);
                           String formattedDate =
@@ -513,7 +500,8 @@ class _mainHomePageState extends State<MainHomePage> {
                         height: 260,
                         child: Consumer<HomeProvider>(
                           builder: (context, homeProvider, child) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) async {
+                            WidgetsBinding.instance
+                                .addPostFrameCallback((_) async {
                               if (homeProvider.news == null) {
                                 await homeProvider.setNews();
                               }

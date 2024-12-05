@@ -55,10 +55,15 @@ class CustomAppbar extends StatelessWidget {
                   ? Consumer<SettingProvider>(
                       builder: (context, settingProvider, child) {
                         if (settingProvider.user == null) {
-                          return const CircleAvatar(
-                            radius: 20,
-                            backgroundImage:
-                                AssetImage('assets/images/default_profile.png'),
+                          return GestureDetector(
+                            onTap: () {
+                              Get.to(() => const SettingPage());
+                            },
+                            child: const CircleAvatar(
+                              radius: 20,
+                              backgroundImage:
+                                  AssetImage('assets/images/default_profile.png'),
+                            ),
                           );
                         }
 

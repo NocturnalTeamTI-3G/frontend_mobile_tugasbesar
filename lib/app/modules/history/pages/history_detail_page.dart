@@ -5,7 +5,6 @@ import 'package:frontend_mobile_tugasbesar/app/models/history/history_model.dart
 import 'package:frontend_mobile_tugasbesar/app/modules/history/providers/history_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
-import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -113,75 +112,45 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
             return SingleChildScrollView(
               child: Stack(
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.82,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.62,
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.mainColor,
-                          AppColors.secondaryColor,
-                          AppColors.mainColor,
-                          AppColors.secondaryColor,
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: Center(
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(25),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.15),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.network(
-                            '$url${history.image}',
-                            fit: BoxFit.cover,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.network(
+                        '$url${history.image}',
+                        fit: BoxFit.cover,
+                        width: 225,
+                        height: 400,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/icon/face-id.png',
                             width: 225,
-                            height: 400,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                'assets/images/icon/face-id.png',
-                                width: 225,
-                                height: 225,
-                                fit: BoxFit.cover,
-                              );
-                            },
-                            loadingBuilder: (context, child, loadingProgress) =>
-                                loadingProgress == null
-                                    ? child
-                                    : Shimmer.fromColors(
-                                        baseColor: Colors.grey.shade300,
-                                        highlightColor: Colors.grey.shade100,
-                                        child: Container(
-                                          height: 225,
-                                          width: 400,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(14),
-                                          ),
-                                        ),
+                            height: 225,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                        loadingBuilder: (context, child, loadingProgress) =>
+                            loadingProgress == null
+                                ? child
+                                : Shimmer.fromColors(
+                                    baseColor: Colors.grey.shade300,
+                                    highlightColor: Colors.grey.shade100,
+                                    child: Container(
+                                      height: 225,
+                                      width: 400,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(14),
                                       ),
-                          ),
-                        ),
+                                    ),
+                                  ),
                       ),
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.75),
+                        top: MediaQuery.of(context).size.height * 0.55),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 25),
                     decoration: const BoxDecoration(
