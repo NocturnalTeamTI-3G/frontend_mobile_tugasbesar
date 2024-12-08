@@ -21,13 +21,13 @@ class AuthService {
   }
 
   Future<Response> register(
-      String email, String password, String name, String gender) async {
+      String email, String password, String name, String gender, String image) async {
     final response = await _dio.post('/api/users', data: {
       'email': email,
       'password': password,
       'username': name,
       'role_id': 1,
-      'profile_img': 'null',
+      'profile_img': image,
       'gender': gender,
     });
     return response;

@@ -385,7 +385,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _authProvider.signUpWithGoogle();
+                            },
                             color: Colors.white,
                             elevation: 2,
                             minWidth: double.infinity,

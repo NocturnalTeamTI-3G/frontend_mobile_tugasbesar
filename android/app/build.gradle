@@ -31,6 +31,15 @@ android {
         multiDexEnabled true
     }
 
+    signingConfigs {
+        debug {
+            storeFile file('test.jks')
+            storePassword '123456'
+            keyAlias 'test'
+            keyPassword '123456'
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -40,6 +49,7 @@ android {
     }
 
     dependencies {
+        implementation 'com.google.android.gms:play-services-auth:20.5.0'
         implementation "androidx.core:core:1.7.0"
     }
 }

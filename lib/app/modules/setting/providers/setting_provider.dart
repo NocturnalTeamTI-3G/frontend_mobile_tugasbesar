@@ -8,6 +8,7 @@ import 'package:frontend_mobile_tugasbesar/app/modules/home/services/user_servic
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/services/setting_service.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,6 +51,7 @@ class SettingProvider extends ChangeNotifier {
                 final response = await _authService.logout();
 
                 if (response.statusCode == 200) {
+                  GoogleSignIn().signOut();
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.remove('token');
                   await prefs.setBool('isLoggedIn', false);
