@@ -40,7 +40,7 @@ class HomeProvider extends ChangeNotifier {
           "face_img": data['face_img'],
           "created_at": data['created_at']
         };
-      } else if (response.statusCode == 400) {
+      } else if (response.statusCode != 200) {
         _history = null;
         print("User tidak memiliki history.");
       } else {
@@ -52,6 +52,7 @@ class HomeProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } catch (e) {
+      _history = null;
       _isLoading = false;
       notifyListeners();
       print('Error setHistory: $e');

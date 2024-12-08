@@ -362,8 +362,10 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                                   ),
                                 ),
                                 IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.arrow_forward_ios_rounded),
+                                  onPressed: () {
+                                    Get.toNamed(AppRouters.newsList);
+                                  },
+                                  icon: const Icon(Icons.arrow_forward_ios_rounded),
                                 )
                               ],
                             ),

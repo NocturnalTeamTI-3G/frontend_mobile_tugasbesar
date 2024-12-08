@@ -72,28 +72,28 @@ class _HistoryDetailPageState extends State<HistoryDetailPage> {
           ),
         ),
         leadingWidth: 60,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              onTap: () {},
-              child: ClipOval(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    color: Colors.black.withOpacity(0.3),
-                    child: const Icon(
-                      Icons.more_horiz_rounded,
-                      color: Colors.white,
-                      size: 25,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 20),
+        //     child: GestureDetector(
+        //       onTap: () {},
+        //       child: ClipOval(
+        //         child: BackdropFilter(
+        //           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        //           child: Container(
+        //             padding: const EdgeInsets.all(8),
+        //             color: Colors.black.withOpacity(0.3),
+        //             child: const Icon(
+        //               Icons.more_horiz_rounded,
+        //               color: Colors.white,
+        //               size: 25,
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
       body: FutureBuilder<HistoryModel?>(
         future: _historyFuture,

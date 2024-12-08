@@ -26,6 +26,7 @@ class _mainHomePageState extends State<MainHomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final homeProvider = Provider.of<HomeProvider>(context, listen: false);
       homeProvider.setHistory();
+      Provider.of<SettingProvider>(context, listen: false).getUser();
     });
   }
 
@@ -34,6 +35,38 @@ class _mainHomePageState extends State<MainHomePage> {
     final authProvider = Provider.of<AuthProvider>(context);
     final String url = '${Api.baseUrl}/api/image/user/';
     final String urlImage = '${Api.baseUrl}/api/image/history_scan/';
+    
+    void showLoginDialog() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: const Text(
+              'Diperlukan Login Untuk Mengakses Fitur Ini',
+              style: TextStyle(fontSize: 16),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Kembali', style: TextStyle(fontSize: 16)),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.toNamed(AppRouters.login);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.mainColor,
+                ),
+                child: const Text('Login',
+                    style: TextStyle(fontSize: 16, color: Colors.white)),
+              ),
+            ],
+          );
+        },
+      );
+    }
 
     return Scaffold(
       // backgroundColor: Colors.grey[100],
@@ -160,7 +193,9 @@ class _mainHomePageState extends State<MainHomePage> {
                                     ),
                                     const SizedBox(height: 15),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () async {
+                                        await Get.toNamed(AppRouters.camera);
+                                      },
                                       child: Container(
                                         padding: const EdgeInsets.all(12),
                                         decoration: BoxDecoration(
@@ -322,7 +357,9 @@ class _mainHomePageState extends State<MainHomePage> {
                               ),
                               const SizedBox(height: 15),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  showLoginDialog();
+                                },
                                 child: Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(

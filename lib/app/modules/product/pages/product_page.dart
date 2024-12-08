@@ -104,7 +104,7 @@ class _ProductPageState extends State<ProductPage> {
                       final buttonText = [
                         'Acne Nodules',
                         'Rosacea',
-                        'Melenoma',
+                        'Melanoma',
                         'Dermatitis Perioral'
                       ][index];
                       final isSelected =
