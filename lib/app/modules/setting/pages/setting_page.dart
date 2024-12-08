@@ -7,6 +7,7 @@ import 'package:frontend_mobile_tugasbesar/app/modules/setting/providers/setting
 import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class SettingPage extends StatefulWidget {
@@ -64,7 +65,7 @@ class _SettingPageState extends State<SettingPage> {
                 children: [
                   Consumer<SettingProvider>(
                     builder: (context, settingProvider, child) {
-                      final profileImg = settingProvider.user?.profileImg;
+                      final String profileImg = settingProvider.user?.profileImg as String;
 
                       if (profileImg == 'null') {
                         return ClipOval(
@@ -80,7 +81,9 @@ class _SettingPageState extends State<SettingPage> {
                       final imageUrl = '$url$profileImg';
                       return ClipOval(
                         child: Image.network(
-                          imageUrl,
+                          profileImg.startsWith('http')
+                              ? profileImg
+                              : imageUrl,
                           width: 140,
                           height: 140,
                           fit: BoxFit.cover,
@@ -109,12 +112,18 @@ class _SettingPageState extends State<SettingPage> {
                   const SizedBox(height: 20),
                   Consumer<SettingProvider>(
                     builder: (context, settingProvider, child) {
-                      return Text(
-                        '''Hello, ${settingProvider.user?.username ?? 'User'}''',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500,
+                      return SizedBox(
+                        width: 300,
+                        child: Text(
+                          '''Hello, ${settingProvider.user?.username ?? 'User'}''',
+                          overflow: TextOverflow.clip,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       );
                     },

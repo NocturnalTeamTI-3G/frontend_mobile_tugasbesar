@@ -41,7 +41,7 @@ class _AccountPageState extends State<AccountPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ListTile(
-                  leading: Icon(Icons.photo_library),
+                  leading: const Icon(Icons.photo_library),
                   title: const Text('Gallery'),
                   onTap: () async {
                     Navigator.pop(context);
@@ -49,7 +49,7 @@ class _AccountPageState extends State<AccountPage> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.camera_alt),
+                  leading: const Icon(Icons.camera_alt),
                   title: const Text('Camera'),
                   onTap: () async {
                     Navigator.pop(context);
@@ -118,7 +118,10 @@ class _AccountPageState extends State<AccountPage> {
                                           width: 120,
                                         )
                                       : Image.network(
-                                          '${url}${settingProvider.user?.profileImg}',
+                                          settingProvider.user!.profileImg
+                                                  .startsWith('http')
+                                              ? settingProvider.user!.profileImg
+                                              : '$url${settingProvider.user?.profileImg}',
                                           width: 120,
                                           height: 120,
                                           fit: BoxFit.cover,

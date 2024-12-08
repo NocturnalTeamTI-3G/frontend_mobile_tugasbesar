@@ -93,7 +93,10 @@ class CustomAppbarWithTabbar extends StatelessWidget {
                               )
                             : ClipOval(
                                 child: Image.network(
-                                  '$url${settingProvider.user!.profileImg}',
+                                  settingProvider.user!.profileImg
+                                            .startsWith('http')
+                                        ? settingProvider.user!.profileImg
+                                        : '$url${settingProvider.user!.profileImg}',
                                   fit: BoxFit.cover,
                                   height: 40,
                                   width: 40,
