@@ -64,12 +64,19 @@ class _mainHomePageState extends State<MainHomePage> {
                       ? Consumer<SettingProvider>(
                           builder: (context, settingProvider, child) {
                             final user = settingProvider.user;
-                            return Text(
-                              user != null ? '${user.username},' : 'SkinUser,',
-                              style: const TextStyle(
-                                fontSize: 38,
-                                fontWeight: FontWeight.w500,
-                                height: 1.4,
+                            return SizedBox(
+                              width: 200,
+                              child: Text(
+                                user != null
+                                    ? '${user.username},'
+                                    : 'SkinUser,',
+                                overflow: TextOverflow.clip,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                  fontSize: 38,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.4,
+                                ),
                               ),
                             );
                           },
