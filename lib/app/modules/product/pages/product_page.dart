@@ -73,7 +73,7 @@ class _ProductPageState extends State<ProductPage> {
                     child: const Row(
                       children: [
                         Expanded(
-                          child: Text('Search for news',
+                          child: Text('Search for products',
                               style: TextStyle(
                                   color: Colors.black54,
                                   fontSize: 16,
@@ -99,10 +99,9 @@ class _ProductPageState extends State<ProductPage> {
                         left: 20, top: 20, bottom: 20, right: 12),
                     scrollDirection: Axis.horizontal,
                     controller: _scrollController,
-                    itemCount: 5, // Number of buttons
+                    itemCount: 4, // Number of buttons
                     itemBuilder: (context, index) {
                       final buttonText = [
-                        'Sehat',
                         'Acne Nodules',
                         'Rosacea',
                         'Melenoma',
