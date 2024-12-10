@@ -6,6 +6,7 @@ import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({Key? key}) : super(key: key);
@@ -45,48 +46,69 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: MaterialButton(
-          onPressed: () async {},
-          color: AppColors.mainColor,
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Buy Now',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+        child: FutureBuilder(
+          future: productProvider.getProductById(id),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data == null) {
+              return const Center(child: Text('Product not found'));
+            } else {
+              final product = snapshot.data!;
+              return MaterialButton(
+                onPressed: () async {
+                  Uri uri = Uri.parse(product.link);
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                  } else {
+                    throw 'Could not launch ${product.link}';
+                  }
+                },
+                color: AppColors.mainColor,
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Buy Now',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        '-',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Icon(
+                        Icons.shopping_bag_rounded,
+                        color: Colors.white,
+                      )
+                    ],
                   ),
                 ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  '-',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Icon(
-                  Icons.shopping_bag_rounded,
-                  color: Colors.white,
-                )
-              ],
-            ),
-          ),
+              );
+            }
+          },
         ),
       ),
       extendBodyBehindAppBar: true,
