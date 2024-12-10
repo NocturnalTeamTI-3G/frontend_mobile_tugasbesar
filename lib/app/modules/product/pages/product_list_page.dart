@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/providers/product_provider.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/widgets/custom_search_product.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/widgets/product_list_card.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
-import 'package:frontend_mobile_tugasbesar/app/widgets/custom_search_screen.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class ProductListPage extends StatefulWidget {
@@ -15,16 +17,52 @@ class ProductListPage extends StatefulWidget {
 }
 
 class _ProductListPageState extends State<ProductListPage> {
-  int _selectedIndex = 0;
+  final ScrollController _scrollController = ScrollController();
+  late String query;
+  late ProductProvider _productProvider;
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    query = Get.arguments as String? ?? '';
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_isInitialized) {
+      _productProvider = Provider.of<ProductProvider>(context);
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_productProvider.listAllProducts.isEmpty) {
+          _productProvider.getAllProduct();
+        }
+
+        _productProvider.searchProduct(query);
+      });
+
+      _isInitialized = true;
+    } else if (query.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _productProvider.searchProduct(query);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _productProvider = Provider.of<ProductProvider>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(120),
+        preferredSize: const Size.fromHeight(65),
         child: Container(
           // padding: const EdgeInsets.only(top: 20),
           decoration: BoxDecoration(
@@ -53,19 +91,31 @@ class _ProductListPageState extends State<ProductListPage> {
               ),
             ),
             leadingWidth: 40,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: IconButton(
+                  onPressed: () {
+                    Get.toNamed(AppRouters.main);
+                    query = '';
+                  },
+                  icon: Icon(Icons.home, color: AppColors.mainColor, size: 30),
+                ),
+              ),
+            ],
             title: GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CustomSearchScreen(
-                      currentQuery: widget.searchQuery ?? '',
+                    builder: (context) => CustomSearchProduct(
+                      currentQuery: query,
                     ),
                   ),
                 );
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.only(left: 16, right: 10),
                 child: Material(
                   elevation: 2,
                   borderRadius: BorderRadius.circular(10),
@@ -81,7 +131,7 @@ class _ProductListPageState extends State<ProductListPage> {
                       children: [
                         Expanded(
                           child: Text(
-                              widget.searchQuery ?? 'Search for Product',
+                              query.isNotEmpty ? query : 'Search for Product',
                               style: const TextStyle(
                                   color: Colors.black54,
                                   fontSize: 16,
@@ -96,89 +146,44 @@ class _ProductListPageState extends State<ProductListPage> {
                 ),
               ),
             ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(60),
-              child: SizedBox(
-                height: 58,
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(
-                      left: 20, top: 10, bottom: 10, right: 12),
-                  scrollDirection: Axis.horizontal,
-                  // controller: _scrollController,
-                  itemCount: 5, // Number of buttons
-                  itemBuilder: (context, index) {
-                    final buttonText = [
-                      'All Skin Type',
-                      'Normal Skin',
-                      'Whitehead',
-                      'Blackhead',
-                      'Pustula',
-                      'Papula'
-                    ][index];
-                    final isSelected = index == _selectedIndex;
-                    final textColor =
-                        isSelected ? AppColors.mainColor : Colors.grey[500];
-                    final borderColor =
-                        isSelected ? AppColors.mainColor : Colors.grey.shade300;
-
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: MaterialButton(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: borderColor, width: 1),
-                        ),
-                        elevation: 1,
-                        onPressed: () {
-                          setState(() {
-                            _selectedIndex = index;
-                          });
-                          // _scrollToCenter(index);
-                        },
-                        child: Text(
-                          buttonText,
-                          style: TextStyle(
-                            color: textColor,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 250),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 0.6,
+      body: _productProvider.listProducts.isEmpty
+          ? Center(
+              child: CircularProgressIndicator(
+                color: AppColors.mainColor,
               ),
-              itemCount:
-                  _productProvider.listAllProducts[_selectedIndex].length,
-              itemBuilder: (context, index) {
-                final product =
-                    _productProvider.listAllProducts[_selectedIndex][index];
-                return ProductListCard(product: product);
+            )
+          : Consumer<ProductProvider>(
+              builder: (context, productProvider, _) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 220),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 0.61,
+                        ),
+                        itemCount: productProvider.listProducts.length,
+                        itemBuilder: (context, index) {
+                          final product = productProvider.listProducts[index];
+                          return ProductListCard(product: product);
+                        },
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
-          ),
-        ),
-      ),
     );
   }
 }

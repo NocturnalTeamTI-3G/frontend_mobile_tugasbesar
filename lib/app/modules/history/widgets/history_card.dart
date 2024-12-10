@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/history/history_model.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HistoryCard extends StatelessWidget {
   const HistoryCard({
@@ -10,10 +13,14 @@ class HistoryCard extends StatelessWidget {
     required this.data,
   });
 
-  final HistoryType data;
+  final HistoryModel data;
 
   @override
   Widget build(BuildContext context) {
+    final String url = '${Api.baseUrl}/api/image/history_scan/';
+    final DateTime dateTime = DateTime.parse(data.date);
+    final String formatedDate = DateFormat('d MMMM yyyy').format(dateTime);
+
     return Stack(
       children: [
         Container(
@@ -24,7 +31,7 @@ class HistoryCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             onPressed: () {
-              Get.toNamed(AppRouters.historyDetail, arguments: data);
+              Get.toNamed(AppRouters.historyDetail, arguments: data.id);
             },
             child: Container(
               padding: const EdgeInsets.all(15),
@@ -46,11 +53,34 @@ class HistoryCard extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      data.image,
+                    child: Image.network(
+                      '$url${data.image}',
                       fit: BoxFit.cover,
                       width: 60,
                       height: 60,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/icon/face-id.png',
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                      loadingBuilder: (context, child, loadingProgress) =>
+                          loadingProgress == null
+                              ? child
+                              : Shimmer.fromColors(
+                                  baseColor: Colors.grey.shade300,
+                                  highlightColor: Colors.grey.shade100,
+                                  child: Container(
+                                    height: 60,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(14),
+                                    ),
+                                  ),
+                                ),
                     ),
                   ),
                   Expanded(
@@ -60,7 +90,7 @@ class HistoryCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            data.type,
+                            data.disease,
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w600,
@@ -68,7 +98,7 @@ class HistoryCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            data.date,
+                            formatedDate,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.grey,
@@ -79,12 +109,11 @@ class HistoryCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    data.status,
+                    data.disease == 'Sehat' ? 'Sehat' : 'Jerawat',
                     style: TextStyle(
                       fontSize: 14,
-                      color: data.status == 'Success'
-                          ? Colors.green
-                          : Colors.red,
+                      color:
+                          data.disease == 'Sehat' ? Colors.green : Colors.red,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -102,9 +131,7 @@ class HistoryCard extends StatelessWidget {
               height: 20,
               width: 5,
               decoration: BoxDecoration(
-                color: data.status == 'Success'
-                    ? Colors.green
-                    : Colors.red,
+                color: data.disease == 'Sehat' ? Colors.green : Colors.red,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
                   bottomLeft: Radius.circular(10),

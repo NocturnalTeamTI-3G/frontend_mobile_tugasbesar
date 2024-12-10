@@ -17,7 +17,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    final arg = Get.arguments;
+    _selectedIndex = (arg is int) ? arg : 0;
+  }
 
   final List<Widget> _pages = [
     const MainHomePage(),
@@ -59,7 +66,8 @@ class _MainPageState extends State<MainPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainColor,
                 ),
-                child: const Text('Login', style: TextStyle(fontSize: 16, color: Colors.white)),
+                child: const Text('Login',
+                    style: TextStyle(fontSize: 16, color: Colors.white)),
               ),
             ],
           );
@@ -151,9 +159,13 @@ class _MainPageState extends State<MainPage> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 15),
                       onPressed: () {
-                        setState(() {
-                          _selectedIndex = 1;
-                        });
+                        if (_authProvider.isLoggedIn) {
+                          setState(() {
+                            _selectedIndex = 1;
+                          });
+                        } else {
+                          showLoginDialog();
+                        }
                       },
                       // color: _selectedIndex == 1 ? Colors.grey[100] : null,
                       child: Column(
@@ -196,9 +208,13 @@ class _MainPageState extends State<MainPage> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 15),
                       onPressed: () {
-                        setState(() {
-                          _selectedIndex = 2;
-                        });
+                        if (_authProvider.isLoggedIn) {
+                          setState(() {
+                            _selectedIndex = 2;
+                          });
+                        } else {
+                          showLoginDialog();
+                        }
                       },
                       // color: _selectedIndex == 2 ? Colors.grey[100] : null,
                       child: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/providers/setting_provider.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     final settingProvider =
         Provider.of<SettingProvider>(context, listen: false);
-
+    final String url = Api.baseUrl + '/api/image/user/';
     _nameController.text = settingProvider.user!.username;
     _emailController.text = settingProvider.user!.email;
 
@@ -40,7 +41,7 @@ class _AccountPageState extends State<AccountPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ListTile(
-                  leading: Icon(Icons.photo_library),
+                  leading: const Icon(Icons.photo_library),
                   title: const Text('Gallery'),
                   onTap: () async {
                     Navigator.pop(context);
@@ -48,7 +49,7 @@ class _AccountPageState extends State<AccountPage> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.camera_alt),
+                  leading: const Icon(Icons.camera_alt),
                   title: const Text('Camera'),
                   onTap: () async {
                     Navigator.pop(context);
@@ -109,12 +110,30 @@ class _AccountPageState extends State<AccountPage> {
                           builder: (context, settingProvider, child) {
                             return ClipOval(
                               child: settingProvider.image == null
-                                  ? Image.asset(
-                                      settingProvider.user!.profileImg,
-                                      width: 120,
-                                      height: 120,
-                                      fit: BoxFit.cover,
-                                    )
+                                  ? settingProvider.user?.profileImg == 'null'
+                                      ? Image.asset(
+                                          'assets/images/default_profile.png',
+                                          fit: BoxFit.cover,
+                                          height: 120,
+                                          width: 120,
+                                        )
+                                      : Image.network(
+                                          settingProvider.user!.profileImg
+                                                  .startsWith('http')
+                                              ? settingProvider.user!.profileImg
+                                              : '$url${settingProvider.user?.profileImg}',
+                                          width: 120,
+                                          height: 120,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  Image.asset(
+                                            'assets/images/default_profile.png',
+                                            fit: BoxFit.cover,
+                                            height: 120,
+                                            width: 120,
+                                          ),
+                                        )
                                   : Image.file(
                                       settingProvider.image!,
                                       width: 120,
@@ -260,7 +279,6 @@ class _AccountPageState extends State<AccountPage> {
                                     _nameController.text,
                                     _emailController.text,
                                     settingProvider.selectedValue!,
-                                    settingProvider.image!.path,
                                   );
                                 }
                               },

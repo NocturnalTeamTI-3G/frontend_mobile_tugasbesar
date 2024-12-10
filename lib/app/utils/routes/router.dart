@@ -1,15 +1,17 @@
 import 'package:frontend_mobile_tugasbesar/app/modules/check/pages/check_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/check/pages/display_picture_screen.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/history/pages/history_detail_page.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/create_new_pw_page.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/forgot_password_page.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/intro_page.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/login_page.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/otp_verif_page.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/register_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/create_new_pw_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/forgot_password_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/intro_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/login_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/otp_verif_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/register_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/main_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/news/pages/news_detail_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/news/pages/news_list_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_detail_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_list_page.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
@@ -23,7 +25,7 @@ class AppRouters {
   static const newPassword = '/newPassword';
 
   // Main page
-  static const main = '/';
+  static const main = '/home';
 
   // History
   static const historyDetail = '/historyDetail';
@@ -35,6 +37,10 @@ class AppRouters {
   // News
   static const newsDetail = '/newsDetail';
   static const newsList = '/newsList';
+
+  // product
+  static const productDetail = '/productDetail';
+  static const productList = '/productList';
 }
 
 class AppPages {
@@ -91,6 +97,14 @@ class AppPages {
     GetPage(
       name: AppRouters.newsList,
       page: () => NewsListPage(),
+    ),
+    GetPage(
+      name: AppRouters.productDetail,
+      page: () => ProductDetailPage(),
+    ),
+    GetPage(
+      name: AppRouters.productList,
+      page: () => ProductListPage(),
     ),
   ];
 }

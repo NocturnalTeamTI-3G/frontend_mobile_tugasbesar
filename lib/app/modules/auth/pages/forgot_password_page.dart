@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/otp_verif_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -15,6 +15,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: Container(
@@ -152,9 +154,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           child: InkWell(
                             splashColor: AppColors.secondaryColor,
                             borderRadius: BorderRadius.circular(15),
-                            onTap: () {
-                              Get.to(() => OtpVerifPage(),
-                                  transition: Transition.fadeIn);
+                            onTap: () async {
+                              await _authProvider
+                                  .sendEmail(_emailController.text);
                             },
                             child: const Center(
                               child: Text(
@@ -173,6 +175,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ],
               ),
             ),
+            if (_authProvider.isLoading)
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.black.withOpacity(0.5),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.mainColor,
+                  ),
+                ),
+              ),
           ],
         ),
       ),

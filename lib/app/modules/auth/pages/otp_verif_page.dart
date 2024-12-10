@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/create_new_pw_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class OtpVerifPage extends StatefulWidget {
   const OtpVerifPage({Key? key}) : super(key: key);
@@ -12,12 +13,19 @@ class OtpVerifPage extends StatefulWidget {
 }
 
 class _OtpVerifPageState extends State<OtpVerifPage> {
-  final List<FocusNode> _focusNodes = List.generate(5, (_) => FocusNode());
+  final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
   final List<TextEditingController> _controllers =
       List.generate(6, (_) => TextEditingController());
 
+  String getCombinedValue() {
+    return _controllers.map((controller) => controller.text).join();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<AuthProvider>(context);
+    final email = Get.arguments;
+    
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: Container(
@@ -104,11 +112,11 @@ class _OtpVerifPageState extends State<OtpVerifPage> {
                   ),
                   const SizedBox(height: 32),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: List.generate(
-                        5,
+                        6,
                         (index) {
                           return SizedBox(
                             width: 50,
@@ -148,7 +156,7 @@ class _OtpVerifPageState extends State<OtpVerifPage> {
                                 ),
                               ),
                               onChanged: (value) {
-                                if (value.length == 1 && index < 4) {
+                                if (value.length == 1 && index < 5) {
                                   FocusScope.of(context)
                                       .requestFocus(_focusNodes[index + 1]);
                                 } else if (value.isEmpty && index > 0) {
@@ -187,9 +195,12 @@ class _OtpVerifPageState extends State<OtpVerifPage> {
                           child: InkWell(
                             splashColor: AppColors.thirdColor,
                             borderRadius: BorderRadius.circular(15),
-                            onTap: () {
-                              Get.to(() => CreateNewPasswordPage(),
-                                  transition: Transition.fadeIn);
+                            onTap: () async {
+                              String combinedValue = getCombinedValue();
+                              await _authProvider.verifyToken(
+                                email,
+                                combinedValue,
+                              );
                             },
                             child: const Center(
                               child: Text(
@@ -225,6 +236,17 @@ class _OtpVerifPageState extends State<OtpVerifPage> {
                 ],
               ),
             ),
+            if (_authProvider.isLoading)
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.black.withOpacity(0.5),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.mainColor,
+                  ),
+                ),
+              ),
           ],
         ),
       ),

@@ -7,28 +7,52 @@ class SettingService {
 
   SettingService() {
     _dio.options.baseUrl = Api.baseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 10);
-    _dio.options.receiveTimeout = const Duration(seconds: 10);
+    _dio.options.connectTimeout = const Duration(seconds: 60);
+    _dio.options.receiveTimeout = const Duration(seconds: 60);
   }
 
   Future<Response> updateProfile(
-      String name, String email, String gender, String profileImg) async {
+      String name, String email, String gender, String? profileImg) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
+    final Response response;
 
-    final response = await _dio.patch(
+    final formData = FormData.fromMap({
+      'username': name,
+      'email': email,
+      'gender': gender,
+      if (profileImg != null)
+        'profile_img': await MultipartFile.fromFile(profileImg),
+    });
+    response = await _dio.patch(
+      '/api/users/current',
+      options: Options(headers: {
+        'Authorization': '$token',
+      }),
+      data: formData,
+    );
+    return response;
+  }
+
+  Future<Response> changePassword(String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    final Response response;
+   
+    response = await _dio.patch(
       '/api/users/current',
       options: Options(headers: {
         'Authorization': '$token',
       }),
       data: {
-        'username': name,
-        'email': email,
-        'gender': gender,
-        'profile_img': profileImg,
+        'password': password,
       },
     );
+    return response;
+  }
 
+  Future<Response> getFaq() async {
+    final response = await _dio.get('/api/faqs');
     return response;
   }
 }

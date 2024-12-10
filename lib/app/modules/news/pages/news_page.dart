@@ -6,8 +6,9 @@ import 'package:frontend_mobile_tugasbesar/app/modules/news/pages/news_list_page
 import 'package:frontend_mobile_tugasbesar/app/modules/news/widgets/custom_card.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/news/widgets/card_carousel.dart';
 import 'package:frontend_mobile_tugasbesar/app/widgets/custom_appbar.dart';
-import 'package:frontend_mobile_tugasbesar/app/widgets/custom_search_screen.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/news/widgets/custom_search_news.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class NewsPage extends StatefulWidget {
   const NewsPage({super.key});
@@ -19,11 +20,16 @@ class NewsPage extends StatefulWidget {
 class _NewsPageState extends State<NewsPage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  late NewsProvider newsProvider;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 3, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      newsProvider = Provider.of<NewsProvider>(context, listen: false);
+      newsProvider.getAllArticles();
+    });
   }
 
   @override
@@ -34,8 +40,6 @@ class _NewsPageState extends State<NewsPage>
 
   @override
   Widget build(BuildContext context) {
-    final newsProvider = Provider.of<NewsProvider>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const PreferredSize(
@@ -53,7 +57,7 @@ class _NewsPageState extends State<NewsPage>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CustomSearchScreen(),
+                      builder: (context) => const CustomSearchNews(),
                     ),
                   );
                 },
@@ -99,42 +103,68 @@ class _NewsPageState extends State<NewsPage>
                 ),
               ),
             ),
-            CarouselSlider(
-              options: CarouselOptions(
-                autoPlay: true,
-                viewportFraction: 1,
-                initialPage: newsProvider.currentPage,
-                onPageChanged: (index, _) {
-                  newsProvider.setCurrentPage(index);
-                },
-                height: 280,
-              ),
-              items: newsProvider.listCarousel
-                  .map(
-                    (artikel) => CardCarousel(artikel: artikel),
-                  )
-                  .toList(),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (int i = 0; i < newsProvider.listCarousel.length; i++)
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 3),
-                    height: 10,
-                    width: i == newsProvider.currentPage ? 30 : 10,
-                    decoration: BoxDecoration(
-                      color: i == newsProvider.currentPage
-                          ? AppColors.mainColor
-                          : Colors.grey,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-              ],
+            Consumer<NewsProvider>(builder: (context, newsProvider, child) {
+              return newsProvider.isLoading
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        child: Container(
+                          height: 250,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                      ),
+                    )
+                  : CarouselSlider(
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        viewportFraction: 1,
+                        initialPage: newsProvider.currentPage.value,
+                        onPageChanged: (index, _) {
+                          newsProvider.setCurrentPage(index);
+                        },
+                        height: 280,
+                      ),
+                      items: newsProvider.carouselArticle
+                          .map(
+                            (artikel) => CardCarousel(artikel: artikel),
+                          )
+                          .toList(),
+                    );
+            }),
+            ValueListenableBuilder<int>(
+              valueListenable: context.read<NewsProvider>().currentPage,
+              builder: (context, currentPage, child) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (int i = 0;
+                        i < context.read<NewsProvider>().carouselArticle.length;
+                        i++)
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 3),
+                        height: 10,
+                        width: i == currentPage ? 30 : 10,
+                        decoration: BoxDecoration(
+                          color: i == currentPage
+                              ? AppColors.mainColor
+                              : Colors.grey,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
 
             // Article List Section
@@ -166,18 +196,50 @@ class _NewsPageState extends State<NewsPage>
                   ),
                   Transform.translate(
                     offset: const Offset(0, -10),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(minHeight: 250),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: newsProvider.listArtikel.length,
-                        itemBuilder: (context, index) {
-                          final artikel = newsProvider.listArtikel[index];
-                          return CustomCard(artikel: artikel);
-                        },
-                      ),
-                    ),
+                    child: Consumer<NewsProvider>(
+                        builder: (context, newsProvider, child) {
+                      return newsProvider.isLoading
+                          ? SizedBox(
+                              height: 250,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: 3,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 10, top: 10),
+                                    child: Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        height: 80,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          : ConstrainedBox(
+                              constraints: const BoxConstraints(minHeight: 250),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: newsProvider.newestArticle.length,
+                                itemBuilder: (context, index) {
+                                  final artikel =
+                                      newsProvider.newestArticle[index];
+                                  return CustomCard(artikel: artikel);
+                                },
+                              ),
+                            );
+                    }),
                   ),
                 ],
               ),

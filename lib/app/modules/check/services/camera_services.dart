@@ -2,26 +2,28 @@ import 'package:dio/dio.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserService {
+class CameraServices {
   final Dio _dio = Dio();
 
-  UserService() {
+  CameraServices() {
     _dio.options.baseUrl = Api.baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 60);
     _dio.options.receiveTimeout = const Duration(seconds: 60);
   }
 
-  Future<Response> getUser() async {
+  Future<Response> scanDisease(String imagePath) async {
+    final formData = FormData.fromMap({
+      'face_img': await MultipartFile.fromFile(imagePath),
+    });
+
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
-    // print(token);
 
-    final response = await _dio.get('/api/users/current',
+    final response = await _dio.post('/api/histories',
+        data: formData,
         options: Options(headers: {
           'Authorization': '$token',
         }));
-
-    // print(response);
     return response;
   }
 }

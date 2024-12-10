@@ -1,38 +1,107 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/product/product_model.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/services/product_service.dart';
+import 'package:get/get.dart';
 
 class ProductProvider extends ChangeNotifier {
-  List<ProductModel> allProducts = ProductData().getAllProducts();
-  List<ProductModel> normalProducts =
-      ProductData().getProductByCategory('Normal');
-  List<ProductModel> whiteheadProducts =
-      ProductData().getProductByCategory('Whitehead');
-  List<ProductModel> blackheadProducts =
-      ProductData().getProductByCategory('Blackhead');
-  List<ProductModel> pustulaProducts =
-      ProductData().getProductByCategory('Pustula');
-  List<ProductModel> papulaProducts =
-      ProductData().getProductByCategory('Papula');
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  final ProductService _productService = ProductService();
+  List<ProductModel> listAllProducts = [];
+  List<ProductModel> listProducts = [];
+  List<ProductModel> carouselProducts = [];
+  List<ProductModel> newestProducts = [];
 
-  List<List<ProductModel>> listProducts = [];
-  List<List<ProductModel>> listAllProducts = [];
-  List<ProductModel> bundleProducts = ProductData().getProductBundle();
+  int _selectedCategory = 0;
+  int get selectedCategory => _selectedCategory;
 
-  ProductProvider() {
-    listAllProducts.add(allProducts);
-    listProducts.add(normalProducts);
-    listProducts.add(whiteheadProducts);
-    listProducts.add(blackheadProducts);
-    listProducts.add(pustulaProducts);
-    listProducts.add(papulaProducts);
-    listAllProducts.addAll(listProducts);
+  List<String> categories = [
+    'Acne Nodules',
+    'Rosacea',
+    'Melanoma',
+    'Dermatitis Perioral',
+  ];
+
+  void setSelectedCategory(int index) {
+    _selectedCategory = index;
+    carouselProducts = listAllProducts
+        .where((element) => element.category == categories[index])
+        .take(3)
+        .toList();
+
+    notifyListeners();
   }
 
-  List<ProductModel> getProductsByCategory(int index) {
-    return listProducts[index];
+  void searchProduct(String query) {
+    if (query.isEmpty) {
+      listProducts = listAllProducts;
+    } else {
+      listProducts = listAllProducts
+          .where((element) =>
+              element.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+
+    notifyListeners();
   }
 
-  List<ProductModel> getBundleProducts() {
-    return bundleProducts;
+  Future<void> getAllProduct() async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+
+      final response = await _productService.getAllProducts();
+
+      if (response.statusCode == 200) {
+        final data = response.data['data'];
+        listAllProducts = List<ProductModel>.from(
+            data.map((json) => ProductModel.fromJson(json)));
+        listProducts = listAllProducts;
+        carouselProducts = listAllProducts
+            .where((element) => element.category == 'Sehat')
+            .take(3)
+            .toList();
+        newestProducts = listAllProducts.take(5).toList();
+      } else {
+        throw ('Terjadi kesalahan dalam pengambilan data produk');
+      }
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      Get.snackbar(
+        'Terjadi Kesalahan',
+        'Tidak dapat mengambil data produk. Silahkan coba lagi atau Hubungi admin.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<ProductModel?> getProductById(int id) async {
+    try {
+      ProductModel product;
+
+      final response = await _productService.getProductById(id);
+      if (response.statusCode == 200) {
+        final data = response.data['data'];
+        product = ProductModel.fromJson(data);
+      } else {
+        throw ('Produk tidak ditemukan');
+      }
+
+      return product;
+    } catch (e) {
+      Get.snackbar(
+        'Terjadi Kesalahan',
+        'Tidak dapat mengambil data produk. Silahkan coba lagi atau Hubungi admin.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+
+      return null;
+    }
   }
 }

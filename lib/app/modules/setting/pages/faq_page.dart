@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/setting/providers/setting_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
+import 'package:provider/provider.dart';
 
 class FaqPage extends StatefulWidget {
   const FaqPage({Key? key}) : super(key: key);
@@ -11,6 +13,9 @@ class FaqPage extends StatefulWidget {
 class _FaqState extends State<FaqPage> {
   @override
   Widget build(BuildContext context) {
+    SettingProvider _settingProvider =
+        Provider.of<SettingProvider>(context, listen: false);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
@@ -30,14 +35,13 @@ class _FaqState extends State<FaqPage> {
               )),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: AppColors.mainColor,
-        child: const Icon(
-          Icons.chat_rounded,
-          color: Colors.white,
-        )
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //     onPressed: () {},
+      //     backgroundColor: AppColors.mainColor,
+      //     child: const Icon(
+      //       Icons.chat_rounded,
+      //       color: Colors.white,
+      //     )),
       body: SingleChildScrollView(
         child: Stack(
           children: <Widget>[
@@ -88,45 +92,34 @@ class _FaqState extends State<FaqPage> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _buildFaqTile(
-                    question: 'Apa itu SkinAssist?',
-                    answer:
-                        'SkinAssist adalah aplikasi mobile berbasis AI yang menganalisis kondisi kulit Anda, khususnya dalam mendeteksi jerawat, serta memberikan rekomendasi perawatan sesuai kebutuhan kulit.',
-                  ),
-                  _buildFaqTile(
-                    question: 'Bagaimana cara menggunakan SkinAssist?',
-                    answer:
-                        'Untuk menggunakan SkinAssist, Anda dapat:\n1. Masuk atau daftar akun.\n2. Ambil foto kulit menggunakan kamera atau unggah foto dari galeri.\n3. Aplikasi akan menganalisis foto dan memberikan hasil deteksi jerawat beserta rekomendasi perawatan.\n4. Lacak perkembangan kondisi kulit Anda dari waktu ke waktu.',
-                  ),
-                  _buildFaqTile(
-                    question:
-                        'Apakah SkinAssist aman untuk digunakan dan melindungi privasi saya?',
-                    answer:
-                        'Ya, kami menjaga keamanan data Anda dengan baik. Foto dan informasi pribadi Anda aman dan tidak akan dibagikan kepada pihak ketiga tanpa persetujuan Anda.',
-                  ),
-                  _buildFaqTile(
-                    question:
-                        'Bagaimana cara meningkatkan akurasi deteksi jerawat di SkinAssist?',
-                    answer:
-                        'Pastikan untuk mengambil foto dalam pencahayaan yang baik, fokus pada area kulit yang ingin dianalisis, dan gunakan kamera dengan resolusi yang tinggi untuk hasil terbaik.',
-                  ),
-                  _buildFaqTile(
-                    question:
-                        'Apakah SkinAssist menggantikan konsultasi dokter kulit?',
-                    answer:
-                        'SkinAssist adalah alat bantu yang dapat membantu memahami kondisi kulit, namun hasilnya tidak menggantikan konsultasi dokter kulit. Untuk kondisi kulit yang serius atau tidak membaik, sebaiknya konsultasi dengan dokter kulit.',
-                  ),
-                  _buildFaqTile(
-                    question:
-                        'Apa yang harus saya lakukan jika aplikasi tidak berfungsi dengan baik?',
-                    answer:
-                        'Jika mengalami masalah, coba periksa koneksi internet, pastikan aplikasi dalam versi terbaru, atau restart aplikasi. Jika masalah tetap terjadi, hubungi dukungan melalui fitur Support di aplikasi.',
-                  ),
-                  _buildFaqTile(
-                    question: 'Apakah SkinAssist gratis atau berbayar?',
-                    answer:
-                        'SkinAssist menawarkan versi gratis untuk fitur dasar. Untuk akses ke fitur premium, seperti konsultasi ahli dan rekomendasi perawatan khusus, tersedia opsi berlangganan melalui aplikasi.',
-                  ),
+                  FutureBuilder(
+                      future: _settingProvider.getFaqs(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(
+                            height: 500,
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        } else {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: _settingProvider.faqs!.length,
+                            itemBuilder: (context, index) {
+                              return _buildFaqTile(
+                                question: _settingProvider.faqs![index].question,
+                                answer: _settingProvider.faqs![index].answer,
+                              );
+                            },
+                          );
+                        }
+                      }),
                 ],
               ),
             ),

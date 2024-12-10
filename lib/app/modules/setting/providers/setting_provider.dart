@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile_tugasbesar/app/models/faq/faq_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/user/user_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/auth/services/auth_service.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/home/services/user_service.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/services/setting_service.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,8 +22,8 @@ class SettingProvider extends ChangeNotifier {
   final ImagePicker _picker = ImagePicker();
   String? _selectedValue;
   UserModel? user;
+  List<FaqModel>? faqs;
   bool _isLoading = false;
-  bool _isFetch = false;
 
   bool get isLoading => _isLoading;
   File? get image => _image;
@@ -49,6 +51,7 @@ class SettingProvider extends ChangeNotifier {
                 final response = await _authService.logout();
 
                 if (response.statusCode == 200) {
+                  GoogleSignIn().signOut();
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.remove('token');
                   await prefs.setBool('isLoggedIn', false);
@@ -88,8 +91,12 @@ class SettingProvider extends ChangeNotifier {
   }
 
   Future<void> getUser() async {
-    if (_isFetch) return;
-    _isFetch = true;
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      return;
+    }
 
     try {
       final response = await _userService.getUser();
@@ -122,6 +129,13 @@ class SettingProvider extends ChangeNotifier {
         _image = File(image.path);
         notifyListeners();
       }
+    } else if (await Permission.manageExternalStorage.request().isGranted) {
+      final XFile? image = await _picker.pickImage(
+          source: ImageSource.gallery, maxHeight: 500, imageQuality: 50);
+      if (image != null) {
+        _image = File(image.path);
+        notifyListeners();
+      }
     }
   }
 
@@ -136,8 +150,7 @@ class SettingProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateProfile(
-      String name, String email, String gender, String imageProfile) async {
+  Future<void> updateProfile(String name, String email, String gender) async {
     try {
       _isLoading = true;
       notifyListeners();
@@ -146,7 +159,7 @@ class SettingProvider extends ChangeNotifier {
         name,
         email,
         gender,
-        imageProfile,
+        _image?.path,
       );
 
       if (response.statusCode == 200) {
@@ -189,5 +202,64 @@ class SettingProvider extends ChangeNotifier {
   Future<void> updateSelectedValue(String value) async {
     _selectedValue = value;
     notifyListeners();
+  }
+
+  Future<void> getFaqs() async {
+    try {
+      final response = await _settingService.getFaq();
+
+      if (response.statusCode == 200) {
+        final data = response.data['data'];
+        faqs = List<FaqModel>.from(data.map((json) => FaqModel.fromJson(json)));
+      } else {
+        throw ('Terjadi kesalahan dalam pengambilan data faq');
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Terjadi Kesalahan',
+        'Tidak dapat mengambil data faq. Silahkan coba lagi atau Hubungi admin.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final response = await _settingService.changePassword(newPassword);
+
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          'Berhasil',
+          'Password berhasil diubah',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        Get.snackbar(
+          'Terjadi Kesalahan',
+          'Tidak dapat mengubah password. Silahkan coba lagi.',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      Get.snackbar(
+        'Terjadi Kesalahan',
+        'Tidak dapat mengubah password. Silahkan coba lagi atau Tunggu beberapa saat.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+
+      _isLoading = false;
+      notifyListeners();
+      print(e);
+    }
   }
 }

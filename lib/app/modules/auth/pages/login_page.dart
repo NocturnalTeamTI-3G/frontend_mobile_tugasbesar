@@ -309,7 +309,9 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           // margin: const EdgeInsets.only(bottom: 20),
                           child: MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _authProvider.signInWithGoogle();
+                            },
                             color: Colors.white,
                             elevation: 2,
                             minWidth: double.infinity,

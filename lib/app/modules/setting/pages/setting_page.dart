@@ -4,8 +4,10 @@ import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/account_pag
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/change_password_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/faq_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/providers/setting_provider.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class SettingPage extends StatefulWidget {
@@ -20,6 +22,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     final settingProvider = Provider.of<SettingProvider>(context);
+    final String url = Api.baseUrl + '/api/image/user/';
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -60,39 +63,71 @@ class _SettingPageState extends State<SettingPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FutureBuilder(
-                    future: settingProvider.getUser(),
-                    builder: (context, snapshot) {
+                  Consumer<SettingProvider>(
+                    builder: (context, settingProvider, child) {
+                      final String profileImg = settingProvider.user?.profileImg as String;
+
+                      if (profileImg == 'null') {
+                        return ClipOval(
+                          child: Image.asset(
+                            'assets/images/default_profile.png',
+                            width: 140,
+                            height: 140,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      }
+
+                      final imageUrl = '$url$profileImg';
                       return ClipOval(
-                        child: (settingProvider.user?.profileImg != null)
-                            ? Image.asset(
-                                settingProvider.user!.profileImg,
-                                width: 120,
-                                height: 120,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.asset(
-                                'assets/images/default_profile.png',
-                                width: 120,
-                                height: 120,
-                                fit: BoxFit.cover,
-                              ),
+                        child: Image.network(
+                          profileImg.startsWith('http')
+                              ? profileImg
+                              : imageUrl,
+                          width: 140,
+                          height: 140,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset(
+                            'assets/images/default_profile.png',
+                            width: 140,
+                            height: 140,
+                            fit: BoxFit.cover,
+                          ),
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            } else {
+                              return const SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
+                        ),
                       );
                     },
                   ),
                   const SizedBox(height: 20),
-                  FutureBuilder(
-                      future: settingProvider.getUser(),
-                      builder: (context, snapshot) {
-                        return Text(
+                  Consumer<SettingProvider>(
+                    builder: (context, settingProvider, child) {
+                      return SizedBox(
+                        width: 300,
+                        child: Text(
                           '''Hello, ${settingProvider.user?.username ?? 'User'}''',
+                          overflow: TextOverflow.clip,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.w500,
                           ),
-                        );
-                      })
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -181,29 +216,29 @@ class _SettingPageState extends State<SettingPage> {
                             Get.to(ChangePasswordPage());
                           },
                         ),
-                        SwitchListTile(
-                          contentPadding: EdgeInsets.zero,
-                          secondary: const Icon(
-                            Icons.dark_mode_rounded,
-                            color: Colors.black,
-                            size: 26,
-                          ),
-                          title: const Text(
-                            'Theme',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          value:
-                              isDarkMode, // Variabel untuk menyimpan status switch
-                          onChanged: (bool value) {
-                            setState(() {
-                              isDarkMode = value;
-                            });
-                          },
-                        ),
+                        // SwitchListTile(
+                        //   contentPadding: EdgeInsets.zero,
+                        //   secondary: const Icon(
+                        //     Icons.dark_mode_rounded,
+                        //     color: Colors.black,
+                        //     size: 26,
+                        //   ),
+                        //   title: const Text(
+                        //     'Theme',
+                        //     style: TextStyle(
+                        //       color: Colors.black,
+                        //       fontSize: 18,
+                        //       fontWeight: FontWeight.w500,
+                        //     ),
+                        //   ),
+                        //   value:
+                        //       isDarkMode, // Variabel untuk menyimpan status switch
+                        //   onChanged: (bool value) {
+                        //     setState(() {
+                        //       isDarkMode = value;
+                        //     });
+                        //   },
+                        // ),
                       ],
                     ),
                   ),

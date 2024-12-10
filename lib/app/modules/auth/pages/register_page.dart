@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile_tugasbesar/app/modules/auth/login_page.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/auth/pages/login_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
@@ -385,7 +385,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _authProvider.signUpWithGoogle();
+                            },
                             color: Colors.white,
                             elevation: 2,
                             minWidth: double.infinity,

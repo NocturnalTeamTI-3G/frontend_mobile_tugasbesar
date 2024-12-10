@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/auth/providers/auth_provider.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/pages/setting_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/setting/providers/setting_provider.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/api/api.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ class CustomAppbarWithTabbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _authProvider = Provider.of<AuthProvider>(context);
-    final _settingProvider = Provider.of<SettingProvider>(context);
+    final String url = '${Api.baseUrl}/api/image/user/';
 
     return Container(
       padding: const EdgeInsets.only(top: 10),
@@ -65,26 +66,52 @@ class CustomAppbarWithTabbar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: _authProvider.isLoggedIn
-                ? FutureBuilder(
-                    future: _settingProvider.getUser(),
-                    builder: (context, snapshot) {
+                ? Consumer<SettingProvider>(
+                    builder: (context, settingProvider, child) {
+                      if (settingProvider.user == null) {
+                        return GestureDetector(
+                          onTap: () {
+                            Get.to(() => const SettingPage());
+                          },
+                          child: const CircleAvatar(
+                            radius: 20,
+                            backgroundImage:
+                                AssetImage('assets/images/default_profile.png'),
+                          ),
+                        );
+                      }
+
                       return GestureDetector(
                         onTap: () {
                           Get.to(() => const SettingPage());
                         },
-                        child: (_settingProvider.user?.profileImg != null)
-                            ? ClipOval(
-                                child: Image.asset(
-                                  _settingProvider.user!.profileImg,
+                        child: (settingProvider.user?.profileImg == 'null')
+                            ? const CircleAvatar(
+                                radius: 20,
+                                backgroundImage: AssetImage(
+                                    'assets/images/default_profile.png'),
+                              )
+                            : ClipOval(
+                                child: Image.network(
+                                  settingProvider.user!.profileImg
+                                            .startsWith('http')
+                                        ? settingProvider.user!.profileImg
+                                        : '$url${settingProvider.user!.profileImg}',
                                   fit: BoxFit.cover,
                                   height: 40,
                                   width: 40,
-                                ),
-                              )
-                            : const CircleAvatar(
-                                radius: 20,
-                                backgroundImage: AssetImage(
-                                  'assets/images/default_profile.png',
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Image.asset(
+                                    'assets/images/default_profile.png',
+                                    fit: BoxFit.cover,
+                                    height: 40,
+                                    width: 40,
+                                  ),
+                                  loadingBuilder: (context, child,
+                                          loadingProgress) =>
+                                      loadingProgress == null
+                                          ? child
+                                          : const CircularProgressIndicator(),
                                 ),
                               ),
                       );
@@ -122,9 +149,9 @@ class CustomAppbarWithTabbar extends StatelessWidget {
           ),
           overlayColor: const WidgetStatePropertyAll(Colors.transparent),
           tabs: const [
-            Tab(text: 'All'),
-            Tab(text: 'Success'),
-            Tab(text: 'Fail'),
+            Tab(text: 'Semua'),
+            Tab(text: 'Sehat'),
+            Tab(text: 'Jerawat'),
           ],
         ),
       ),

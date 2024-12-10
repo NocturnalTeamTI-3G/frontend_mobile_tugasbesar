@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_detail_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/pages/product_list_page.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/providers/product_provider.dart';
+import 'package:frontend_mobile_tugasbesar/app/modules/product/widgets/custom_search_product.dart';
 import 'package:frontend_mobile_tugasbesar/app/utils/themes/color.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/product/widgets/product_card.dart';
 import 'package:frontend_mobile_tugasbesar/app/widgets/custom_appbar.dart';
-import 'package:frontend_mobile_tugasbesar/app/widgets/custom_search_screen.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -18,8 +18,17 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
+  late ProductProvider productProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      productProvider = Provider.of<ProductProvider>(context, listen: false);
+      productProvider.getAllProduct();
+    });
+  }
 
   @override
   void dispose() {
@@ -29,8 +38,6 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductProvider>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const PreferredSize(
@@ -48,7 +55,7 @@ class _ProductPageState extends State<ProductPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CustomSearchScreen(),
+                      builder: (context) => const CustomSearchProduct(),
                     ),
                   );
                 },
@@ -66,7 +73,7 @@ class _ProductPageState extends State<ProductPage> {
                     child: const Row(
                       children: [
                         Expanded(
-                          child: Text('Search for news',
+                          child: Text('Search for products',
                               style: TextStyle(
                                   color: Colors.black54,
                                   fontSize: 16,
@@ -83,165 +90,204 @@ class _ProductPageState extends State<ProductPage> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
-              child: SizedBox(
-                height: 78,
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(
-                      left: 20, top: 20, bottom: 20, right: 12),
-                  scrollDirection: Axis.horizontal,
-                  controller: _scrollController,
-                  itemCount: 5, // Number of buttons
-                  itemBuilder: (context, index) {
-                    final buttonText = [
-                      'Normal Skin',
-                      'Whitehead',
-                      'Blackhead',
-                      'Pustula',
-                      'Papula'
-                    ][index];
-                    final isSelected = index == _selectedIndex;
-                    final textColor =
-                        isSelected ? AppColors.mainColor : Colors.grey[500];
-                    final borderColor =
-                        isSelected ? AppColors.mainColor : Colors.grey.shade300;
+              child: Consumer<ProductProvider>(
+                  builder: (context, productProvider, child) {
+                return SizedBox(
+                  height: 78,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(
+                        left: 20, top: 20, bottom: 20, right: 12),
+                    scrollDirection: Axis.horizontal,
+                    controller: _scrollController,
+                    itemCount: 4, // Number of buttons
+                    itemBuilder: (context, index) {
+                      final buttonText = [
+                        'Acne Nodules',
+                        'Rosacea',
+                        'Melanoma',
+                        'Dermatitis Perioral'
+                      ][index];
+                      final isSelected =
+                          index == productProvider.selectedCategory;
+                      final textColor =
+                          isSelected ? AppColors.mainColor : Colors.grey[500];
+                      final borderColor = isSelected
+                          ? AppColors.mainColor
+                          : Colors.grey.shade300;
 
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: MaterialButton(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: borderColor, width: 1),
-                        ),
-                        elevation: 1,
-                        onPressed: () {
-                          setState(() {
-                            _selectedIndex = index;
-                          });
-                          _scrollToCenter(index);
-                        },
-                        child: Text(
-                          buttonText,
-                          style: TextStyle(
-                            color: textColor,
-                            fontSize: 16,
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: MaterialButton(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: borderColor, width: 1),
+                          ),
+                          elevation: 1,
+                          onPressed: () {
+                            productProvider.setSelectedCategory(index);
+                            _scrollToCenter(index);
+                          },
+                          child: Text(
+                            buttonText,
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+                      );
+                    },
+                  ),
+                );
+              }),
             ),
-            SizedBox(
-              height: 280,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(left: 20, bottom: 15),
-                scrollDirection: Axis.horizontal,
-                itemCount: productProvider
-                    .getProductsByCategory(_selectedIndex)
-                    .length,
-                itemBuilder: (context, index) {
-                  final product = productProvider
-                      .getProductsByCategory(_selectedIndex)[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: MaterialButton(
-                      padding: const EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: BorderSide(color: Colors.grey.shade300),
+            Consumer<ProductProvider>(
+                builder: (context, productProvider, child) {
+              return productProvider.isLoading
+                  ? SizedBox(
+                      height: 280,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.only(left: 20, bottom: 15),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: _buildSkeletonCarousel(),
+                          );
+                        },
                       ),
-                      elevation: 2,
-                      onPressed: () {
-                        setState(() {
-                          Get.to(const ProductDetailPage(), arguments: product);
-                        });
-                      },
-                      child: Container(
-                        width: 190,
-                        height: 265,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: const EdgeInsets.all(6),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 165,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.secondaryColor,
-                                    AppColors.cardColor,
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
+                    )
+                  : SizedBox(
+                      height: 280,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.only(left: 20, bottom: 15, right: 5),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: productProvider.carouselProducts.length,
+                        itemBuilder: (context, index) {
+                          final product =
+                              productProvider.carouselProducts[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: MaterialButton(
+                              padding: const EdgeInsets.all(0),
+                              onPressed: () {
+                                setState(() {
+                                  Get.to(const ProductDetailPage(),
+                                      arguments: product.id);
+                                });
+                              },
+                              child: Container(
+                                width: 190,
+                                height: 265,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                              child: Image.network(
-                                product.imageUrl,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                loadingBuilder: (context, child,
-                                        loadingProgress) =>
-                                    loadingProgress == null
-                                        ? child
-                                        : _buildSkeletonImage(),
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.only(top: 8),
-                              width: double.infinity,
-                              height: 88,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    product.name,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    product
-                                        .type,
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Container(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      '\$${product.price.toString()}',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w700,
+                                padding: const EdgeInsets.all(6),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 165,
+                                      decoration: BoxDecoration(
+                                        // gradient: LinearGradient(
+                                        //   colors: [
+                                        //     AppColors.secondaryColor,
+                                        //     AppColors.cardColor,
+                                        //   ],
+                                        //   begin: Alignment.topLeft,
+                                        //   end: Alignment.bottomRight,
+                                        // ),
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(14),
+                                        child: Image.network(
+                                          product.imageUrl,
+                                          width: double.infinity,
+                                          fit: BoxFit.fill,
+                                          loadingBuilder: (context, child,
+                                                  loadingProgress) =>
+                                              loadingProgress == null
+                                                  ? child
+                                                  : Shimmer.fromColors(
+                                                      baseColor:
+                                                          Colors.grey.shade300,
+                                                      highlightColor:
+                                                          Colors.grey.shade100,
+                                                      child: Container(
+                                                        height: 165,
+                                                        width: double.infinity,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(14),
+                                                        ),
+                                                      ),
+                                                    ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      width: double.infinity,
+                                      height: 88,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            product.name,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            product.nutrition.split(',')[0],
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          // const Spacer(),
+                                          // Container(
+                                          //   alignment: Alignment.centerRight,
+                                          //   child: Text(
+                                          //     // '\$${product.price.toString()}',
+                                          //     '',
+                                          //     style: const TextStyle(
+                                          //       color: Colors.black,
+                                          //       fontSize: 22,
+                                          //       fontWeight: FontWeight.w700,
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                    );
+            }),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 16),
               child: Column(
@@ -250,7 +296,7 @@ class _ProductPageState extends State<ProductPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Bundle Products',
+                        'Newest Products',
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w600),
                       ),
@@ -262,21 +308,42 @@ class _ProductPageState extends State<ProductPage> {
                       )
                     ],
                   ),
-                  Transform.translate(
-                    offset: const Offset(0, -5),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(minHeight: 250),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: productProvider.getBundleProducts().length,
-                        itemBuilder: (context, index) {
-                          final product =
-                              productProvider.getBundleProducts()[index];
-                          return ProductCard(product: product);
-                        },
-                      ),
-                    ),
+                  Consumer<ProductProvider>(
+                    builder: (context, productProvider, child) {
+                      return productProvider.isLoading
+                          ? SizedBox(
+                              height: 250,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: 3,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 15),
+                                    child: _buildSkeletonCard(),
+                                  );
+                                },
+                              ),
+                            )
+                          : Transform.translate(
+                              offset: const Offset(0, -5),
+                              child: ConstrainedBox(
+                                constraints:
+                                    const BoxConstraints(minHeight: 250),
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount:
+                                      productProvider.newestProducts.length,
+                                  itemBuilder: (context, index) {
+                                    final product =
+                                        productProvider.newestProducts[index];
+                                    return ProductCard(product: product);
+                                  },
+                                ),
+                              ),
+                            );
+                    },
                   ),
                 ],
               ),
@@ -298,13 +365,28 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  _buildSkeletonImage() {
+  _buildSkeletonCarousel() {
     return Shimmer.fromColors(
       baseColor: Colors.grey.shade300,
       highlightColor: Colors.grey.shade100,
       child: Container(
-        height: 165,
+        height: 240,
         width: 190,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+        ),
+      ),
+    );
+  }
+
+  _buildSkeletonCard() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        height: 80,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(14),

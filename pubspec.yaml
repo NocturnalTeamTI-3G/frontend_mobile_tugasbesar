@@ -38,13 +38,17 @@ dependencies:
   flutter_svg: ^2.0.10+1
   get: ^4.6.6
   google_fonts: ^6.2.1
+  google_sign_in: ^6.2.2
+  image: ^4.3.0
   image_picker: ^1.1.2
+  intl: ^0.20.0
   lottie: ^3.1.2
   permission_handler: ^11.3.1
   provider: ^6.1.2
   shared_preferences: ^2.3.2
   shimmer: ^3.0.0
   smooth_page_indicator: ^1.2.0+3
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.14.1"
@@ -105,3 +109,7 @@ flutter:
     - assets/images/news/artikel/
     - assets/svgs/
     - assets/lottie/
+
+proxy:
+  local:
+    server: "http://192.168.1.12:3000"
