@@ -34,4 +34,16 @@ class HistoryService {
 
     return response;
   }
+
+  Future<Response> deleteHistory(int id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    final response = await _dio.delete('/api/histories/$id',
+        options: Options(headers: {
+          'Authorization': '$token',
+        }));
+
+    return response;
+  }
 }

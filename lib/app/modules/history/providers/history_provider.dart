@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_mobile_tugasbesar/app/models/history/history_model.dart';
 import 'package:frontend_mobile_tugasbesar/app/modules/history/services/history_service.dart';
+import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:get/get.dart';
 
 class HistoryProvider extends ChangeNotifier {
@@ -70,6 +71,38 @@ class HistoryProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
       return null;
+    }
+  }
+
+  Future<void> deleteHistoryById(int id) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final response = await _historyService.deleteHistory(id);
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          'Sukses',
+          'History Berhasil Dihapus',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+
+        Get.toNamed(AppRouters.main, arguments: 1);
+      } else {
+        throw ('History tidak ditemukan');
+      }
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      Get.snackbar(
+        'Terjadi Kesalahan',
+        'Tidak dapat menghapus data history. Silahkan coba lagi atau Hubungi admin.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }

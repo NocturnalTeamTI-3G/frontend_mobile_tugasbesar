@@ -17,7 +17,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    final arg = Get.arguments;
+    _selectedIndex = (arg is int) ? arg : 0;
+  }
 
   final List<Widget> _pages = [
     const MainHomePage(),
@@ -203,7 +210,7 @@ class _MainPageState extends State<MainPage> {
                       onPressed: () {
                         if (_authProvider.isLoggedIn) {
                           setState(() {
-                            _selectedIndex =2;
+                            _selectedIndex = 2;
                           });
                         } else {
                           showLoginDialog();
