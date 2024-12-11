@@ -60,12 +60,7 @@ class SettingProvider extends ChangeNotifier {
                       backgroundColor: Colors.green, colorText: Colors.white);
                   Get.offAllNamed('/login');
                 } else {
-                  Get.snackbar(
-                    'Terjadi Kesalahan',
-                    'Silahkan coba lagi atau hubungi admin',
-                    backgroundColor: Colors.red,
-                    colorText: Colors.white,
-                  );
+                  throw ('Anda tidak terautentikasi');
                 }
               } catch (e) {
                 Get.snackbar(

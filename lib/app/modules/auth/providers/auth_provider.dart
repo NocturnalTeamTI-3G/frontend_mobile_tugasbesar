@@ -4,6 +4,7 @@ import 'package:frontend_mobile_tugasbesar/app/utils/routes/router.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dio/dio.dart';
 
 class AuthProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -39,8 +40,12 @@ class AuthProvider with ChangeNotifier {
         String gender = "Laki-laki";
         String password = "defaultPassword123";
 
-        final response = await _authService.register(user.email, password,
-            user.displayName ?? user.email.split('@')[0], gender, user.photoUrl ?? 'null');
+        final response = await _authService.register(
+            user.email,
+            password,
+            user.displayName ?? user.email.split('@')[0],
+            gender,
+            user.photoUrl ?? 'null');
 
         if (response.statusCode == 200) {
           Get.snackbar(
@@ -93,12 +98,35 @@ class AuthProvider with ChangeNotifier {
 
           Get.offAllNamed(AppRouters.main);
         } else {
-          throw Exception('Google Sign-In Error');
+          Get.snackbar(
+            'Akun Tidak Ditemukan',
+            'Pastikan email dan password yang Anda masukkan sudah benar.',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
         }
       } else {
         throw Exception('Google Sign-In Error');
       }
 
+      _isLoading = false;
+      notifyListeners();
+    } on DioError catch (e) {
+      if (e.response != null && e.response!.statusCode != 200) {
+        Get.snackbar(
+          'Akun Tidak Ditemukan',
+          'Pastikan email dan password yang Anda masukkan sudah benar.',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      } else {
+        Get.snackbar(
+          'Terjadi Kesalahan',
+          'Silahkan coba lagi atau hubungi admin',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
       _isLoading = false;
       notifyListeners();
     } catch (error) {
@@ -138,6 +166,24 @@ class AuthProvider with ChangeNotifier {
         );
       }
 
+      _isLoading = false;
+      notifyListeners();
+    } on DioError catch (e) {
+      if (e.response != null && e.response!.statusCode != 200) {
+        Get.snackbar(
+          'Terjadi Kesalahan',
+          'Email atau password salah',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      } else {
+        Get.snackbar(
+          'Terjadi Kesalahan',
+          'Silahkan coba lagi atau hubungi admin',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
       _isLoading = false;
       notifyListeners();
     } catch (e) {
