@@ -108,6 +108,10 @@ class _LoginPageState extends State<LoginPage> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please fill the email';
+                              } else if (!RegExp(
+                                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                  .hasMatch(value)) {
+                                return 'Please enter a valid email';
                               }
                               return null;
                             },
@@ -159,6 +163,8 @@ class _LoginPageState extends State<LoginPage> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please fill the password';
+                              } else if (value.length < 8) {
+                                return 'Password must be at least 8 characters';
                               }
                               return null;
                             },
@@ -219,7 +225,13 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.only(right: 35),
                               child: TextButton(
                                 onPressed: () {
-                                  Get.toNamed(AppRouters.forgotPassword);
+                                  // Get.toNamed(AppRouters.forgotPassword);
+                                  Get.snackbar(
+                                    'Fitur Sedang Dalam Pengembangan',
+                                    'Silakan coba lagi nanti.',
+                                    backgroundColor: Colors.blue,
+                                    colorText: Colors.white,
+                                  );
                                 },
                                 child: Text(
                                   'Forgot Password?',
